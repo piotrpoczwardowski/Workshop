@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .content {
+            width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            width: 50px;
+            height: 50px;
+           
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            width: 80px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <button>Click Me</button>
+    <div class="content">
+
+    </div>
+
+</body>
+<script>
+ var box = []
+
+
+
+   for(var i =0; i<240; i++){
+      
+       box[i] = new Constructor
+      
+   }
+
+
+
+    function numberToColor(color) {
+        return 'rgb(' + color + ',' + color + ',' + color + ')'
+    }
+
+   Constructor.prototype.toggle =  function () {
+            if (this.intervalId) {
+                clearInterval(this.intervalId)
+                this.intervalId = undefined
+                return
+            }
+
+
+            this.intervalId = setInterval(function () {
+                this.box.style.background = numberToColor(this.color)
+                if (this.color >= 255) {
+                    this.direction = -1
+                }
+                if (this.color <= 0) {
+                    this.direction = 1
+                }
+                this.color += this.direction
+                
+            }.bind(this), 10)
+        }
+
+
+    function Constructor() {
+
+
+        this.body = document.querySelector('.content')
+        this.box = document.createElement('div')
+       
+        this.box.classList.add('box')
+        this.body.appendChild(this.box)
+        this.button = document.querySelector('button')
+        
+        this.color = 255
+        this.animationDirection = -1;
+        this.intervalId
+
+        this.button.addEventListener('click',function(){
+            this.toggle()
+        }.bind(this))
+
+
+
+    }
+
+    
+
+
+
+
+</script>
+
+</html>
