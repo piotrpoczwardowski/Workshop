@@ -37,16 +37,21 @@
 </head>
 
 <body>
+    <button>Click Me</button>
     <div class="content">
 
     </div>
 
 </body>
 <script>
+ var box = []
+
 
 
    for(var i =0; i<24; i++){
-       var box = new Constructor
+      
+       box[i] = new Constructor
+      
    }
 
 
@@ -55,25 +60,7 @@
         return 'rgb(' + color + ',' + color + ',' + color + ')'
     }
 
-   
-
-
-    function Constructor() {
-
-
-        this.body = document.querySelector('.content')
-        this.box = document.createElement('div')
-        this.button = document.createElement('button')
-        this.button.innerHTML = 'Click me'
-        this.box.classList.add('box')
-        this.body.appendChild(this.box)
-        this.box.appendChild(this.button)
-
-        this.color = 255
-        this.animationDirection = -1;
-        this.intervalId
-
-        this.toggle = function () {
+   Constructor.prototype.toggle =  function () {
             if (this.intervalId) {
                 clearInterval(this.intervalId)
                 this.intervalId = undefined
@@ -93,66 +80,33 @@
                 
             }.bind(this), 10)
         }
-      
+
+
+    function Constructor() {
+
+
+        this.body = document.querySelector('.content')
+        this.box = document.createElement('div')
        
-        this.button.addEventListener('click', function(){
-           this.toggle()
+        this.box.classList.add('box')
+        this.body.appendChild(this.box)
+        this.button = document.querySelector('button')
+        
+        this.color = 255
+        this.animationDirection = -1;
+        this.intervalId
+
+        this.button.addEventListener('click',function(){
+            this.toggle()
         }.bind(this))
-
-
 
 
 
     }
 
+    
 
 
-
-
-
-
-
-    // var body = document.querySelector('#app')
-    // var button = document.querySelector('#toggle')
-
-    // var tos = new Constructor(body)
-
-    // function numberToColor(color) {
-    //     return 'rgb(' + color + ',' + color + ',' + color + ')'
-    // }
-    // button.addEventListener('click', function () {
-    //     tos.toggle()
-    // })
-    // Constructor.prototype.toggle = function () {
-    //         if (this.intervalId) {
-    //             clearInterval(this.intervalId)
-    //             this.intervalId = undefined
-    //             return
-    //         }
-
-
-    //         this.intervalId = setInterval(function () {
-    //             this.target.style.background = numberToColor(this.color)
-    //             if (this.color >= 255) {
-    //                 this.direction = -1
-    //             }
-    //             if (this.color <= 0) {
-    //                 this.direction = 1
-    //             }
-    //             this.color += this.direction
-    //             console.log(this.intervalId)
-    //         }.bind(this), 10)
-    //     }
-
-    // function Constructor(element) {
-    //     this.target = element
-    //     this.color = 255
-    //     this.direction = -1
-    //     this.intervalId
-
-
-
-    // }
 
 
 </script>
