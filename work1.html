@@ -44,33 +44,22 @@
 </body>
 <script>
 
-    
+
     var box1 = new Constructor
+    var box2 = new Constructor
 
 
 
-    // function numberToColor(color) {
-    //     return 'rgb(' + color + ',' + color + ',' + color + ')'
-    // }
+    function numberToColor(color) {
+        return 'rgb(' + color + ',' + color + ',' + color + ')'
+    }
 
-    // function toggle(){
-    //    if(this.intervalId){
-    //        clearInterval(this.intervalId)
-    //        this.intervalId = undefined
-    //        return
-    //    }
-    //    this.intervalId = setInterval(function(){
-    //        this.color++
-    //        console.log(this.color)
-    //    }.bind(this),16)
-    // }
+   
 
 
     function Constructor() {
-     
-        this.color = 255
-        this.animationDirection = -1;
-        this.intervalId
+
+
         this.body = document.querySelector('.content')
         this.box = document.createElement('div')
         this.button = document.createElement('button')
@@ -78,9 +67,18 @@
         this.box.classList.add('box')
         this.body.appendChild(this.box)
         this.box.appendChild(this.button)
-        console.log(this.box)
+
+        this.color = 255
+        this.animationDirection = -1;
+        this.intervalId
+      
        
-       
+        this.button.addEventListener('click', function(){
+           console.log('buzzz')
+        })
+
+
+
 
 
     }
