@@ -7,20 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        #app {
-            background: rgb(255, 255, 255)
+        body{
+            margin: 0;
+            padding: 0;
         }
+       .box{
+           width: 200px;
+           height: 200px;
+           border: 1px solid black;
+           box-sizing: border-box;
+       }
     </style>
 </head>
 
 <body>
 
-    <div id="app" style="width: 100px; height: 100px"></div>
-    <button id="toggle">Start</button>
+   
 </body>
 <script>
+    function createBox(){
+        var body = document.querySelector('body')
+        var box = document.createElement('div')
+        box.classList.add('box')
+        body.appendChild(box)
+    }
 
-    
 
 
 
