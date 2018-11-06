@@ -45,8 +45,9 @@
 <script>
 
 
-    var box1 = new Constructor
-    var box2 = new Constructor
+   for(var i =0; i<20; i++){
+       var box = new Constructor
+   }
 
 
 
@@ -71,11 +72,32 @@
         this.color = 255
         this.animationDirection = -1;
         this.intervalId
+
+        this.toggle = function () {
+            if (this.intervalId) {
+                clearInterval(this.intervalId)
+                this.intervalId = undefined
+                return
+            }
+
+
+            this.intervalId = setInterval(function () {
+                this.box.style.background = numberToColor(this.color)
+                if (this.color >= 255) {
+                    this.direction = -1
+                }
+                if (this.color <= 0) {
+                    this.direction = 1
+                }
+                this.color += this.direction
+                
+            }.bind(this), 10)
+        }
       
        
         this.button.addEventListener('click', function(){
-           console.log('buzzz')
-        })
+           this.toggle()
+        }.bind(this))
 
 
 
