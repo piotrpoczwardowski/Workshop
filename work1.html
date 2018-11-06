@@ -45,6 +45,7 @@
 <script>
 
     createBox()
+    var box1 = new Constructor
 
     function createBox() {
         var body = document.querySelector('.content')
@@ -54,9 +55,23 @@
         box.classList.add('box')
         body.appendChild(box)
         box.appendChild(button)
+        button.addEventListener('click', function () {
+            box.style.background = 'red'
+        })
+    }
+    
+    function numberToColor(color) {
+        return 'rgb(' + color + ',' + color + ',' + color + ')'
     }
 
-    
+
+
+    function Constructor() {
+        this.createBox = createBox
+        this.color = 255
+
+    }
+
 
 
 
