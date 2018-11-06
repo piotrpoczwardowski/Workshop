@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #app {
+           background: rgb(255, 255, 255)
+        
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" style="width: 100px; height: 100px"></div>
+    <button id="toggle">Start</button>
+</body>
+<script>
+var body = document.querySelector('#app')
+var button = document.querySelector('#toggle')
+var cos = new Constructor(body)
+
+function numberToColor(color){
+    return 'rgb(' +color+','+color+','+color+')'
+}
+button.addEventListener('click', function(){
+    cos.toggle()
+})
+
+
+function Constructor(element){
+    this.target = element
+    this.color = 255
+    this.direction = -1
+    this.intervalId
+    this.toggle = function(){
+        this.intervalId = setInterval(function(){
+            this.target.style.background= numberToColor(this.color)
+            if(this.color >= 255){
+                this.direction = -1
+            }
+            if(this.color <= 0){
+                this.direction = 1
+            }
+            this.color += this.direction
+            console.log(this.intervalId)
+        }.bind(this),10)
+    }
+  
+    
+}
+
+
+</script>
+
+</html>
