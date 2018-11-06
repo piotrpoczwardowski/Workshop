@@ -44,31 +44,44 @@
 </body>
 <script>
 
-    createBox()
+    
     var box1 = new Constructor
 
-    function createBox() {
-        var body = document.querySelector('.content')
-        var box = document.createElement('div')
-        var button = document.createElement('button')
-        button.innerHTML = 'Click me'
-        box.classList.add('box')
-        body.appendChild(box)
-        box.appendChild(button)
-        button.addEventListener('click', function () {
-            box.style.background = 'red'
-        })
-    }
-    
-    function numberToColor(color) {
-        return 'rgb(' + color + ',' + color + ',' + color + ')'
-    }
 
+
+    // function numberToColor(color) {
+    //     return 'rgb(' + color + ',' + color + ',' + color + ')'
+    // }
+
+    // function toggle(){
+    //    if(this.intervalId){
+    //        clearInterval(this.intervalId)
+    //        this.intervalId = undefined
+    //        return
+    //    }
+    //    this.intervalId = setInterval(function(){
+    //        this.color++
+    //        console.log(this.color)
+    //    }.bind(this),16)
+    // }
 
 
     function Constructor() {
-        this.createBox = createBox
+     
         this.color = 255
+        this.animationDirection = -1;
+        this.intervalId
+        this.body = document.querySelector('.content')
+        this.box = document.createElement('div')
+        this.button = document.createElement('button')
+        this.button.innerHTML = 'Click me'
+        this.box.classList.add('box')
+        this.body.appendChild(this.box)
+        this.box.appendChild(this.button)
+        console.log(this.box)
+       
+       
+
 
     }
 
