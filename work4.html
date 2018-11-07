@@ -58,6 +58,19 @@
 
    setInterval(function(){
        makeBall()
+
+      if(up){
+          ballY--
+      }
+      if(down){
+          ballY++
+      }
+      if(right){
+          ballX++
+      }
+      if(left){
+          ballX--
+      }
    },16)
 
 
