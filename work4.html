@@ -33,17 +33,13 @@
 <script>
     var board = document.querySelector('body')
     var button = document.querySelector('button')
-    var intervalId
+
 
     var ball = document.createElement('div')
     var ballX = (board.offsetWidth / 2) - (ball.offsetWidth / 2)
     var ballY = (board.offsetHeight / 2) - (ball.offsetHeight / 2)
 
-    var up = false
-    var down = false
-    var right = false
-    var left = false
-
+   
     function makeBall() {
 
         var ball = document.createElement('div')
@@ -56,25 +52,11 @@
 
     }
 
-   setInterval(function(){
-       makeBall()
-
-      if(up){
-          ballY--
-      }
-      if(down){
-          ballY++
-      }
-      if(right){
-          ballX++
-      }
-      if(left){
-          ballX--
-      }
-   },16)
-
-
-
+button.addEventListener('click', function(){
+    setTimeout(function(){
+    console.log('hi')
+},1000)
+})
 
 
 
