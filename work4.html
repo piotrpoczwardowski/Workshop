@@ -44,18 +44,6 @@
     var right = false
     var left = false
 
-    if(up===true){
-
-        setInterval(function(){
-            makeBall()
-            ballY--
-        },16)
-        
-    }
-
-
-
-
     function makeBall() {
 
         var ball = document.createElement('div')
@@ -66,13 +54,11 @@
         ball.style.left = ballX + 'px'
         ball.style.top = ballY + 'px'
 
-
-
-
-
     }
 
-   
+   setInterval(function(){
+       makeBall()
+   },16)
 
 
 
