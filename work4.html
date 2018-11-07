@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 900px;
+
+        }
+
+        .ball {
+            width: 25px;
+            height: 25px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button>Click Me</button>
+
+</body>
+<script>
+    var board = document.querySelector('body')
+    var button = document.querySelector('button')
+    var intervalId
+
+    var ball = document.createElement('div')
+    var ballX = (board.offsetWidth / 2) - (ball.offsetWidth / 2)
+    var ballY = (board.offsetHeight / 2) - (ball.offsetHeight / 2)
+
+    var up = false
+    var down = false
+    var right = false
+    var left = false
+
+    if(up===true){
+
+        setInterval(function(){
+            makeBall()
+            ballY--
+        },16)
+        
+    }
+
+
+
+
+    function makeBall() {
+
+        var ball = document.createElement('div')
+
+        ball.classList.add('ball')
+        board.appendChild(ball)
+
+        ball.style.left = ballX + 'px'
+        ball.style.top = ballY + 'px'
+
+
+
+
+
+    }
+
+   
+
+
+
+
+
+
+</script>
+
+</html>
