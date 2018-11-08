@@ -55,7 +55,22 @@
       }
       example1()
 
-      
+      function example2(){
+          function makeAdder(x){
+              return function(y){
+                  return x + y
+              }
+          }
+          var add10 = makeAdder(10)
+      var add20 = makeAdder(20)
+      var add30 = makeAdder(30)
+
+      console.log(add10(2), add20(2), add30(2))
+
+      }
+     
+
+      example2()
     </script>
   </body>
 </html>
