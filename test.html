@@ -27,8 +27,9 @@
     <h1>Hi i am H1</h1>
     <h2>Hi i am H2</h2>
     <script>
-      function example1() {
         var body = document.querySelector("body");
+      function example1() {
+        
 
         function increaseSize(size) {
           return function() {
@@ -71,6 +72,52 @@
      
 
       example2()
+
+      function example3(){
+          
+        var counter = (function(){
+            var privateCounter = 0;
+            function changeBy(val){
+                privateCounter += val
+            }
+            return {
+                increment: function() {
+                    changeBy(1)
+                },
+                decrement: function() {
+                    changeBy(-1)
+                },
+                value: function(){
+                    return privateCounter
+                }
+                
+            }
+        })()
+    function MakeButton(name, func){
+
+        this.button = document.createElement('button')
+        this.button.innerHTML = (name)
+        body.appendChild(this.button)
+        this.button.addEventListener('click',function(){
+            func()
+            number.innerHTML = (counter.value())
+            
+        })
+
+    }
+       
+      var increment = new MakeButton('increment', counter.increment)
+      var decrement = new MakeButton('decrement', counter.decrement)
+      var number = document.createElement('p')
+      number.innerHTML = (counter.value())
+      body.appendChild(number)
+
+      }
+      example3()
+
+
+
+
     </script>
   </body>
 </html>
