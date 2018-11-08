@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 30px;
+    }
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    h2 {
+      font-size: 1.2em;
+    }
+  </style>
+  <body>
+    <a href="#" id="size-40">40</a> <a href="#" id="size-50">50</a>
+    <a href="#" id="size-60">60</a>
+    <p>Hi i am pargraph</p>
+    <h1>Hi i am H1</h1>
+    <h2>Hi i am H2</h2>
+    <script>
+      function example1() {
+        var body = document.querySelector("body");
+
+        function increaseSize(size) {
+          return function() {
+            body.style.fontSize = `${size}px`;
+          };
+        }
+
+        make40 = increaseSize(40);
+        make50 = increaseSize(50);
+        make60 = increaseSize(60);
+
+        var link40 = document.querySelector("#size-40");
+        var link50 = document.querySelector("#size-50");
+        var link60 = document.querySelector("#size-60");
+        link40.addEventListener("click", function() {
+          make40();
+        });
+        link50.addEventListener("click", function() {
+          make50();
+        });
+        link60.addEventListener("click", function() {
+          make60();
+        });
+      }
+      example1()
+
+      
+    </script>
+  </body>
+</html>
