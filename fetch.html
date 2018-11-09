@@ -7,35 +7,35 @@
     <title>Document</title>
   </head>
   <body>
-    <button id="btn1">Pobierz</button>
-    <button id="btn2">Wyslij</button>
+    <button id="btn1">Pobierz</button> <button id="btn2">Wyslij</button>
     <script>
       const btn = document.querySelector("#btn1");
       const btn2 = document.querySelector("#btn2");
       btn.addEventListener("click", function() {
         fetch("https://jsonplaceholder.typicode.com/users")
-          .then(resp => resp.json())
+          .then(resp => {
+            if (resp.ok) {
+              return response.json();
+            } else {
+              throw new Error("Wystąpił błąd połączenia!");
+            }
+          })
           .then(resp => {
             console.log(resp);
-
-            resp.forEach(user => {
-              const {
-                id,
-                name = "Brak danych",
-                userName: username = "Brak danych",
-                email = "Brak danych",
-                address: { street, zipCode: zipcode },
-                www: website
-              } = user;
-
-              console.log(name)
-            });
-
-          });
+          })
+          .catch(error => console.dir("Błąd: ", error));
       });
 
       btn2.addEventListener("click", function() {
-        
+        fetch("https://jsonplaceholder.typicode.com/posts", {
+          method: "post",
+          body: "name=Piotr&Surname=Taz"
+        })
+          .then(res => res.json())
+          .then(res => {
+            console.log("Dodałem");
+            console.log(res);
+          });
       });
     </script>
   </body>
