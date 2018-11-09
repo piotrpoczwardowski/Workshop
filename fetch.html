@@ -11,10 +11,25 @@
     <script>
       const btn = document.querySelector("#btn1");
       btn.addEventListener("click", function() {
-        fetch("https://jsonplaceholder.typicode.com/users").then(resp =>
-          resp.json()).then(resp => {
-            console.log(resp)
-        });
+        fetch("https://jsonplaceholder.typicode.com/users")
+          .then(resp => resp.json())
+          .then(resp => {
+            console.log(resp);
+
+            resp.forEach(user => {
+              const {
+                id,
+                name = "Brak danych",
+                userName: username = "Brak danych",
+                email = "Brak danych",
+                address: { street, zipCode: zipcode },
+                www: website
+              } = user;
+
+              console.log(name)
+            });
+
+          });
       });
     </script>
   </body>
