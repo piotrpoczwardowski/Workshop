@@ -7,21 +7,15 @@
     <title>Document</title>
   </head>
   <body>
-
-    <button id='btn1'>
-GUYKIUYIUYIYUIUYIUYIUYI
-    </button>
+    <button id="btn1">GUYKIUYIUYIYUIUYIUYIUYI</button>
     <script>
-       
-        const btn = document.querySelector("#btn1");
-    btn.addEventListener("click", function() {
-        fetch("https://jsonplaceholder.typicode.com/users")
-            .then(resp => {
-                console.log("Przykład 1:");
-                console.log(resp.headers);
-            })
-    })
-    
+      const btn = document.querySelector("#btn1");
+      btn.addEventListener("click", function() {
+        fetch("https://jsonplaceholder.typicode.com/users").then(resp =>
+          resp.json()).then(resp => {
+            console.log(resp)
+        });
+      });
     </script>
   </body>
 </html>
