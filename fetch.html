@@ -13,13 +13,9 @@
       const btn2 = document.querySelector("#btn2");
       btn.addEventListener("click", function() {
         fetch("https://jsonplaceholder.typicode.com/users")
-          .then(resp => {
-            if (resp.ok) {
-              return response.json();
-            } else {
-              throw new Error("Wystąpił błąd połączenia!");
-            }
-          })
+          .then(resp => 
+              response.json()
+            )
           .then(resp => {
             console.log(resp);
           })
