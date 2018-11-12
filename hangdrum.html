@@ -23,6 +23,8 @@
       .button {
         border: 3px solid purple;
         border-radius: 10px;
+        background: rgba(128, 0, 128, 0.103);
+        transition: all, 0.1s;
         width: 100px;
         height: 100px;
         display: flex;
@@ -30,22 +32,36 @@
         align-items: center;
       }
 
-      .button:hover{
-          transform: scale(1.2)
+      .active{
+          transform: scale(1.2);
+          background: rgba(128, 0, 128, 0.664);
 
       }
     </style>
   </head>
   <body>
     <div class="panel">
-      <div class="button"><p>A</p></div>
-      <div class="button"><p>S</p></div>
-      <div class="button"><p>D</p></div>
-      <div class="button"><p>F</p></div>
-      <div class="button"><p>G</p></div>
-      <div class="button"><p>H</p></div>
+      <div data-key='65' class="button"><p>A</p></div>
+      <div data-key='83' class="button"><p>S</p></div>
+      <div data-key='68' class="button"><p>D</p></div>
+      <div data-key='70' class="button"><p>F</p></div>
+      <div data-key='71' class="button"><p>G</p></div>
+      <div data-key='72' class="button"><p>H</p></div>
     </div>
 
-    <script></script>
+    <audio data-key='65' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='83' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='68' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='70' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='71' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='72' src="/hangdrum/drum1.wav"></audio>
+    <script>
+
+        addEventListener('keydown', function(e){
+
+            console.log(e)
+        })
+
+    </script>
   </body>
 </html>
