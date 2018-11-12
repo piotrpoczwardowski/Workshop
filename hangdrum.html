@@ -16,9 +16,9 @@
         padding: 0;
         font-size: 35px;
       }
-      .panel{
-          display: flex;
-          justify-content: space-around;
+      .panel {
+        display: flex;
+        justify-content: space-around;
       }
       .button {
         border: 3px solid purple;
@@ -32,47 +32,48 @@
         align-items: center;
       }
 
-      .active{
-          transform: scale(1.2);
-          background: rgba(128, 0, 128, 0.664);
-
+      .active {
+        transform: scale(1.2);
+        background: rgba(128, 0, 128, 0.664);
       }
     </style>
   </head>
   <body>
     <div class="panel">
-      <div data-key='65' class="button"><p>A</p></div>
-      <div data-key='83' class="button"><p>S</p></div>
-      <div data-key='68' class="button"><p>D</p></div>
-      <div data-key='70' class="button"><p>F</p></div>
-      <div data-key='71' class="button"><p>G</p></div>
-      <div data-key='72' class="button"><p>H</p></div>
+      <div data-key="65" class="button"><p>A</p></div>
+      <div data-key="83" class="button"><p>S</p></div>
+      <div data-key="68" class="button"><p>D</p></div>
+      <div data-key="70" class="button"><p>F</p></div>
+      <div data-key="71" class="button"><p>G</p></div>
+      <div data-key="72" class="button"><p>H</p></div>
     </div>
 
-    <audio data-key='65' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='83' src="/hangdrum/drum2.wav"></audio>
-    <audio data-key='68' src="/hangdrum/drum3.wav"></audio>
-    <audio data-key='70' src="/hangdrum/drum4.wav"></audio>
-    <audio data-key='71' src="/hangdrum/drum5.wav"></audio>
-    <audio data-key='72' src="/hangdrum/drum9.wav"></audio>
+    <audio data-key="65" src="/hangdrum/drum1.wav"></audio>
+    <audio data-key="83" src="/hangdrum/drum2.wav"></audio>
+    <audio data-key="68" src="/hangdrum/drum3.wav"></audio>
+    <audio data-key="70" src="/hangdrum/drum4.wav"></audio>
+    <audio data-key="71" src="/hangdrum/drum5.wav"></audio>
+    <audio data-key="72" src="/hangdrum/drum9.wav"></audio>
     <script>
-
-        addEventListener('keydown', function(e){
-
-            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-            const button = document.querySelector(`div[data-key="${e.keyCode}"]`)
-            if(!audio){
-                return
-            }
-            console.log(audio)
-            audio.play()
-            audio.currentTime = 0;
-            button.classList.add('active')
-            
-        })
-
-       
-
+      addEventListener("keydown", function(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const button = document.querySelector(`div[data-key="${e.keyCode}"]`);
+        if (!audio) {
+          return;
+        }
+        console.log(audio);
+        audio.play();
+        audio.currentTime = 0;
+        button.classList.add("active");
+      });
+      var buttons = document.querySelectorAll(".button");
+      
+      buttons.forEach( button => button.addEventListener('transitionend', function(e){
+          if(e.propertyName !== 'transform'){
+              return
+          }
+          this.classList.remove('active')
+      }))
     </script>
   </body>
 </html>
