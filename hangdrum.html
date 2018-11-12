@@ -11,6 +11,7 @@
         margin: 0;
         padding: 0;
         background: black;
+        transition: all, 0.5s;
       }
       p {
         margin: 0;
@@ -40,9 +41,28 @@
         transform: scale(1.2);
         background: rgba(128, 0, 128, 0.664);
       }
+      .purple {
+        background: rgb(54, 5, 70);
+      }
+      .blue {
+        background: rgb(6, 5, 71);
+      }
+    
+      .azure {
+        background: rgb(5, 63, 71);
+      }
+      .green {
+        background: rgb(5, 71, 8);
+      }
+      .orange {
+        background: rgb(71, 53, 5);
+      }
+      .red {
+        background: rgb(71, 5, 5);
+      }
     </style>
   </head>
-  <body>
+  <body class="">
     <div class="panel">
       <div data-key="65" class="button"><p>A</p></div>
       <div data-key="83" class="button"><p>S</p></div>
@@ -59,30 +79,62 @@
     <audio data-key="71" src="/hangdrum/drum5.wav"></audio>
     <audio data-key="72" src="/hangdrum/drum9.wav"></audio>
     <script>
-    function playSound(e){
+      var buttons = document.querySelectorAll(".button");
+      var body = document.querySelector('body')
+
+      addEventListener("keydown", playSound);
+      buttons.forEach(button =>
+        button.addEventListener("transitionend", removeActiveClass)
+      );
+
+        body.addEventListener('transitionend', removeClass)
+
+
+        function removeClass(e){
+            if(e.target !== body){
+                return;
+            }
+            this.classList = ''
+            
+        }
+
+      function playSound(e) {
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
         const button = document.querySelector(`div[data-key="${e.keyCode}"]`);
-       
+
         if (!audio) {
           return;
         }
-       
+
         audio.play();
         audio.currentTime = 0;
         button.classList.add("active");
+        if (e.keyCode === 65) {
+            body.classList.add('purple')
+        }
+        if (e.keyCode === 83) {
+            body.classList.add('blue')
+        }
+        if (e.keyCode === 68) {
+            body.classList.add('azure')
+        }
+        if (e.keyCode === 70) {
+            body.classList.add('green')
+        }
+        if (e.keyCode === 71) {
+            body.classList.add('orange')
+        }
+        if (e.keyCode === 72) {
+            body.classList.add('red')
+        }
       }
 
-      function removeClass(e){
-          if(e.propertyName !== 'transform'){
-              return
-          }
-          this.classList.remove('active')
+      function removeActiveClass(e) {
+        if (e.propertyName !== "transform") {
+          return;
+        }
+        this.classList.remove("active");
       }
-    
-      addEventListener("keydown", playSound);
-      var buttons = document.querySelectorAll(".button");
-      
-      buttons.forEach( button => button.addEventListener('transitionend', removeClass))
     </script>
   </body>
 </html>
