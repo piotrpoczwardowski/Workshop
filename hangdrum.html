@@ -50,17 +50,28 @@
     </div>
 
     <audio data-key='65' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='83' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='68' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='70' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='71' src="/hangdrum/drum1.wav"></audio>
-    <audio data-key='72' src="/hangdrum/drum1.wav"></audio>
+    <audio data-key='83' src="/hangdrum/drum2.wav"></audio>
+    <audio data-key='68' src="/hangdrum/drum3.wav"></audio>
+    <audio data-key='70' src="/hangdrum/drum4.wav"></audio>
+    <audio data-key='71' src="/hangdrum/drum5.wav"></audio>
+    <audio data-key='72' src="/hangdrum/drum9.wav"></audio>
     <script>
 
         addEventListener('keydown', function(e){
 
-            console.log(e)
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+            const button = document.querySelector(`div[data-key="${e.keyCode}"]`)
+            if(!audio){
+                return
+            }
+            console.log(audio)
+            audio.play()
+            audio.currentTime = 0;
+            button.classList.add('active')
+            
         })
+
+       
 
     </script>
   </body>
