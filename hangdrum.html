@@ -10,15 +10,19 @@
       body {
         margin: 0;
         padding: 0;
+        background: black;
       }
       p {
         margin: 0;
         padding: 0;
         font-size: 35px;
+        color: white;
+        font-weight: bold;
       }
       .panel {
         display: flex;
         justify-content: space-around;
+        margin-top: 400px;
       }
       .button {
         border: 3px solid purple;
@@ -55,25 +59,30 @@
     <audio data-key="71" src="/hangdrum/drum5.wav"></audio>
     <audio data-key="72" src="/hangdrum/drum9.wav"></audio>
     <script>
-      addEventListener("keydown", function(e) {
+    function playSound(e){
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
         const button = document.querySelector(`div[data-key="${e.keyCode}"]`);
+       
         if (!audio) {
           return;
         }
-        console.log(audio);
+       
         audio.play();
         audio.currentTime = 0;
         button.classList.add("active");
-      });
-      var buttons = document.querySelectorAll(".button");
-      
-      buttons.forEach( button => button.addEventListener('transitionend', function(e){
+      }
+
+      function removeClass(e){
           if(e.propertyName !== 'transform'){
               return
           }
           this.classList.remove('active')
-      }))
+      }
+    
+      addEventListener("keydown", playSound);
+      var buttons = document.querySelectorAll(".button");
+      
+      buttons.forEach( button => button.addEventListener('transitionend', removeClass))
     </script>
   </body>
 </html>
