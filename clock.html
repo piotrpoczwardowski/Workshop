@@ -33,6 +33,11 @@
         top: 50%;
         transform: rotate(90deg);
         transform-origin: 100%;
+       
+       
+      }
+
+      .trans{
         transition: all, 0.05s;
         transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
       }
@@ -52,6 +57,7 @@
       var secondHand = document.querySelector(".seconds");
       var minHand = document.querySelector(".minutes");
       var hourHand = document.querySelector(".hour");
+      var hand = document.querySelectorAll('.hand')
       function setDate() {
         const now = new Date();
         const second = now.getSeconds();
@@ -60,10 +66,27 @@
         const secondDegree = ((second / 60) * 360) + 90;
         const minDegree = ((min / 60) * 360) + 90;
         const hourDegree = ((hour / 60) * 360) + 90;
-        console.log(second)
+       
         secondHand.style.transform = `rotate(${secondDegree}deg)`;
         minHand.style.transform = `rotate(${minDegree}deg)`;
         hourHand.style.transform = `rotate(${hourDegree}deg)`;
+       secondHand.classList.add('trans')
+       if(second === 60 || second ===0){
+          
+            secondHand.classList.remove('trans')
+         
+       }
+       if(min === 60 || min ===0){
+          
+          minHand.classList.remove('trans')
+       
+     }
+       if(hour === 60 || hour ===0){
+          
+          hourHand.classList.remove('trans')
+       
+     }
+
       }
 
       setInterval(setDate, 1000);
