@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+      }
 
-        body{
-            margin: 0;
-            padding: 0;
-        }
-    p{
+      :root{
+          --text: red;
+      }
+
+      p {
         text-align: center;
         font-size: 60px;
-        font-weight: white;
-    }
+        font-weight: bold;
+        color: white;
+       
+      }
+
+      .img{
+          text-align: center;
+
+      }
+
+      img{
+          border: 10px solid rgb(49, 2, 49);
+          border-radius: 10px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <p>Uptade CSS variables with JS</p>
-</body>
+    
+    <div class="img">
+        <img src="/M31_Spiral_Galaxy.jpg" alt="">
+    </div>
+  </body>
 </html>
