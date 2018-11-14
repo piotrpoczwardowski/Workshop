@@ -10,34 +10,49 @@
         margin: 0;
         padding: 0;
         background: black;
+        text-align: center;
+        font-size: 50px;
+        color: white;
+
       }
 
       :root{
           --text: red;
       }
 
-      p {
-        text-align: center;
-        font-size: 60px;
-        font-weight: bold;
-        color: white;
-       
-      }
+     .controls{
+         margin-bottom: 80px;
+     }
+     
+     
+    input{
+        margin-right: 80px;
 
-      .img{
-          text-align: center;
-
-      }
+    }
+     
 
       img{
           border: 10px solid rgb(49, 2, 49);
           border-radius: 10px;
       }
+      #h1{
+          color: rgb(156, 8, 156);
+      }
     </style>
   </head>
   <body>
-    <p>Uptade CSS variables with JS</p>
+    <p>Uptade CSS variables with <span id='h1'>JS</span></p>
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input type="range" min='10' max='200' value='10' data-sizing='px' name="spacing">
     
+        <label for="blur">Blur:</label>
+        <input type="range" min='0' max='25' value='10' data-sizing='px' name="blur">
+
+        <label for="base">Base:</label>
+        <input type="color" value='555' name="base">
+    
+    </div>
     <div class="img">
         <img src="/M31_Spiral_Galaxy.jpg" alt="">
     </div>
