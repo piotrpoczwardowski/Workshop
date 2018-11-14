@@ -19,7 +19,7 @@
       :root{
           --base: #660066;
           --spacing: 10px;
-          --blur: 10px;
+          --blur: 0px;
       }
 
      .controls{
@@ -45,13 +45,13 @@
     </style>
   </head>
   <body>
-    <p>Uptade CSS variables with <span id='h1'>JS</span></p>
+    <h2>Uptade CSS variables with <span id='h1'>JS</span></h2>
     <div class="controls">
         <label for="spacing">Spacing:</label>
         <input type="range" min='10' max='200' value='10' data-sizing='px' name="spacing">
     
         <label for="blur">Blur:</label>
-        <input type="range" min='0' max='25' value='10' data-sizing='px' name="blur">
+        <input type="range" min='0' max='25' value='0' data-sizing='px' name="blur">
 
         <label for="base">Base:</label>
         <input type="color" value='#660066' name="base">
@@ -62,10 +62,15 @@
     </div>
 
     <script>
+
     const inputs = document.querySelectorAll('.controls input')
 
     function handleChange(){
+       
+        const suffix = this.dataset.sizing || ''
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix )
         console.log(this.value)
+        
     }
 
     inputs.forEach(input => {
