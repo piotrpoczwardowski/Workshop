@@ -17,7 +17,9 @@
       }
 
       :root{
-          --text: red;
+          --base: #660066;
+          --spacing: 10px;
+          --blur: 10px;
       }
 
      .controls{
@@ -32,11 +34,13 @@
      
 
       img{
-          border: 10px solid rgb(49, 2, 49);
+          padding: var(--spacing);
+          border: 10px solid var(--base);
+          filter: blur(var(--blur));
           border-radius: 10px;
       }
       #h1{
-          color: rgb(156, 8, 156);
+        color: var(--base)
       }
     </style>
   </head>
@@ -50,11 +54,26 @@
         <input type="range" min='0' max='25' value='10' data-sizing='px' name="blur">
 
         <label for="base">Base:</label>
-        <input type="color" value='555' name="base">
+        <input type="color" value='#660066' name="base">
     
     </div>
     <div class="img">
         <img src="/M31_Spiral_Galaxy.jpg" alt="">
     </div>
+
+    <script>
+    const inputs = document.querySelectorAll('.controls input')
+
+    function handleChange(){
+        console.log(this.value)
+    }
+
+    inputs.forEach(input => {
+    input.addEventListener('mousemove', handleChange)
+    input.addEventListener('change', handleChange)
+    }
+    )
+
+    </script>
   </body>
 </html>
