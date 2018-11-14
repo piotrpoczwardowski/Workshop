@@ -9,15 +9,18 @@
       body {
         margin: 0;
         padding: 0;
+        background: black;
       }
       .clock {
         margin: 50px auto;
-        width: 30rem;
-        height: 30rem;
-        border: 5px solid rgb(8, 233, 8);
+        width: 50rem;
+        height: 50rem;
+        border: 40px solid rgb(8, 233, 8);
         border-radius: 50%;
         position: relative;
         padding: 2rem;
+        transition: all, 0.05s;
+        box-sizing: border-box;
       }
       .clock-face {
         position: relative;
@@ -26,7 +29,7 @@
         transform: translateY(-3px);
       }
       .hand {
-        background: black;
+        background: rgb(255, 255, 255);
         width: 50%;
         height: 6px;
         position: absolute;
@@ -41,6 +44,11 @@
         transition: all, 0.05s;
         transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
       }
+
+      /* .glow{
+          border: 45px solid white;
+          box-shadow: 0 0 20px white, 0 0 50px rgb(1, 236, 1),0 0 70px rgb(1, 236, 1),0 0 100px rgb(1, 236, 1), 0 0 110px rgb(1, 236, 1);
+      } */
       
     </style>
   </head>
@@ -58,6 +66,7 @@
       var minHand = document.querySelector(".minutes");
       var hourHand = document.querySelector(".hour");
       var hand = document.querySelectorAll('.hand')
+      var clock = document.querySelector('.clock')
       function setDate() {
         const now = new Date();
         const second = now.getSeconds();
@@ -71,6 +80,8 @@
         minHand.style.transform = `rotate(${minDegree}deg)`;
         hourHand.style.transform = `rotate(${hourDegree}deg)`;
        secondHand.classList.add('trans')
+       clock.classList.add('glow')
+      
        if(second === 60 || second ===0){
           
             secondHand.classList.remove('trans')
@@ -90,6 +101,13 @@
       }
 
       setInterval(setDate, 1000);
+
+       clock.addEventListener('transitionend', function(e){
+           if(e.propertyName !== "box-shadow"){
+               return
+           }
+           clock.classList.remove('glow')
+       })
     </script>
   </body>
 </html>
