@@ -45,6 +45,9 @@
           0 0 50px rgb(255, 0, 255), 0 0 100px rgb(255, 0, 255),
           0 0 200px rgb(255, 0, 255);
       }
+      .active_rainbow{
+        transform: scale(1.4)
+      }
       .purple {
         background: rgb(13, 1, 17);
       }
@@ -82,11 +85,10 @@
         filter: blur(60px);
         background-repeat: no-repeat;
         background-position: center;
-        transition: all, 0.3s;
+        transition: all, 0.5s;
       }
       .rainbow:hover {
-        width: 800px;
-        height: 500px;
+       transform: scale(1.4)
       }
 
       .box {
@@ -124,6 +126,13 @@
       var box = document.querySelector(".box");
       var x = 0;
 
+      var rainbowWidth = parseInt(
+        window.getComputedStyle(rainbow).getPropertyValue("width")
+      );
+      var rainbowHeight = parseInt(
+        window.getComputedStyle(rainbow).getPropertyValue("height")
+      );
+
       addEventListener("keydown", playSound);
       buttons.forEach(button =>
         button.addEventListener("transitionend", removeActiveClass)
@@ -149,11 +158,10 @@
         audio.play();
         audio.currentTime = 0;
         button.classList.add("active");
-        intervalId =   setInterval(function() {
-        simpleChange()
-      }, 20);
-       
-       
+        rainbow.classList.add('active_rainbow')
+        intervalId = setInterval(function() {
+          simpleChange();
+        }, 50);
       }
 
       function removeActiveClass(e) {
@@ -161,7 +169,10 @@
           return;
         }
         this.classList.remove("active");
-        clearInterval(intervalId)
+        rainbow.classList.remove('active_rainbow')
+        rainbowWidth = 300
+        rainbowHeight = 300
+        clearInterval(intervalId);
         
       }
 
@@ -193,7 +204,7 @@
         "#ff0040",
         "	#ff0000"
       ];
-     
+
       function slideColor() {
         var stringColors = colors.toString();
         var col = colors.pop();
@@ -224,8 +235,10 @@
           "background",
           `radial-gradient(${slideColor()})`
         );
+
+       
+        
       }
-    
     </script>
   </body>
 </html>
