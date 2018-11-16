@@ -79,7 +79,7 @@
         );
 
         border-radius: 50%;
-        filter: blur(2px);
+        filter: blur(70px);
         background-repeat: no-repeat;
         background-position: center;
         transition: all, 0.3s;
@@ -204,8 +204,8 @@
 
       function slideColor() {
         var stringColors = colors.toString();
-        var col = colors.shift();
-        colors.push(col);
+        var col = colors.pop();
+        colors.unshift(col);
         return stringColors;
       }
 
