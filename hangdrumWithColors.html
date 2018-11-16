@@ -77,15 +77,13 @@
           green,
           aqua
         );
-        
+
         border-radius: 50%;
         filter: blur(2px);
         background-repeat: no-repeat;
         background-position: center;
         transition: all, 0.3s;
         position: absolute;
-        
-       
       }
       .rainbow:hover {
         opacity: 0;
@@ -96,7 +94,6 @@
         height: 400px;
         margin: 0 auto;
         position: relative;
-      
       }
     </style>
   </head>
@@ -109,7 +106,7 @@
       <div data-key="71" class="button"><p>G</p></div>
       <div data-key="72" class="button"><p>H</p></div>
     </div>
-    <div class="box"></div>
+    <div class="box"><div class="rainbow"></div></div>
 
     <audio data-key="65" src="/hangdrum/drum3.wav"></audio>
     <audio data-key="83" src="/hangdrum/drum4.wav"></audio>
@@ -174,56 +171,73 @@
       }
 
       var colors = [
-        
-        "blue",
-        "purple",
-        "red",
-        "orange",
-        "yellow",
-        "green",
-        "aqua"
-        
+        "#ff0000",
+        "#ff4000",
+        "#ff8000",
+        "#ffbf00",
+        "#ffff00",
+        "#bfff00",
+        "#80ff00",
+        "	#40ff00",
+        "#00ff00",
+        "#00ff40",
+        "	#00ff80",
+        "	#00ffbf",
+        "#00ffff",
+        "#00bfff",
+        "#0080ff",
+        "#0040ff",
+        "#0000ff",
+        "	#4000ff",
+        "#8000ff",
+
+        "	#bf00ff",
+        "#ff00ff",
+        "#ff00bf",
+        "#ff0080",
+        "#ff0040",
+        "	#ff0000"
       ];
       var rainbow = document.querySelector(".rainbow");
       var box = document.querySelector(".box");
-      var x = 0
-     
+      var x = 0;
 
-     
-function slideColor(){
-      var stringColors = colors.toString();
-      var col = colors.shift();
-     colors.push(col);
-     return stringColors
-}
-
-      function newRainbow() {
-        if(x <= -1){
-         
-         var visibleRainbow = document.querySelector('.rainbow')
-         visibleRainbow.style.opacity = 0
-         visibleRainbow.addEventListener('transitionend',function(){
-           box.removeChild(visibleRainbow)
-         })
-        }
-        var hiddenRainbow = document.createElement("div");
-        hiddenRainbow.classList.add("rainbow");
-        hiddenRainbow.style.zIndex = x;
-        x--
-        hiddenRainbow.style.setProperty(
-        "background",
-        `radial-gradient(${slideColor()})`
-      );
-      box.appendChild(hiddenRainbow)
-      
-      
-       
-        
+      function slideColor() {
+        var stringColors = colors.toString();
+        var col = colors.shift();
+        colors.push(col);
+        return stringColors;
       }
 
-      setInterval(function(){
-        newRainbow()
-      },400)
+      // function newRainbow() {
+      //   if (x <= -1) {
+      //     );var visibleRainbow = document.querySelector(".rainbow"
+      //     visibleRainbow.style.opacity = 0;
+      //     visibleRainbow.addEventListener("transitionend", function() {
+      //       box.removeChild(visibleRainbow);
+      //     });
+      //   }
+      //   var hiddenRainbow = document.createElement("div");
+      //   hiddenRainbow.classList.add("rainbow");
+      //   hiddenRainbow.style.zIndex = x;
+      //   x--;
+      //   hiddenRainbow.style.setProperty(
+      //     "background",
+      //     `radial-gradient(${slideColor()})`
+      //   );
+      //   box.appendChild(hiddenRainbow);
+      // }
+      function simpleChange(){
+        
+       
+        rainbow.style.setProperty(
+          "background",
+          `radial-gradient(${slideColor()})`
+        );
+      }
+      setInterval(function() {
+        simpleChange()
+      }, 56);
     </script>
   </body>
 </html>
