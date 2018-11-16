@@ -69,19 +69,21 @@
         width: 500px;
         height: 500px;
         background: radial-gradient(
-          red 12%,
-          purple 24%,
-          blue 36%,
-          yellow 48%,
-          green 60%,
-          orange 72%
+         blue,
+         purple,
+         red,
+         orange,
+         yellow,
+         green,
+         aqua
+
         );
         margin: 0 auto;
         border-radius: 50%;
         filter: blur(2px);
         background-repeat: no-repeat;
-        background-position: center;
-        background-size: 500px 500px;
+       
+      
         
       }
     </style>
@@ -157,14 +159,11 @@
         }
         this.classList.remove("active");
       }
-
+      var array = ['red', 'blue', 'purple']
       var rainbow = document.querySelector('.rainbow')
-      var x = 2000
+      console.log(rainbow.style.setProperty('background', 'radial-gradient(black, red)'))
 
-      setInterval(function(){
-        rainbow.style.backgroundSize= `${x}px ${x}px`
-        x--
-      },16)
+      
     </script>
   </body>
 </html>
