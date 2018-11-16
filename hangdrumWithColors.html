@@ -82,6 +82,9 @@
         filter: blur(2px);
         background-repeat: no-repeat;
         background-position: center;
+        transition: all, 0.3s;
+        position: absolute;
+        
        
       }
       .rainbow:hover {
@@ -195,8 +198,13 @@ function slideColor(){
 }
 
       function newRainbow() {
-        if(visibleRainbow){
-          box.removeChild(visibleRainbow)
+        if(x <= -1){
+         
+         var visibleRainbow = document.querySelector('.rainbow')
+         visibleRainbow.style.opacity = 0
+         visibleRainbow.addEventListener('transitionend',function(){
+           box.removeChild(visibleRainbow)
+         })
         }
         var hiddenRainbow = document.createElement("div");
         hiddenRainbow.classList.add("rainbow");
@@ -207,11 +215,15 @@ function slideColor(){
         `radial-gradient(${slideColor()})`
       );
       box.appendChild(hiddenRainbow)
-      var visibleRainbow = hiddenRainbow
-      console.log(visibleRainbow)
+      
+      
        
         
       }
+
+      setInterval(function(){
+        newRainbow()
+      },400)
     </script>
   </body>
 </html>
