@@ -28,7 +28,7 @@
         border: 3px solid purple;
         border-radius: 10px;
         background: rgba(128, 0, 128, 0.103);
-        transition: all, 0.4s;
+        transition: all, 0.5s;
         width: 100px;
         height: 100px;
         display: flex;
@@ -66,8 +66,8 @@
       }
 
       .rainbow {
-        width: 400px;
-        height: 400px;
+        width: 300px;
+        height: 300px;
         background: radial-gradient(
           blue,
           purple,
@@ -79,21 +79,23 @@
         );
 
         border-radius: 50%;
-        filter: blur(70px);
+        filter: blur(60px);
         background-repeat: no-repeat;
         background-position: center;
         transition: all, 0.3s;
-        position: absolute;
       }
       .rainbow:hover {
-        opacity: 0;
+        width: 800px;
+        height: 500px;
       }
 
       .box {
-        width: 400px;
-        height: 400px;
-        margin: 0 auto;
-        position: relative;
+        width: 500px;
+        height: 500px;
+        margin: 60px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     </style>
   </head>
@@ -117,6 +119,10 @@
     <script>
       var buttons = document.querySelectorAll(".button");
       var body = document.querySelector("body");
+      var intervalId;
+      var rainbow = document.querySelector(".rainbow");
+      var box = document.querySelector(".box");
+      var x = 0;
 
       addEventListener("keydown", playSound);
       buttons.forEach(button =>
@@ -143,24 +149,11 @@
         audio.play();
         audio.currentTime = 0;
         button.classList.add("active");
-        if (e.keyCode === 65) {
-          body.classList.add("purple");
-        }
-        if (e.keyCode === 83) {
-          body.classList.add("blue");
-        }
-        if (e.keyCode === 68) {
-          body.classList.add("azure");
-        }
-        if (e.keyCode === 70) {
-          body.classList.add("green");
-        }
-        if (e.keyCode === 71) {
-          body.classList.add("orange");
-        }
-        if (e.keyCode === 72) {
-          body.classList.add("red");
-        }
+        intervalId =   setInterval(function() {
+        simpleChange()
+      }, 20);
+       
+       
       }
 
       function removeActiveClass(e) {
@@ -168,6 +161,8 @@
           return;
         }
         this.classList.remove("active");
+        clearInterval(intervalId)
+        
       }
 
       var colors = [
@@ -198,10 +193,7 @@
         "#ff0040",
         "	#ff0000"
       ];
-      var rainbow = document.querySelector(".rainbow");
-      var box = document.querySelector(".box");
-      var x = 0;
-
+     
       function slideColor() {
         var stringColors = colors.toString();
         var col = colors.pop();
@@ -227,17 +219,13 @@
       //   );
       //   box.appendChild(hiddenRainbow);
       // }
-      function simpleChange(){
-        
-       
+      function simpleChange() {
         rainbow.style.setProperty(
           "background",
           `radial-gradient(${slideColor()})`
         );
       }
-      setInterval(function() {
-        simpleChange()
-      }, 56);
+    
     </script>
   </body>
 </html>
