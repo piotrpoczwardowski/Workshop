@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      var myCanvas = document.createElement("canvas");
+    myCanvas.width=600;
+    myCanvas.height=600;
+    document.body.appendChild(myCanvas);
+    var ctx = myCanvas.getContext("2d");
+   
+    ctx.fillRect(20, 10, 1, 1);
+    
+    for(var i = 0; i<myCanvas.width; i++){
+       
+        for(var j = 0; j<myCanvas.height; j++){
+            if(i%2 ===0){
+                ctx.fillStyle= 'red'
+                ctx.fillRect(i,j,1,1)
+
+            } else {
+                ctx.fillStyle = 'black'
+            ctx.fillRect(i,j,1,1)
+            }
+        }
+    }
+    
+    </script>
+</body>
+</html>
