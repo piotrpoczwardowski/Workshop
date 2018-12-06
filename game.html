@@ -77,11 +77,19 @@
        player.addEventListener('click', function(){
           var playerX = parseInt(player.getAttribute('data-x'))
           var playerY = parseInt(player.getAttribute('data-y'))
-          player.classList.add('selected')
+          player.classList.toggle('selected')
         
        var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
-        moveRange.forEach(function(x){
-            x.classList.add('move')
+        moveRange.forEach(function(cell){
+            cell.classList.toggle('move')
+            
+            cell.addEventListener('click',function(){
+                player.setAttribute('data-x', parseInt(this.getAttribute('data-x')))
+                player.setAttribute('data-y', parseInt(this.getAttribute('data-y')))
+
+                
+            })
+
         })
    
    
