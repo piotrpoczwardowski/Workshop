@@ -6,14 +6,101 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-    .cell{
-        width: 40px;
-        height: 40px;
-    }
+      .grid {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .gridRow {
+    display: flex;
+    justify-content: space-around;
+    
+  }
+
+  .gridCell {
+    height: 80px;
+    width: 80px;
+    flex-grow: 1;
+    background: gray;
+    box-sizing: border-box;
+    border: 2px solid white;
+    box-sizing: border-box;
+  }
+
+  .player{
+      background: rgb(111, 7, 121);
+  }
+
+  .move{
+      background: rgba(187, 50, 50, 0.678);
+  }
+.selected{
+    border: 5px solid red;
+    
+}
     </style>
 </head>
 <body>
+    <div class="grid">
+
+    </div>
     <script>
+          var grid = document.querySelector('.grid')
+  for(var i = 0; i<10;i++){
+            var row = document.createElement('div')
+            row.classList.add('gridRow')
+           grid.appendChild(row)
+            for(var j = 0; j<10; j++){
+                var cell = document.createElement('div')
+            cell.classList.add('gridCell')
+            cell.setAttribute('data-y', i+1)
+            cell.setAttribute('data-x', j+1)
+            row.appendChild(cell)
+            }
+
+        }
+
+
+
+      
+      
+
+
+        
+
+        var player = document.querySelector(`div[data-x="${2}"][data-y="${2}"]`)
+       player.classList.add('player')
+
+       player.addEventListener('click', function(){
+          var playerX = parseInt(player.getAttribute('data-x'))
+          var playerY = parseInt(player.getAttribute('data-y'))
+          player.classList.add('selected')
+        
+       var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
+        moveRange.forEach(function(x){
+            x.classList.add('move')
+        })
+   
+   
+       })
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
     </script>
 </body>
 </html>
