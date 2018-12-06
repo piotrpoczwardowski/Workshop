@@ -1,99 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
       .grid {
-    display: flex;
-    flex-direction: column;
-    width: 800px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-  }
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
 
-  .gridRow {
-    display: flex;
-    justify-content: space-around;
-    
-  }
+      .gridRow {
+        display: flex;
+        justify-content: space-around;
+      }
 
-  .gridCell {
-    height: 80px;
-    width: 80px;
-    flex-grow: 1;
-    background: gray;
-    box-sizing: border-box;
-    border: 2px solid white;
-    box-sizing: border-box;
-  }
+      .gridCell {
+        height: 80px;
+        width: 80px;
+        flex-grow: 1;
+        background: gray;
+        box-sizing: border-box;
+        border: 2px solid white;
+        box-sizing: border-box;
+      }
 
-  .player{
-      background: rgb(111, 7, 121);
-  }
-
-  .move{
-      background: rgba(187, 50, 50, 0.678);
-  }
-.selected{
-    border: 5px solid red;
-    
-}
+      .move {
+        background: rgba(187, 50, 50, 0.678);
+      }
+      .selected {
+        border: 5px solid red;
+      }
+      .player {
+        background: rgb(111, 7, 121);
+      }
     </style>
-</head>
-<body>
-    <div class="grid">
-
-    </div>
+  </head>
+  <body>
+    <div class="grid"></div>
     <script>
-          var grid = document.querySelector('.grid')
-  for(var i = 0; i<10;i++){
-            var row = document.createElement('div')
-            row.classList.add('gridRow')
-           grid.appendChild(row)
-            for(var j = 0; j<10; j++){
-                var cell = document.createElement('div')
-            cell.classList.add('gridCell')
-            cell.setAttribute('data-y', i+1)
-            cell.setAttribute('data-x', j+1)
-            row.appendChild(cell)
-            }
+                var grid = document.querySelector('.grid')
+        for(var i = 0; i<10;i++){
+                  var row = document.createElement('div')
+                  row.classList.add('gridRow')
+                 grid.appendChild(row)
+                  for(var j = 0; j<10; j++){
+                      var cell = document.createElement('div')
+                  cell.classList.add('gridCell')
+                  cell.setAttribute('data-y', i+1)
+                  cell.setAttribute('data-x', j+1)
+                  row.appendChild(cell)
+                  }
 
-        }
+              }
 
+              var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
+              startPosition.classList.add('player')
+              
+              var cellsNoPlayer = document.querySelectorAll('.gridCell:not(.player)')
+              var allCells =  document.querySelectorAll('.gridCell')
 
+             allCells.forEach(function(cell){
+                 cell.addEventListener('click', function(){
+                     if(cell.classList.contains('player')){
+                         this.classList.toggle('selected')
+                     }
+                 })
+             })
 
-      
-      
+       cellsNoPlayer.forEach(function(cell){
+                 cell.addEventListener('click', function(){
+                    var target = this
 
-
-        
-
-        var player = document.querySelector(`div[data-x="${2}"][data-y="${2}"]`)
-       player.classList.add('player')
-
-       player.addEventListener('click', function(){
-          var playerX = parseInt(player.getAttribute('data-x'))
-          var playerY = parseInt(player.getAttribute('data-y'))
-          player.classList.toggle('selected')
-        
-       var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
-        moveRange.forEach(function(cell){
-            cell.classList.toggle('move')
-            
-            cell.addEventListener('click',function(){
-                player.setAttribute('data-x', parseInt(this.getAttribute('data-x')))
-                player.setAttribute('data-y', parseInt(this.getAttribute('data-y')))
-
-                
-            })
-
-        })
-   
-   
-       })
+                    if(player.classList.contains('selected')){
+                        player.classList.remove('selected', 'player')
+                        target.classList.add('player')
+                      
+                    }
+                   
+                 })
+             })
 
 
 
@@ -102,13 +92,40 @@
 
 
 
+          //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
+          //    startPosition.classList.add('player')
+
+          //    var player = document.querySelector('.player')
+
+          //    player.addEventListener('click', function(){
+          //     player = document.querySelector('.player')
+          //       var playerX = parseInt(player.getAttribute('data-x'))
+
+          //       var playerY = parseInt(player.getAttribute('data-y'))
+          //       player.classList.toggle('selected')
+
+          //    var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
+          //     moveRange.forEach(function(cell){
+          //         cell.classList.toggle('move')
+
+          //         cell.addEventListener('click',function(){
+          //            var targetX = parseInt(this.getAttribute('data-x'))
+          //            var targetY = parseInt(this.getAttribute('data-y'))
+          //            var target = document.querySelector(`[data-x="${targetX}"][data-y="${targetY}"]`)
+          //            moveRange.forEach(function(x){
+          //                x.classList.remove('move')
+          //            })
+          //            player.classList.remove('player')
+          //            player.classList.remove('selected')
+
+          //            target.classList.add('player')
+
+          //         })
+
+          //     })
 
 
-      
-
-
-
-
+          //    })
     </script>
-</body>
+  </body>
 </html>
