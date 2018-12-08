@@ -91,6 +91,7 @@
               var freeCells = document.querySelectorAll('.gridCell:not(.player)')
               var redTeamPawns = document.querySelectorAll('.redTeam')
               var blueTeamPawns = document.querySelectorAll('.blueTeam')
+              var bothTeams = document.querySelectorAll('.redTeam, .blueTeam')
               var round = 0
               var redPlayer = {
                 team: 'red',
@@ -107,7 +108,8 @@
                   }
                 },
                 select: function(){
-                  this.pawns.warrior.selected = true
+                  this.pawns.warrior.selected = true 
+
                 }
                 
               } 
@@ -130,14 +132,18 @@
               
                whoPlay =  round % 2 === 0 ? redPlayer : bluePlayer
                 
-                whoPlay.pawns.warrior.location.addEventListener('click',function(){
-                  this.classList.toggle('selected')
-                })
-
-                 whoPlay.pawns.assassin.location.addEventListener('click',function(){
-                  this.classList.toggle('selected')
-                })
-
+               whoPlay.allies.forEach(function(pawn){
+                 pawn.addEventListener('click',function(){
+                   removeSelected()
+                   pawn.classList.toggle('selected')
+                 })
+               })
+               
+               function removeSelected(){
+                 bothTeams.forEach(function(pawn){
+                   pawn.classList.remove('selected')
+                 })
+               }
              
           //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
           //    startPosition.classList.add('warriorRedTeam')
