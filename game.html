@@ -83,7 +83,7 @@
               var warriorBlueTeam = startPositionWarriorBlueTeam
               warriorBlueTeam.classList.add('warriorBlueTeam', 'player', 'blueTeam')
 
-              var startPositionAssassinRedTeam = document.querySelector(`[data-x="${2}"][data-y="${5}"]`)
+              var startPositionAssassinRedTeam = document.querySelector(`[data-x="${5}"][data-y="${5}"]`)
               var assassinRedTeam = startPositionAssassinRedTeam
               assassinRedTeam.classList.add('assassinRedTeam' ,'player','redTeam')
               assassinRedTeam.setAttribute('type', 'assassin')
@@ -110,7 +110,7 @@
                   },
                   'assassin': {
                     location: assassinRedTeam,
-                    moveRange: 2
+                    moveRange: 3
                   }
                 }
                
@@ -137,6 +137,7 @@
                 
                whoPlay.allies.forEach(function(pawn){
                  pawn.addEventListener('click',function(){
+                   
                    removeSelected()
                    pawn.classList.toggle('selected')
                     selectedPawn = document.querySelector('.selected')
@@ -152,16 +153,27 @@
                function markRange(pawn, range){
                 let pawnX = parseInt(pawn.getAttribute('data-x'))
                  let pawnY =   parseInt(pawn.getAttribute('data-y'))
-                 let moveRange = document.querySelectorAll(`[data-x="${pawnX+range}"][data-y="${pawnY}"], [data-x="${pawnX-range}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+range}"], [data-x="${pawnX}"][data-y="${pawnY-range}"]`)
-                 moveRange.forEach(function(cell){
+                 
+               
+               for(var i = range; i>=1; i--){
+                let moveRange = document.querySelectorAll(`[data-x="${pawnX+i}"][data-y="${pawnY}"], [data-x="${pawnX-i}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+i}"], [data-x="${pawnX}"][data-y="${pawnY-i}"]`)
+                moveRange.forEach(function(cell){
                    cell.classList.add('moveRange')
                  })
+               }
+               
+               
+               
+                 
                }
 
 
                function removeSelected(){
                  bothTeams.forEach(function(pawn){
                    pawn.classList.remove('selected')
+                 })
+                 allCells.forEach(function(cell){
+                   cell.classList.remove('moveRange')
                  })
                }
              
