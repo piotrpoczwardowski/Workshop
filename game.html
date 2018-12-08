@@ -61,10 +61,52 @@
                   }
 
               }
-              
-
             
 
+              var startPositionWarriorRedTeam = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
+              var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
+            
+              var warriorRedTeam = startPositionWarriorRedTeam
+              warriorRedTeam.classList.add('warriorRedTeam' ,'player','redTeam')
+
+              var warriorBlueTeam = startPositionWarriorBlueTeam
+              warriorBlueTeam.classList.add('warriorBlueTeam', 'player', 'blueTeam')
+
+              var allCells = document.querySelectorAll('.gridCell')
+              var freeCells = document.querySelectorAll('.gridCell:not(.player)')
+              var redTeamPawns = document.querySelectorAll('.redTeam')
+              var blueTeamPawns = document.querySelectorAll('.blueTeam')
+              var round = 0
+              var redPlayer = {
+                team: 'red',
+                myRound: false,
+                pawns: {
+                  warrior: {
+                    location: warriorRedTeam
+                  }
+                }
+                
+              } 
+
+              var bluePlayer = {
+                team: 'blue',
+                myRound: false,
+                pawns: {
+                  warrior: {
+                    location: warriorBlueTeam
+                  }
+                }
+                
+              } 
+              
+              setInterval(function(){
+               whoPlay =  round % 2 === 0 ? redPlayer : bluePlayer
+                
+                
+
+
+
+              },16)
           //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
           //    startPosition.classList.add('warriorRedTeam')
 
