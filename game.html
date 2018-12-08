@@ -98,11 +98,16 @@
                 allies: redTeamPawns,
                 pawns: {
                   warrior: {
-                    location: warriorRedTeam
+                    location: warriorRedTeam,
+                    selected: false
                   },
                   assassin: {
-                    location: assassinRedTeam
+                    location: assassinRedTeam,
+                    selected: false
                   }
+                },
+                select: function(){
+                  this.pawns.warrior.selected = true
                 }
                 
               } 
@@ -121,19 +126,19 @@
                 }
                 
               } 
+             
               
-              setInterval(function(){
                whoPlay =  round % 2 === 0 ? redPlayer : bluePlayer
                 
-                whoPlay.allies.forEach(function(pawn){
-                  pawn.addEventListener('click',function(){
-                    pawn.classList.contains('selected') ? pawn.classList.remove('selected') : pawn.classList.add('selected')
-                  })
+                whoPlay.pawns.warrior.location.addEventListener('click',function(){
+                  this.classList.toggle('selected')
                 })
 
+                 whoPlay.pawns.assassin.location.addEventListener('click',function(){
+                  this.classList.toggle('selected')
+                })
 
-
-              },16)
+             
           //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
           //    startPosition.classList.add('warriorRedTeam')
 
