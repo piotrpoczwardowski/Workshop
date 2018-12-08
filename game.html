@@ -35,8 +35,12 @@
       .selected {
         border: 5px solid red;
       }
-      .player {
-        background: rgb(111, 7, 121);
+      .warriorRedTeam {
+        background: rgb(121, 7, 7);
+      }
+
+      .warriorBlueTeam{
+        background: rgb(11, 27, 167);
       }
     </style>
   </head>
@@ -57,49 +61,21 @@
                   }
 
               }
-              var allCells = document.querySelectorAll('.gridCell')
-             
-              var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-              startPosition.classList.add('player')
-              var player = document.querySelector('.player')
-              var noPlayerCells = document.querySelectorAll('.gridCell:not(.player)')
               
-              function updatePlayer(){
-                 player = document.querySelector('.player')
-                 noPlayerCells = document.querySelectorAll('.gridCell:not(.player)')
-                 player.addEventListener('click',function(){
-               this.classList.toggle('selected')
-             })
-              }
-             updatePlayer()
-            
-
-             noPlayerCells.forEach(function(cell){
-               cell.addEventListener('click',function(){
-                if(player.classList.contains('selected')){
-                  player.classList.remove('player', 'selected')
-                  this.classList.add('player')
-                 updatePlayer()
-                }
-               })
-             })
-
-
-             var x = 10
 
             
 
           //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-          //    startPosition.classList.add('player')
+          //    startPosition.classList.add('warriorRedTeam')
 
-          //    var player = document.querySelector('.player')
+          //    var warriorRedTeam = document.querySelector('.warriorRedTeam')
 
-          //    player.addEventListener('click', function(){
-          //     player = document.querySelector('.player')
-          //       var playerX = parseInt(player.getAttribute('data-x'))
+          //    warriorRedTeam.addEventListener('click', function(){
+          //     warriorRedTeam = document.querySelector('.warriorRedTeam')
+          //       var playerX = parseInt(warriorRedTeam.getAttribute('data-x'))
 
-          //       var playerY = parseInt(player.getAttribute('data-y'))
-          //       player.classList.toggle('selected')
+          //       var playerY = parseInt(warriorRedTeam.getAttribute('data-y'))
+          //       warriorRedTeam.classList.toggle('selected')
 
           //    var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
           //     moveRange.forEach(function(cell){
@@ -112,10 +88,10 @@
           //            moveRange.forEach(function(x){
           //                x.classList.remove('move')
           //            })
-          //            player.classList.remove('player')
-          //            player.classList.remove('selected')
+          //            warriorRedTeam.classList.remove('warriorRedTeam')
+          //            warriorRedTeam.classList.remove('selected')
 
-          //            target.classList.add('player')
+          //            target.classList.add('warriorRedTeam')
 
           //         })
 
