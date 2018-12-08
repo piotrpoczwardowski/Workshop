@@ -49,6 +49,9 @@
       .assassinBlueTeam{
         background: rgb(0, 26, 255);
       }
+      .moveRange{
+        background: rgba(255, 166, 0, 0.527);
+      }
     </style>
   </head>
   <body>
@@ -92,6 +95,7 @@
               var redTeamPawns = document.querySelectorAll('.redTeam')
               var blueTeamPawns = document.querySelectorAll('.blueTeam')
               var bothTeams = document.querySelectorAll('.redTeam, .blueTeam')
+              var selectedPawn
               var round = 0
               var redPlayer = {
                 team: 'red',
@@ -100,17 +104,14 @@
                 pawns: {
                   warrior: {
                     location: warriorRedTeam,
-                    selected: false
+                    moveRange: 1
                   },
                   assassin: {
                     location: assassinRedTeam,
-                    selected: false
+                    moveRange: 2
                   }
-                },
-                select: function(){
-                  this.pawns.warrior.selected = true 
-
                 }
+               
                 
               } 
 
@@ -136,9 +137,21 @@
                  pawn.addEventListener('click',function(){
                    removeSelected()
                    pawn.classList.toggle('selected')
+                    selectedPawn = document.querySelector('.selected')
+
                  })
                })
                
+              
+
+
+               function getCoordinates(pawn, range){
+                let pawnX = parseInt(pawn.getAttribute('data-x'))
+                 let pawnY =   parseInt(pawn.getAttribute('data-y'))
+                 let moveRange = document.querySelectorAll(`[data-x="${pawnX+1}"][data-y="${pawnY}"], [data-x="${pawnX-1}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+1}"], [data-x="${pawnX}"][data-y="${pawnY-1}"]`)
+               }
+
+
                function removeSelected(){
                  bothTeams.forEach(function(pawn){
                    pawn.classList.remove('selected')
