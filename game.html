@@ -150,6 +150,9 @@
           selectedPawn = document.querySelector(".selected");
           
           pawnType = selectedPawn.getAttribute("type");
+          setInterval(function(){
+            console.log(pawn)
+          },1000)
           markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
           var targets = document.querySelectorAll(".moveRange");
 
@@ -163,7 +166,8 @@
 
                 this.classList.add("assassinRedTeam", "player", "redTeam")
                 this.setAttribute('type', 'assassin')
-
+                
+                assassinRedTeam = document.querySelector('.assassinRedTeam')
 
                 removeSelected()
                 updatePositions()
