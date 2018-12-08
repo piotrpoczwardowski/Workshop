@@ -35,187 +35,212 @@
       .selected {
         border: 5px solid rgb(21, 189, 15);
       }
-      .moveRange{
+      .moveRange {
         background: rgba(255, 166, 0, 0.527);
       }
       .warriorRedTeam {
         background: rgb(121, 7, 7);
       }
 
-       .assassinRedTeam {
+      .assassinRedTeam {
         background: rgb(255, 0, 0);
       }
 
-      .warriorBlueTeam{
+      .warriorBlueTeam {
         background: rgb(11, 22, 126);
       }
-      .assassinBlueTeam{
+      .assassinBlueTeam {
         background: rgb(0, 26, 255);
       }
-    
     </style>
   </head>
   <body>
     <div class="grid"></div>
     <script>
-                var grid = document.querySelector('.grid')
-        for(var i = 0; i<10;i++){
-                  var row = document.createElement('div')
-                  row.classList.add('gridRow')
-                 grid.appendChild(row)
-                  for(var j = 0; j<10; j++){
-                      var cell = document.createElement('div')
-                  cell.classList.add('gridCell')
-                  cell.setAttribute('data-y', i+1)
-                  cell.setAttribute('data-x', j+1)
-                  row.appendChild(cell)
-                  }
+      var grid = document.querySelector(".grid");
+      for (var i = 0; i < 10; i++) {
+        var row = document.createElement("div");
+        row.classList.add("gridRow");
+        grid.appendChild(row);
+        for (var j = 0; j < 10; j++) {
+          var cell = document.createElement("div");
+          cell.classList.add("gridCell");
+          cell.setAttribute("data-y", i + 1);
+          cell.setAttribute("data-x", j + 1);
+          row.appendChild(cell);
+        }
+      }
 
+      var startPositionWarriorRedTeam = document.querySelector(
+        `[data-x="${2}"][data-y="${2}"]`
+      );
+      var warriorRedTeam = startPositionWarriorRedTeam;
+      warriorRedTeam.classList.add("warriorRedTeam", "player", "redTeam");
+      warriorRedTeam.setAttribute("type", "warrior");
+
+      var startPositionWarriorBlueTeam = document.querySelector(
+        `[data-x="${9}"][data-y="${2}"]`
+      );
+      var warriorBlueTeam = startPositionWarriorBlueTeam;
+      warriorBlueTeam.classList.add("warriorBlueTeam", "player", "blueTeam");
+      warriorBlueTeam.setAttribute("type", "warrior");
+
+      var startPositionAssassinRedTeam = document.querySelector(
+        `[data-x="${5}"][data-y="${5}"]`
+      );
+      var assassinRedTeam = startPositionAssassinRedTeam;
+      assassinRedTeam.classList.add("assassinRedTeam", "player", "redTeam");
+      assassinRedTeam.setAttribute("type", "assassin");
+
+      var startPositionAssassinBlueTeam = document.querySelector(
+        `[data-x="${9}"][data-y="${5}"]`
+      );
+      var assassinBlueTeam = startPositionAssassinBlueTeam;
+      assassinBlueTeam.classList.add("assassinBlueTeam", "player", "blueTeam");
+      assassinBlueTeam.setAttribute("type", "assassin");
+
+      var allCells = document.querySelectorAll(".gridCell");
+      var freeCells = document.querySelectorAll(".gridCell:not(.player)");
+      var redTeamPawns = document.querySelectorAll(".redTeam");
+      var blueTeamPawns = document.querySelectorAll(".blueTeam");
+      var bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
+      var selectedPawn;
+      var round = 0;
+      var moveRange
+      var redPlayer = {
+        team: "red",
+        myRound: false,
+        allies: redTeamPawns,
+        pawns: {
+          warrior: {
+            location: warriorRedTeam,
+            moveRange: 1
+          },
+          assassin: {
+            location: assassinRedTeam,
+            moveRange: 3
+          }
+        }
+      };
+
+      var bluePlayer = {
+        team: "blue",
+        myRound: false,
+        allies: blueTeamPawns,
+        pawns: {
+          warrior: {
+            location: warriorBlueTeam,
+            moveRange: 1
+          },
+          assassin: {
+            location: assassinBlueTeam,
+            moveRange: 3
+          }
+        }
+      };
+
+      whoPlay = round % 2 === 0 ? redPlayer : bluePlayer;
+
+      whoPlay.allies.forEach(function(pawn) {
+        pawn.addEventListener("click", function() {
+          
+          removeSelected();
+          
+          pawn.classList.add("selected");
+          selectedPawn = document.querySelector(".selected");
+          
+          pawnType = selectedPawn.getAttribute("type");
+          markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
+          var targets = document.querySelectorAll(".moveRange");
+
+          targets.forEach(function(target) {
+            target.addEventListener("click", function() {
+              if(this.classList.contains('moveRange')){
+                var vanish = document.querySelector('.assassinRedTeam')
+                vanish.classList.remove("assassinRedTeam", "player", "redTeam")
+                vanish.removeAttribute('type')
+
+
+                this.classList.add("assassinRedTeam", "player", "redTeam")
+                this.setAttribute('type', 'assassin')
+
+
+                removeSelected()
+                updatePositions()
               }
-            
+            });
+          });
+        });
+      });
 
-              
-              var startPositionWarriorRedTeam = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-              var warriorRedTeam = startPositionWarriorRedTeam
-              warriorRedTeam.classList.add('warriorRedTeam' ,'player','redTeam')
-              warriorRedTeam.setAttribute('type', 'warrior')
+      function updatePositions() {
+        freeCells = document.querySelectorAll(".gridCell:not(.player)");
+        redTeamPawns = document.querySelectorAll(".redTeam");
+        blueTeamPawns = document.querySelectorAll(".blueTeam");
+        bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
+        redPlayer.allies = redTeamPawns
+      }
 
-              var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
-              var warriorBlueTeam = startPositionWarriorBlueTeam
-              warriorBlueTeam.classList.add('warriorBlueTeam', 'player', 'blueTeam')
-              warriorBlueTeam.setAttribute('type', 'warrior')
+      function markRange(pawn, range) {
+        let pawnX = parseInt(pawn.getAttribute("data-x"));
+        let pawnY = parseInt(pawn.getAttribute("data-y"));
 
-              var startPositionAssassinRedTeam = document.querySelector(`[data-x="${5}"][data-y="${5}"]`)
-              var assassinRedTeam = startPositionAssassinRedTeam
-              assassinRedTeam.classList.add('assassinRedTeam' ,'player','redTeam')
-              assassinRedTeam.setAttribute('type', 'assassin')
+        for (var i = range; i >= 1; i--) {
+           moveRange = document.querySelectorAll(
+            `[data-x="${pawnX + i}"][data-y="${pawnY}"], [data-x="${pawnX -
+              i}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY +
+              i}"], [data-x="${pawnX}"][data-y="${pawnY - i}"]`
+          );
+          moveRange.forEach(function(cell) {
+            cell.classList.add("moveRange");
+          });
+        }
+        moveRange = document.querySelectorAll('.moveRange')
+      }
 
-               var startPositionAssassinBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${5}"]`)
-              var assassinBlueTeam = startPositionAssassinBlueTeam
-              assassinBlueTeam.classList.add('assassinBlueTeam' ,'player','blueTeam')
-              assassinBlueTeam.setAttribute('type', 'assassin')
+      function removeSelected() {
+       
+        allCells.forEach(function(cell) {
+          cell.classList.remove("moveRange", "selected");
+         
+        });
+        selectedPawn = null
+        moveRange = null
+      }
 
-              var allCells = document.querySelectorAll('.gridCell')
-              var freeCells = document.querySelectorAll('.gridCell:not(.player)')
-              var redTeamPawns = document.querySelectorAll('.redTeam')
-              var blueTeamPawns = document.querySelectorAll('.blueTeam')
-              var bothTeams = document.querySelectorAll('.redTeam, .blueTeam')
-              var selectedPawn
-              var round = 1
-              var redPlayer = {
-                team: 'red',
-                myRound: false,
-                allies: redTeamPawns,
-                pawns: {
-                  'warrior': {
-                    location: warriorRedTeam,
-                    moveRange: 1
-                  },
-                  'assassin': {
-                    location: assassinRedTeam,
-                    moveRange: 3
-                  }
-                }
-               
-                
-              } 
+      //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
+      //    startPosition.classList.add('warriorRedTeam')
 
-              var bluePlayer = {
-                team: 'blue',
-                myRound: false,
-                allies: blueTeamPawns,
-                pawns: {
-                  warrior: {
-                    location: warriorBlueTeam,
-                    moveRange: 1
-                  },
-                  assassin: {
-                    location: assassinBlueTeam,
-                    moveRange: 3
-                  }
-                }
-                
-              } 
-             
-              
-               whoPlay =  round % 2 === 0 ? redPlayer : bluePlayer
-                
-               whoPlay.allies.forEach(function(pawn){
-                 pawn.addEventListener('click',function(){
+      //    var warriorRedTeam = document.querySelector('.warriorRedTeam')
 
-                   removeSelected()
-                   pawn.classList.toggle('selected')
-                    selectedPawn = document.querySelector('.selected')
-                   pawnType = selectedPawn.getAttribute('type')
-                    markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange)
-                  
-                 })
-               })
-               
-              
+      //    warriorRedTeam.addEventListener('click', function(){
+      //     warriorRedTeam = document.querySelector('.warriorRedTeam')
+      //       var playerX = parseInt(warriorRedTeam.getAttribute('data-x'))
 
+      //       var playerY = parseInt(warriorRedTeam.getAttribute('data-y'))
+      //       warriorRedTeam.classList.toggle('selected')
 
-               function markRange(pawn, range){
-                let pawnX = parseInt(pawn.getAttribute('data-x'))
-                 let pawnY =   parseInt(pawn.getAttribute('data-y'))
-                 
-               
-               for(var i = range; i>=1; i--){
-                let moveRange = document.querySelectorAll(`[data-x="${pawnX+i}"][data-y="${pawnY}"], [data-x="${pawnX-i}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+i}"], [data-x="${pawnX}"][data-y="${pawnY-i}"]`)
-                moveRange.forEach(function(cell){
-                   cell.classList.add('moveRange')
-                 })
-               }
-               
-               
-               
-                 
-               }
+      //    var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
+      //     moveRange.forEach(function(cell){
+      //         cell.classList.toggle('move')
 
+      //         cell.addEventListener('click',function(){
+      //            var targetX = parseInt(this.getAttribute('data-x'))
+      //            var targetY = parseInt(this.getAttribute('data-y'))
+      //            var target = document.querySelector(`[data-x="${targetX}"][data-y="${targetY}"]`)
+      //            moveRange.forEach(function(x){
+      //                x.classList.remove('move')
+      //            })
+      //            warriorRedTeam.classList.remove('warriorRedTeam')
+      //            warriorRedTeam.classList.remove('selected')
 
-               function removeSelected(){
-                 bothTeams.forEach(function(pawn){
-                   pawn.classList.remove('selected')
-                 })
-                 allCells.forEach(function(cell){
-                   cell.classList.remove('moveRange')
-                 })
-               }
-             
-          //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-          //    startPosition.classList.add('warriorRedTeam')
+      //            target.classList.add('warriorRedTeam')
 
-          //    var warriorRedTeam = document.querySelector('.warriorRedTeam')
+      //         })
 
-          //    warriorRedTeam.addEventListener('click', function(){
-          //     warriorRedTeam = document.querySelector('.warriorRedTeam')
-          //       var playerX = parseInt(warriorRedTeam.getAttribute('data-x'))
+      //     })
 
-          //       var playerY = parseInt(warriorRedTeam.getAttribute('data-y'))
-          //       warriorRedTeam.classList.toggle('selected')
-
-          //    var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
-          //     moveRange.forEach(function(cell){
-          //         cell.classList.toggle('move')
-
-          //         cell.addEventListener('click',function(){
-          //            var targetX = parseInt(this.getAttribute('data-x'))
-          //            var targetY = parseInt(this.getAttribute('data-y'))
-          //            var target = document.querySelector(`[data-x="${targetX}"][data-y="${targetY}"]`)
-          //            moveRange.forEach(function(x){
-          //                x.classList.remove('move')
-          //            })
-          //            warriorRedTeam.classList.remove('warriorRedTeam')
-          //            warriorRedTeam.classList.remove('selected')
-
-          //            target.classList.add('warriorRedTeam')
-
-          //         })
-
-          //     })
-
-
-          //    })
+      //    })
     </script>
   </body>
 </html>
