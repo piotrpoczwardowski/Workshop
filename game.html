@@ -65,21 +65,29 @@
               var noPlayerCells = document.querySelectorAll('.gridCell:not(.player)')
               
               function updatePlayer(){
-                var player = document.querySelector('.player')
-                var noPlayerCells = document.querySelectorAll('.gridCell:not(.player)')
-              }
-             
-             player.addEventListener('click',function(){
+                 player = document.querySelector('.player')
+                 noPlayerCells = document.querySelectorAll('.gridCell:not(.player)')
+                 player.addEventListener('click',function(){
                this.classList.toggle('selected')
              })
+              }
+             updatePlayer()
+            
 
-             if(player.classList.contains('player')){
-               noPlayerCells.forEach(function(cell){
-                 cell.addEventListener('click',function(){
-                   
-                 })
+             noPlayerCells.forEach(function(cell){
+               cell.addEventListener('click',function(){
+                if(player.classList.contains('selected')){
+                  player.classList.remove('player', 'selected')
+                  this.classList.add('player')
+                 updatePlayer()
+                }
                })
-             }
+             })
+
+
+             var x = 10
+
+            
 
           //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
           //    startPosition.classList.add('player')
