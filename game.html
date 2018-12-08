@@ -33,14 +33,21 @@
         background: rgba(187, 50, 50, 0.678);
       }
       .selected {
-        border: 5px solid red;
+        border: 5px solid rgb(21, 189, 15);
       }
       .warriorRedTeam {
         background: rgb(121, 7, 7);
       }
 
+       .assassinRedTeam {
+        background: rgb(255, 0, 0);
+      }
+
       .warriorBlueTeam{
-        background: rgb(11, 27, 167);
+        background: rgb(11, 22, 126);
+      }
+      .assassinBlueTeam{
+        background: rgb(0, 26, 255);
       }
     </style>
   </head>
@@ -63,14 +70,22 @@
               }
             
 
+              
               var startPositionWarriorRedTeam = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-              var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
-            
               var warriorRedTeam = startPositionWarriorRedTeam
               warriorRedTeam.classList.add('warriorRedTeam' ,'player','redTeam')
 
+              var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
               var warriorBlueTeam = startPositionWarriorBlueTeam
               warriorBlueTeam.classList.add('warriorBlueTeam', 'player', 'blueTeam')
+
+              var startPositionAssassinRedTeam = document.querySelector(`[data-x="${2}"][data-y="${5}"]`)
+              var assassinRedTeam = startPositionAssassinRedTeam
+              assassinRedTeam.classList.add('assassinRedTeam' ,'player','redTeam')
+
+               var startPositionAssassinBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${5}"]`)
+              var assassinBlueTeam = startPositionAssassinBlueTeam
+              assassinBlueTeam.classList.add('assassinBlueTeam' ,'player','blueTeam')
 
               var allCells = document.querySelectorAll('.gridCell')
               var freeCells = document.querySelectorAll('.gridCell:not(.player)')
@@ -80,9 +95,13 @@
               var redPlayer = {
                 team: 'red',
                 myRound: false,
+                allies: redTeamPawns,
                 pawns: {
                   warrior: {
                     location: warriorRedTeam
+                  },
+                  assassin: {
+                    location: assassinRedTeam
                   }
                 }
                 
@@ -91,9 +110,13 @@
               var bluePlayer = {
                 team: 'blue',
                 myRound: false,
+                allies: blueTeamPawns,
                 pawns: {
                   warrior: {
                     location: warriorBlueTeam
+                  },
+                  assassin: {
+                    location: assassinBlueTeam
                   }
                 }
                 
@@ -102,7 +125,11 @@
               setInterval(function(){
                whoPlay =  round % 2 === 0 ? redPlayer : bluePlayer
                 
-                
+                whoPlay.allies.forEach(function(pawn){
+                  pawn.addEventListener('click',function(){
+                    pawn.classList.contains('selected') ? pawn.classList.remove('selected') : pawn.classList.add('selected')
+                  })
+                })
 
 
 
