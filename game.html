@@ -35,6 +35,9 @@
       .selected {
         border: 5px solid rgb(21, 189, 15);
       }
+      .moveRange{
+        background: rgba(255, 166, 0, 0.527);
+      }
       .warriorRedTeam {
         background: rgb(121, 7, 7);
       }
@@ -49,9 +52,7 @@
       .assassinBlueTeam{
         background: rgb(0, 26, 255);
       }
-      .moveRange{
-        background: rgba(255, 166, 0, 0.527);
-      }
+    
     </style>
   </head>
   <body>
@@ -82,6 +83,7 @@
               var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
               var warriorBlueTeam = startPositionWarriorBlueTeam
               warriorBlueTeam.classList.add('warriorBlueTeam', 'player', 'blueTeam')
+              warriorBlueTeam.setAttribute('type', 'warrior')
 
               var startPositionAssassinRedTeam = document.querySelector(`[data-x="${5}"][data-y="${5}"]`)
               var assassinRedTeam = startPositionAssassinRedTeam
@@ -91,6 +93,7 @@
                var startPositionAssassinBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${5}"]`)
               var assassinBlueTeam = startPositionAssassinBlueTeam
               assassinBlueTeam.classList.add('assassinBlueTeam' ,'player','blueTeam')
+              assassinBlueTeam.setAttribute('type', 'assassin')
 
               var allCells = document.querySelectorAll('.gridCell')
               var freeCells = document.querySelectorAll('.gridCell:not(.player)')
@@ -98,7 +101,7 @@
               var blueTeamPawns = document.querySelectorAll('.blueTeam')
               var bothTeams = document.querySelectorAll('.redTeam, .blueTeam')
               var selectedPawn
-              var round = 0
+              var round = 1
               var redPlayer = {
                 team: 'red',
                 myRound: false,
@@ -123,10 +126,12 @@
                 allies: blueTeamPawns,
                 pawns: {
                   warrior: {
-                    location: warriorBlueTeam
+                    location: warriorBlueTeam,
+                    moveRange: 1
                   },
                   assassin: {
-                    location: assassinBlueTeam
+                    location: assassinBlueTeam,
+                    moveRange: 3
                   }
                 }
                 
@@ -137,7 +142,7 @@
                 
                whoPlay.allies.forEach(function(pawn){
                  pawn.addEventListener('click',function(){
-                   
+
                    removeSelected()
                    pawn.classList.toggle('selected')
                     selectedPawn = document.querySelector('.selected')
