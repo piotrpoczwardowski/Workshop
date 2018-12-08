@@ -77,6 +77,7 @@
               var startPositionWarriorRedTeam = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
               var warriorRedTeam = startPositionWarriorRedTeam
               warriorRedTeam.classList.add('warriorRedTeam' ,'player','redTeam')
+              warriorRedTeam.setAttribute('type', 'warrior')
 
               var startPositionWarriorBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${2}"]`)
               var warriorBlueTeam = startPositionWarriorBlueTeam
@@ -85,6 +86,7 @@
               var startPositionAssassinRedTeam = document.querySelector(`[data-x="${2}"][data-y="${5}"]`)
               var assassinRedTeam = startPositionAssassinRedTeam
               assassinRedTeam.classList.add('assassinRedTeam' ,'player','redTeam')
+              assassinRedTeam.setAttribute('type', 'assassin')
 
                var startPositionAssassinBlueTeam = document.querySelector(`[data-x="${9}"][data-y="${5}"]`)
               var assassinBlueTeam = startPositionAssassinBlueTeam
@@ -102,11 +104,11 @@
                 myRound: false,
                 allies: redTeamPawns,
                 pawns: {
-                  warrior: {
+                  'warrior': {
                     location: warriorRedTeam,
                     moveRange: 1
                   },
-                  assassin: {
+                  'assassin': {
                     location: assassinRedTeam,
                     moveRange: 2
                   }
@@ -138,17 +140,22 @@
                    removeSelected()
                    pawn.classList.toggle('selected')
                     selectedPawn = document.querySelector('.selected')
-
+                   pawnType = selectedPawn.getAttribute('type')
+                    markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange)
+                  
                  })
                })
                
               
 
 
-               function getCoordinates(pawn, range){
+               function markRange(pawn, range){
                 let pawnX = parseInt(pawn.getAttribute('data-x'))
                  let pawnY =   parseInt(pawn.getAttribute('data-y'))
-                 let moveRange = document.querySelectorAll(`[data-x="${pawnX+1}"][data-y="${pawnY}"], [data-x="${pawnX-1}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+1}"], [data-x="${pawnX}"][data-y="${pawnY-1}"]`)
+                 let moveRange = document.querySelectorAll(`[data-x="${pawnX+range}"][data-y="${pawnY}"], [data-x="${pawnX-range}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY+range}"], [data-x="${pawnX}"][data-y="${pawnY-range}"]`)
+                 moveRange.forEach(function(cell){
+                   cell.classList.add('moveRange')
+                 })
                }
 
 
