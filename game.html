@@ -61,33 +61,8 @@
               var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
               startPosition.classList.add('player')
               
-              var cellsNoPlayer = document.querySelectorAll('.gridCell:not(.player)')
-              var allCells =  document.querySelectorAll('.gridCell')
-
-             allCells.forEach(function(cell){
-                 cell.addEventListener('click', function(){
-                     if(cell.classList.contains('player')){
-                         this.classList.toggle('selected')
-                     }
-                 })
-             })
-
-       cellsNoPlayer.forEach(function(cell){
-                 cell.addEventListener('click', function(){
-                    var target = this
-
-                    if(player.classList.contains('selected')){
-                        player.classList.remove('selected', 'player')
-                        target.classList.add('player')
-                      
-                    }
-                   
-                 })
-             })
-
-
-
-
+              var player = document.querySelector('.player')
+             
 
 
 
