@@ -161,13 +161,40 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            round += 1;
+            
 
             removeMoveRange();
             updatePositions();
           }
         });
       });
+
+
+      function checkRange(){
+
+      }
+      function checkRightCells(){
+        var pawn = document.querySelector('.assassinRed')
+        pawnX = getPosition(pawn).x
+        pawnY = getPosition(pawn).y
+        var cellsOnRight = []
+        
+        for(var i = 1; i<3;i++){
+          console.log(i)
+        }
+        
+      }
+
+      function som(x,y){
+        return `[data-x='${x}'][data-y='${y}']`
+      }
+      function getPosition(cell){
+       return {
+        x: parseInt(cell.getAttribute('data-x')),
+        y: parseInt(cell.getAttribute('data-y'))
+       
+       }
+      }
 
       String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1);
@@ -179,7 +206,7 @@
         redTeamPawns = document.querySelectorAll(".red");
         blueTeamPawns = document.querySelectorAll(".blue");
         bothTeams = document.querySelectorAll(".red, .blue");
-        redPlayer.allies = redTeamPawns;
+       
       }
 
       function markRange(pawn, range) {
