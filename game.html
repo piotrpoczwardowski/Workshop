@@ -174,34 +174,75 @@
         });
       });
 
-      function checkRange() {}
-      function checkRightCells() {
+      function checkRange() {
         var pawn = document.querySelector(".assassinRed");
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
         var range = 3;
 
-        for (var i = 1; i < range + 1; i++) {
-          var next = document.querySelector(som(pawnX + i, pawnY));
-          if (next) {
-            if (next.classList.contains("player")) {
-              next.classList.add("attack");
-              break;
+        for (var i = 0; i < 4; i++) {
+          for (var j = 1; j < range+1 ; j++) {
+            var x;
+            var y;
+            if (i === 0) {
+              x = j;
+              y = 0;
             }
-            next.classList.add("moveRange");
+            if (i === 1) {
+              x = 0;
+              y = j;
+            }
+            if (i === 2) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 3) {
+              x = 0;
+              y = -j;
+            }
+
+            var next = document.querySelector(som(pawnX + x, pawnY + y));
+            console.log(next);
+            if (next) {
+              if (next.classList.contains("player")) {
+                next.classList.add("attack");
+                break;
+              }
+              next.classList.add("moveRange");
+            }
           }
         }
 
-        for (var i = 1; i < range + 1; i++) {
-          var next = document.querySelector(som(pawnX - i, pawnY));
-          if (next) {
-            if (next.classList.contains("player")) {
-              next.classList.add("attack");
-              break;
-            }
-            next.classList.add("moveRange");
-          }
-        }
+        // for (var i = 1; i < range + 1; i++) {
+        //   var next = document.querySelector(som(pawnX - i, pawnY));
+        //   if (next) {
+        //     if (next.classList.contains("player")) {
+        //       next.classList.add("attack");
+        //       break;
+        //     }
+        //     next.classList.add("moveRange");
+        //   }
+        // }
+        // for (var i = 1; i < range + 1; i++) {
+        //   var next = document.querySelector(som(pawnX, pawnY+i));
+        //   if (next) {
+        //     if (next.classList.contains("player")) {
+        //       next.classList.add("attack");
+        //       break;
+        //     }
+        //     next.classList.add("moveRange");
+        //   }
+        // }
+        // for (var i = 1; i < range + 1; i++) {
+        //   var next = document.querySelector(som(pawnX, pawnY-i));
+        //   if (next) {
+        //     if (next.classList.contains("player")) {
+        //       next.classList.add("attack");
+        //       break;
+        //     }
+        //     next.classList.add("moveRange");
+        //   }
+        // }
       }
 
       function som(x, y) {
