@@ -150,9 +150,7 @@
           selectedPawn = document.querySelector(".selected");
           
           pawnType = selectedPawn.getAttribute("type");
-          setInterval(function(){
-            console.log(pawn)
-          },1000)
+          
           markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
           var targets = document.querySelectorAll(".moveRange");
 
