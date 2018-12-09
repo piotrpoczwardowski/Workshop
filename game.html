@@ -152,7 +152,7 @@
             this.classList.add("selected");
             selectedPawn = document.querySelector(".selected");
             pawnType = selectedPawn.getAttribute("type");
-            markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
+            checkRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
           }
           if (this.classList.contains("moveRange")) {
             selectedPawn.classList.remove(
@@ -174,14 +174,12 @@
         });
       });
 
-      function checkRange() {
-        var pawn = document.querySelector(".assassinRed");
+      function checkRange(pawn, range) {
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
-        var range = 3;
 
         for (var i = 0; i < 4; i++) {
-          for (var j = 1; j < range+1 ; j++) {
+          for (var j = 1; j < range + 1; j++) {
             var x;
             var y;
             if (i === 0) {
@@ -202,7 +200,7 @@
             }
 
             var next = document.querySelector(som(pawnX + x, pawnY + y));
-            console.log(next);
+           
             if (next) {
               if (next.classList.contains("player")) {
                 next.classList.add("attack");
@@ -212,37 +210,6 @@
             }
           }
         }
-
-        // for (var i = 1; i < range + 1; i++) {
-        //   var next = document.querySelector(som(pawnX - i, pawnY));
-        //   if (next) {
-        //     if (next.classList.contains("player")) {
-        //       next.classList.add("attack");
-        //       break;
-        //     }
-        //     next.classList.add("moveRange");
-        //   }
-        // }
-        // for (var i = 1; i < range + 1; i++) {
-        //   var next = document.querySelector(som(pawnX, pawnY+i));
-        //   if (next) {
-        //     if (next.classList.contains("player")) {
-        //       next.classList.add("attack");
-        //       break;
-        //     }
-        //     next.classList.add("moveRange");
-        //   }
-        // }
-        // for (var i = 1; i < range + 1; i++) {
-        //   var next = document.querySelector(som(pawnX, pawnY-i));
-        //   if (next) {
-        //     if (next.classList.contains("player")) {
-        //       next.classList.add("attack");
-        //       break;
-        //     }
-        //     next.classList.add("moveRange");
-        //   }
-        // }
       }
 
       function som(x, y) {
@@ -292,7 +259,7 @@
 
       function removeMoveRange() {
         allCells.forEach(function(cell) {
-          cell.classList.remove("moveRange");
+          cell.classList.remove("moveRange", 'attack');
         });
       }
     </script>
