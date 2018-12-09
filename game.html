@@ -52,6 +52,12 @@
       .assassinBlue {
         background: rgb(0, 26, 255);
       }
+      .attack {
+        transition: all, 0.5s;
+      }
+      .attack:hover {
+        border: 5px solid purple;
+      }
     </style>
   </head>
   <body>
@@ -161,7 +167,6 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            
 
             removeMoveRange();
             updatePositions();
@@ -169,31 +174,44 @@
         });
       });
 
+      function checkRange() {}
+      function checkRightCells() {
+        var pawn = document.querySelector(".assassinRed");
+        pawnX = getPosition(pawn).x;
+        pawnY = getPosition(pawn).y;
+        var range = 3;
 
-      function checkRange(){
-
-      }
-      function checkRightCells(){
-        var pawn = document.querySelector('.assassinRed')
-        pawnX = getPosition(pawn).x
-        pawnY = getPosition(pawn).y
-        var cellsOnRight = []
-        
-        for(var i = 1; i<3;i++){
-          console.log(i)
+        for (var i = 1; i < range + 1; i++) {
+          var next = document.querySelector(som(pawnX + i, pawnY));
+          if (next) {
+            if (next.classList.contains("player")) {
+              next.classList.add("attack");
+              break;
+            }
+            next.classList.add("moveRange");
+          }
         }
-        
+
+        for (var i = 1; i < range + 1; i++) {
+          var next = document.querySelector(som(pawnX - i, pawnY));
+          if (next) {
+            if (next.classList.contains("player")) {
+              next.classList.add("attack");
+              break;
+            }
+            next.classList.add("moveRange");
+          }
+        }
       }
 
-      function som(x,y){
-        return `[data-x='${x}'][data-y='${y}']`
+      function som(x, y) {
+        return `[data-x='${x}'][data-y='${y}']`;
       }
-      function getPosition(cell){
-       return {
-        x: parseInt(cell.getAttribute('data-x')),
-        y: parseInt(cell.getAttribute('data-y'))
-       
-       }
+      function getPosition(cell) {
+        return {
+          x: parseInt(cell.getAttribute("data-x")),
+          y: parseInt(cell.getAttribute("data-y"))
+        };
       }
 
       String.prototype.capitalize = function() {
@@ -206,7 +224,6 @@
         redTeamPawns = document.querySelectorAll(".red");
         blueTeamPawns = document.querySelectorAll(".blue");
         bothTeams = document.querySelectorAll(".red, .blue");
-       
       }
 
       function markRange(pawn, range) {
