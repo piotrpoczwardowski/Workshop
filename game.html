@@ -118,7 +118,7 @@
         teams: {
           red: {
             color: "red",
-            enemy: 'blue',
+            enemy: "blue",
             pawns: {
               warrior: {
                 moveRange: 1
@@ -130,7 +130,7 @@
           },
           blue: {
             color: "blue",
-            enemy: 'red',
+            enemy: "red",
             pawns: {
               warrior: {
                 moveRange: 1
@@ -177,11 +177,11 @@
       });
 
       function checkRange(pawn, whoPlay) {
-        let range = whoPlay.pawns[pawnType].moveRange
-        let enemy = whoPlay.enemy
+        let range = whoPlay.pawns[pawnType].moveRange;
+        let enemy = whoPlay.enemy;
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
-        
+
         for (var i = 0; i < 4; i++) {
           for (var j = 1; j < range + 1; j++) {
             var x;
@@ -203,12 +203,14 @@
               y = -j;
             }
 
-            var next = document.querySelector(som(pawnX + x, pawnY + y));
-           
+            var next = document.querySelector(
+              insertCoordinates(pawnX + x, pawnY + y)
+            );
+
             if (next) {
               if (next.classList.contains("player")) {
-                if(next.classList.contains(enemy)){
-                  next.classList.add('attack')
+                if (next.classList.contains(enemy)) {
+                  next.classList.add("attack");
                 }
                 break;
               }
@@ -218,7 +220,7 @@
         }
       }
 
-      function som(x, y) {
+      function insertCoordinates(x, y) {
         return `[data-x='${x}'][data-y='${y}']`;
       }
       function getPosition(cell) {
@@ -265,7 +267,7 @@
 
       function removeMoveRange() {
         allCells.forEach(function(cell) {
-          cell.classList.remove("moveRange", 'attack');
+          cell.classList.remove("moveRange", "attack");
         });
       }
     </script>
