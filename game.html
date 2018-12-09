@@ -99,7 +99,7 @@
       assassinRed.setAttribute("type", "assassin");
 
       var startPositionAssassinBlueTeam = document.querySelector(
-        `[data-x="${9}"][data-y="${5}"]`
+        `[data-x="${9}"][data-y="${4}"]`
       );
       var assassinBlue = startPositionAssassinBlueTeam;
       assassinBlue.classList.add("assassinBlue", "player", "blue");
@@ -182,6 +182,7 @@
       function checkRange(pawn, whoPlay) {
         let moveRange = whoPlay.pawns[pawnType].moveRange;
         let enemy = whoPlay.enemy;
+        let attackRange = whoPlay.pawns[pawnType].attackRange
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
@@ -212,12 +213,14 @@
 
             if (next) {
               if (next.classList.contains("player")) {
-                if (next.classList.contains(enemy)) {
+                if (next.classList.contains(enemy) && j<=attackRange) {
+                  
                   next.classList.add("attack");
                 }
                 break;
               }
               next.classList.add("moveRange");
+              console.log(i)
             }
           }
         }
