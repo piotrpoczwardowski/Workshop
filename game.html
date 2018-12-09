@@ -106,7 +106,7 @@
       var bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
       var selectedPawn;
       var round = 0;
-      var moveRange
+      var moveRange;
       var redPlayer = {
         team: "red",
         myRound: false,
@@ -142,39 +142,45 @@
       whoPlay = round % 2 === 0 ? redPlayer : bluePlayer;
 
       allCells.forEach(function(pawn) {
-        
         pawn.addEventListener("click", function() {
-          
           removeSelected();
-         if(this.classList.contains('redTeam')){
-         
-         }
-         pawn.classList.add("selected");
-          selectedPawn = document.querySelector(".selected");
-          
-          pawnType = selectedPawn.getAttribute("type");
-          
-          markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
-          var targets = document.querySelectorAll(".moveRange");
+        
 
-          targets.forEach(function(target) {
-            target.addEventListener("click", function() {
-              if(this.classList.contains('moveRange')){
-                var vanish = document.querySelector('.assassinRedTeam')
-                vanish.classList.remove("assassinRedTeam", "player", "redTeam")
-                vanish.removeAttribute('type')
+          if (this.classList.contains("redTeam")) {
+            removeMoveRange()
+            this.classList.add("selected");
+            selectedPawn = document.querySelector(".selected");
+            pawnType = selectedPawn.getAttribute("type");
+            markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
+          }
+          if (this.classList.contains("moveRange")) {
+            this.classList.add("assassinRedTeam", "player", "redTeam")
+            this.setAttribute('type', 'assassin')
+            selectedPawn.classList.remove("assassinRedTeam", "player", "redTeam");
+            selectedPawn.removeAttribute("type");
+            removeMoveRange()
+            updatePositions()
+          }
 
+          // var targets = document.querySelectorAll(".moveRange");
 
-                this.classList.add("assassinRedTeam", "player", "redTeam")
-                this.setAttribute('type', 'assassin')
-                
-                assassinRedTeam = document.querySelector('.assassinRedTeam')
+          // targets.forEach(function(target) {
+          //   target.addEventListener("click", function() {
+          //     if (this.classList.contains("moveRange")) {
+          //       var vanish = document.querySelector(".assassinRedTeam");
+          //       vanish.classList.remove("assassinRedTeam", "player", "redTeam");
+          //       vanish.removeAttribute("type");
 
-                removeSelected()
-                updatePositions()
-              }
-            });
-          });
+          //       this.classList.add("assassinRedTeam", "player", "redTeam");
+          //       this.setAttribute("type", "assassin");
+
+          //       assassinRedTeam = document.querySelector(".assassinRedTeam");
+
+          //       removeSelected();
+          //       updatePositions();
+          //     }
+          //   });
+          // });
         });
       });
 
@@ -183,7 +189,7 @@
         redTeamPawns = document.querySelectorAll(".redTeam");
         blueTeamPawns = document.querySelectorAll(".blueTeam");
         bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
-        redPlayer.allies = redTeamPawns
+        redPlayer.allies = redTeamPawns;
       }
 
       function markRange(pawn, range) {
@@ -191,7 +197,7 @@
         let pawnY = parseInt(pawn.getAttribute("data-y"));
 
         for (var i = range; i >= 1; i--) {
-           moveRange = document.querySelectorAll(
+          moveRange = document.querySelectorAll(
             `[data-x="${pawnX + i}"][data-y="${pawnY}"], [data-x="${pawnX -
               i}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY +
               i}"], [data-x="${pawnX}"][data-y="${pawnY - i}"]`
@@ -200,17 +206,21 @@
             cell.classList.add("moveRange");
           });
         }
-        moveRange = document.querySelectorAll('.moveRange')
+        moveRange = document.querySelectorAll(".moveRange");
       }
 
       function removeSelected() {
-       
         allCells.forEach(function(cell) {
-          cell.classList.remove("moveRange", "selected");
-         
+          cell.classList.remove( "selected");
         });
-        selectedPawn = null
-        moveRange = null
+       
+      }
+
+       function removeMoveRange() {
+        allCells.forEach(function(cell) {
+          cell.classList.remove( "moveRange");
+        });
+       
       }
 
       //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
