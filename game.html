@@ -141,12 +141,15 @@
 
       whoPlay = round % 2 === 0 ? redPlayer : bluePlayer;
 
-      whoPlay.allies.forEach(function(pawn) {
+      allCells.forEach(function(pawn) {
+        
         pawn.addEventListener("click", function() {
           
           removeSelected();
-          
-          pawn.classList.add("selected");
+         if(this.classList.contains('redTeam')){
+         
+         }
+         pawn.classList.add("selected");
           selectedPawn = document.querySelector(".selected");
           
           pawnType = selectedPawn.getAttribute("type");
