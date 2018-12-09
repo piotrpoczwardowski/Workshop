@@ -86,7 +86,7 @@
       warriorBlue.setAttribute("type", "warrior");
 
       var startPositionAssassinRedTeam = document.querySelector(
-        `[data-x="${5}"][data-y="${5}"]`
+        `[data-x="${2}"][data-y="${5}"]`
       );
       var assassinRed = startPositionAssassinRedTeam;
       assassinRed.classList.add("assassinRed", "player", "red");
@@ -107,38 +107,6 @@
       var selectedPawn;
       var round = 0;
       var moveRange;
-
-      var redPlayer = {
-        team: "red",
-        myRound: false,
-        allies: redTeamPawns,
-        pawns: {
-          warrior: {
-            location: warriorRed,
-            moveRange: 1
-          },
-          assassin: {
-            location: assassinRed,
-            moveRange: 3
-          }
-        }
-      };
-
-      var bluePlayer = {
-        team: "blue",
-        myRound: false,
-        allies: blueTeamPawns,
-        pawns: {
-          warrior: {
-            location: warriorBlue,
-            moveRange: 1
-          },
-          assassin: {
-            location: assassinBlue,
-            moveRange: 3
-          }
-        }
-      };
 
       var players = {
         teams: {
@@ -171,7 +139,6 @@
 
       allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
-          
           removeSelected();
 
           if (this.classList.contains(whoPlay.color)) {
@@ -194,8 +161,8 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            round +=1
-            
+            round += 1;
+
             removeMoveRange();
             updatePositions();
           }
@@ -205,30 +172,6 @@
       String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1);
       };
-
-      // allCells.forEach(function(pawn) {
-      //   pawn.addEventListener("click", function() {
-      //     removeSelected();
-
-      //     if (this.classList.contains("red")) {
-      //       removeMoveRange()
-      //       this.classList.add("selected");
-      //       selectedPawn = document.querySelector(".selected");
-      //       pawnType = selectedPawn.getAttribute("type");
-      //       markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
-      //     }
-      //     if (this.classList.contains("moveRange")) {
-      //       selectedPawn.classList.remove("assassinRed", "player", "red");
-      //       selectedPawn.removeAttribute("type");
-      //       this.classList.add("assassinRed", "player", "red")
-      //       this.setAttribute('type', 'assassin')
-
-      //       removeMoveRange()
-      //       updatePositions()
-      //     }
-
-      //   });
-      // });
 
       function updatePositions() {
         whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
