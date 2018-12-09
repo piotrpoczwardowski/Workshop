@@ -121,10 +121,12 @@
             enemy: "blue",
             pawns: {
               warrior: {
-                moveRange: 1
+                moveRange: 1,
+                attackRange: 1
               },
               assassin: {
-                moveRange: 3
+                moveRange: 3,
+                attackRange: 1
               }
             }
           },
@@ -169,7 +171,8 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-
+            
+            
             removeMoveRange();
             updatePositions();
           }
@@ -177,13 +180,13 @@
       });
 
       function checkRange(pawn, whoPlay) {
-        let range = whoPlay.pawns[pawnType].moveRange;
+        let moveRange = whoPlay.pawns[pawnType].moveRange;
         let enemy = whoPlay.enemy;
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
         for (var i = 0; i < 4; i++) {
-          for (var j = 1; j < range + 1; j++) {
+          for (var j = 1; j < moveRange + 1; j++) {
             var x;
             var y;
             if (i === 0) {
