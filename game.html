@@ -118,6 +118,7 @@
         teams: {
           red: {
             color: "red",
+            enemy: 'blue',
             pawns: {
               warrior: {
                 moveRange: 1
@@ -129,6 +130,7 @@
           },
           blue: {
             color: "blue",
+            enemy: 'red',
             pawns: {
               warrior: {
                 moveRange: 1
@@ -152,7 +154,7 @@
             this.classList.add("selected");
             selectedPawn = document.querySelector(".selected");
             pawnType = selectedPawn.getAttribute("type");
-            checkRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
+            checkRange(selectedPawn, whoPlay);
           }
           if (this.classList.contains("moveRange")) {
             selectedPawn.classList.remove(
@@ -174,10 +176,12 @@
         });
       });
 
-      function checkRange(pawn, range) {
+      function checkRange(pawn, whoPlay) {
+        let range = whoPlay.pawns[pawnType].moveRange
+        let enemy = whoPlay.enemy
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
-
+        
         for (var i = 0; i < 4; i++) {
           for (var j = 1; j < range + 1; j++) {
             var x;
@@ -203,7 +207,9 @@
            
             if (next) {
               if (next.classList.contains("player")) {
-                next.classList.add("attack");
+                if(next.classList.contains(enemy)){
+                  next.classList.add('attack')
+                }
                 break;
               }
               next.classList.add("moveRange");
