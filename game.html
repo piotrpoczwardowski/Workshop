@@ -39,18 +39,24 @@
         background: rgba(255, 166, 0, 0.527);
       }
       .warriorRed {
-        background: rgb(121, 7, 7);
+        background: rgb(58, 2, 2);
       }
 
       .assassinRed {
-        background: rgb(255, 0, 0);
+        background: rgb(161, 2, 2);
+      }
+      .archerRed {
+        background: red;
       }
 
       .warriorBlue {
-        background: rgb(11, 22, 126);
+        background: rgb(1, 7, 63);
       }
       .assassinBlue {
-        background: rgb(0, 26, 255);
+        background: rgb(1, 14, 129);
+      }
+      .archerBlue {
+        background: blue;
       }
       .attack {
         transition: all, 0.5s;
@@ -77,33 +83,46 @@
         }
       }
 
-      var startPositionWarriorRedTeam = document.querySelector(
-        `[data-x="${2}"][data-y="${2}"]`
+      var startPositionWarriorRed = document.querySelector(
+        insertCoordinates(2, 2)
       );
-      var warriorRed = startPositionWarriorRedTeam;
+      var warriorRed = startPositionWarriorRed;
       warriorRed.classList.add("warriorRed", "player", "red");
       warriorRed.setAttribute("type", "warrior");
 
-      var startPositionWarriorBlueTeam = document.querySelector(
-        `[data-x="${9}"][data-y="${2}"]`
+      var startPositionWarriorBlue = document.querySelector(
+        insertCoordinates(9, 2)
       );
-      var warriorBlue = startPositionWarriorBlueTeam;
+      var warriorBlue = startPositionWarriorBlue;
       warriorBlue.classList.add("warriorBlue", "player", "blue");
       warriorBlue.setAttribute("type", "warrior");
 
-      var startPositionAssassinRedTeam = document.querySelector(
-        `[data-x="${2}"][data-y="${5}"]`
+      var startPositionAssassinRed = document.querySelector(
+        insertCoordinates(2, 5)
       );
-      var assassinRed = startPositionAssassinRedTeam;
+      var assassinRed = startPositionAssassinRed;
       assassinRed.classList.add("assassinRed", "player", "red");
       assassinRed.setAttribute("type", "assassin");
 
-      var startPositionAssassinBlueTeam = document.querySelector(
-        `[data-x="${9}"][data-y="${4}"]`
+      var startPositionAssassinBlue = document.querySelector(
+        insertCoordinates(9, 5)
       );
-      var assassinBlue = startPositionAssassinBlueTeam;
+      var assassinBlue = startPositionAssassinBlue;
       assassinBlue.classList.add("assassinBlue", "player", "blue");
       assassinBlue.setAttribute("type", "assassin");
+
+
+       var startPositionArcherRed =document.querySelector(insertCoordinates(2,8))
+      var archerRed = startPositionArcherRed
+      archerRed.classList.add("archerRed", "player", "red");
+      archerRed.setAttribute("type", "archer");
+
+      var startPositionArcherBlue = document.querySelector(
+        insertCoordinates(9, 8)
+      );
+      var archerBlue = startPositionArcherBlue;
+      archerBlue.classList.add("archerBlue", "player", "blue");
+      archerBlue.setAttribute("type", "archer");
 
       var allCells = document.querySelectorAll(".gridCell");
       var freeCells = document.querySelectorAll(".gridCell:not(.player)");
@@ -122,11 +141,24 @@
             pawns: {
               warrior: {
                 moveRange: 1,
-                attackRange: 1
+                attackRange: 1,
+                health: 100,
+                attack: 10,
+                armor: 50
               },
               assassin: {
                 moveRange: 3,
-                attackRange: 1
+                attackRange: 1,
+                health: 100,
+                attack: 30,
+                armor: 10
+              },
+              archer: {
+                moveRange: 3,
+                attackRange: 3,
+                health: 100,
+                attack: 40,
+                armor: 0
               }
             }
           },
@@ -135,10 +167,25 @@
             enemy: "red",
             pawns: {
               warrior: {
-                moveRange: 1
+                moveRange: 1,
+                attackRange: 1,
+                health: 100,
+                attack: 10,
+                armor: 50
               },
               assassin: {
-                moveRange: 3
+                moveRange: 3,
+                attackRange: 1,
+                health: 100,
+                attack: 30,
+                armor: 10
+              },
+              archer: {
+                moveRange: 3,
+                attackRange: 3,
+                health: 100,
+                attack: 40,
+                armor: 0
               }
             }
           }
@@ -146,6 +193,7 @@
       };
 
       whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
+      enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
 
       allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
@@ -171,10 +219,14 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            
-            
+
             removeMoveRange();
             updatePositions();
+          }
+
+          if (this.classList.contains("attack")) {
+            var enemyPawnType = this.getAttribute("type");
+            enemy.pawns[enemyPawnType].health -= whoPlay.pawns[pawnType].attack;
           }
         });
       });
@@ -182,7 +234,7 @@
       function checkRange(pawn, whoPlay) {
         let moveRange = whoPlay.pawns[pawnType].moveRange;
         let enemy = whoPlay.enemy;
-        let attackRange = whoPlay.pawns[pawnType].attackRange
+        let attackRange = whoPlay.pawns[pawnType].attackRange;
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
@@ -213,14 +265,12 @@
 
             if (next) {
               if (next.classList.contains("player")) {
-                if (next.classList.contains(enemy) && j<=attackRange) {
-                  
+                if (next.classList.contains(enemy) && j <= attackRange) {
                   next.classList.add("attack");
                 }
                 break;
               }
               next.classList.add("moveRange");
-              console.log(i)
             }
           }
         }
@@ -241,6 +291,7 @@
       };
 
       function updatePositions() {
+        enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
         whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
         freeCells = document.querySelectorAll(".gridCell:not(.player)");
         redTeamPawns = document.querySelectorAll(".red");
