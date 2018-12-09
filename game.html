@@ -38,18 +38,18 @@
       .moveRange {
         background: rgba(255, 166, 0, 0.527);
       }
-      .warriorRedTeam {
+      .warriorRed {
         background: rgb(121, 7, 7);
       }
 
-      .assassinRedTeam {
+      .assassinRed {
         background: rgb(255, 0, 0);
       }
 
-      .warriorBlueTeam {
+      .warriorBlue {
         background: rgb(11, 22, 126);
       }
-      .assassinBlueTeam {
+      .assassinBlue {
         background: rgb(0, 26, 255);
       }
     </style>
@@ -74,72 +74,51 @@
       var startPositionWarriorRedTeam = document.querySelector(
         `[data-x="${2}"][data-y="${2}"]`
       );
-      var warriorRedTeam = startPositionWarriorRedTeam;
-      warriorRedTeam.classList.add("warriorRedTeam", "player", "redTeam");
-      warriorRedTeam.setAttribute("type", "warrior");
+      var warriorRed = startPositionWarriorRedTeam;
+      warriorRed.classList.add("warriorRed", "player", "red");
+      warriorRed.setAttribute("type", "warrior");
 
       var startPositionWarriorBlueTeam = document.querySelector(
         `[data-x="${9}"][data-y="${2}"]`
       );
-      var warriorBlueTeam = startPositionWarriorBlueTeam;
-      warriorBlueTeam.classList.add("warriorBlueTeam", "player", "blueTeam");
-      warriorBlueTeam.setAttribute("type", "warrior");
+      var warriorBlue = startPositionWarriorBlueTeam;
+      warriorBlue.classList.add("warriorBlue", "player", "blue");
+      warriorBlue.setAttribute("type", "warrior");
 
       var startPositionAssassinRedTeam = document.querySelector(
         `[data-x="${5}"][data-y="${5}"]`
       );
-      var assassinRedTeam = startPositionAssassinRedTeam;
-      assassinRedTeam.classList.add("assassinRedTeam", "player", "redTeam");
-      assassinRedTeam.setAttribute("type", "assassin");
+      var assassinRed = startPositionAssassinRedTeam;
+      assassinRed.classList.add("assassinRed", "player", "red");
+      assassinRed.setAttribute("type", "assassin");
 
       var startPositionAssassinBlueTeam = document.querySelector(
         `[data-x="${9}"][data-y="${5}"]`
       );
-      var assassinBlueTeam = startPositionAssassinBlueTeam;
-      assassinBlueTeam.classList.add("assassinBlueTeam", "player", "blueTeam");
-      assassinBlueTeam.setAttribute("type", "assassin");
+      var assassinBlue = startPositionAssassinBlueTeam;
+      assassinBlue.classList.add("assassinBlue", "player", "blue");
+      assassinBlue.setAttribute("type", "assassin");
 
       var allCells = document.querySelectorAll(".gridCell");
       var freeCells = document.querySelectorAll(".gridCell:not(.player)");
-      var redTeamPawns = document.querySelectorAll(".redTeam");
-      var blueTeamPawns = document.querySelectorAll(".blueTeam");
-      var bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
+      var redTeamPawns = document.querySelectorAll(".red");
+      var blueTeamPawns = document.querySelectorAll(".blue");
+      var bothTeams = document.querySelectorAll(".red, .blue");
       var selectedPawn;
       var round = 0;
       var moveRange;
-      var Players = {
-        teams: {
-          red: {
-            color: 'red',
-            warrior: {
-              moveRange: 1
-            },
-            assassin: {
-              moveRange: 2
-            }
-          },
-          blue: {
-            color: 'blue',
-            warrior: {
-              moveRange: 1
-            },
-            assassin: {
-              moveRange: 2
-            }
-          }
-        }
-      }
+
       var redPlayer = {
         team: "red",
         myRound: false,
         allies: redTeamPawns,
         pawns: {
           warrior: {
-            location: warriorRedTeam,
+            location: warriorRed,
             moveRange: 1
           },
           assassin: {
-            location: assassinRedTeam,
+            location: assassinRed,
             moveRange: 3
           }
         }
@@ -151,56 +130,87 @@
         allies: blueTeamPawns,
         pawns: {
           warrior: {
-            location: warriorBlueTeam,
+            location: warriorBlue,
             moveRange: 1
           },
           assassin: {
-            location: assassinBlueTeam,
+            location: assassinBlue,
             moveRange: 3
           }
         }
       };
 
-      whoPlay = round % 2 === 0 ? redPlayer : bluePlayer;
+      var players = {
+        teams: {
+          red: {
+            color: "red",
+            pawns: {
+              warrior: {
+                moveRange: 1
+              },
+              assassin: {
+                moveRange: 3
+              }
+            }
+          },
+          blue: {
+            color: "blue",
+            pawns: {
+              warrior: {
+                moveRange: 1
+              },
+              assassin: {
+                moveRange: 3
+              }
+            }
+          }
+        }
+      };
 
+      whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
 
-    allCells.forEach(function(pawn) {
+      allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
+          
           removeSelected();
-        
 
-          if (this.classList.contains("redTeam")) {
-            removeMoveRange()
+          if (this.classList.contains(whoPlay.color)) {
+            removeMoveRange();
             this.classList.add("selected");
             selectedPawn = document.querySelector(".selected");
             pawnType = selectedPawn.getAttribute("type");
             markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
           }
           if (this.classList.contains("moveRange")) {
-            selectedPawn.classList.remove("assassinRedTeam", "player", "redTeam");
+            selectedPawn.classList.remove(
+              pawnType + whoPlay.color.capitalize(),
+              "player",
+              whoPlay.color
+            );
             selectedPawn.removeAttribute("type");
-            this.classList.add("assassinRedTeam", "player", "redTeam")
-            this.setAttribute('type', 'assassin')
+            this.classList.add(
+              pawnType + whoPlay.color.capitalize(),
+              "player",
+              whoPlay.color
+            );
+            this.setAttribute("type", pawnType);
+            round +=1
             
-            removeMoveRange()
-            updatePositions()
+            removeMoveRange();
+            updatePositions();
           }
-
-          
         });
       });
 
-
-
-
-
+      String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      };
 
       // allCells.forEach(function(pawn) {
       //   pawn.addEventListener("click", function() {
       //     removeSelected();
-        
 
-      //     if (this.classList.contains("redTeam")) {
+      //     if (this.classList.contains("red")) {
       //       removeMoveRange()
       //       this.classList.add("selected");
       //       selectedPawn = document.querySelector(".selected");
@@ -208,24 +218,24 @@
       //       markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
       //     }
       //     if (this.classList.contains("moveRange")) {
-      //       selectedPawn.classList.remove("assassinRedTeam", "player", "redTeam");
+      //       selectedPawn.classList.remove("assassinRed", "player", "red");
       //       selectedPawn.removeAttribute("type");
-      //       this.classList.add("assassinRedTeam", "player", "redTeam")
+      //       this.classList.add("assassinRed", "player", "red")
       //       this.setAttribute('type', 'assassin')
-            
+
       //       removeMoveRange()
       //       updatePositions()
       //     }
 
-          
       //   });
       // });
 
       function updatePositions() {
+        whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
         freeCells = document.querySelectorAll(".gridCell:not(.player)");
-        redTeamPawns = document.querySelectorAll(".redTeam");
-        blueTeamPawns = document.querySelectorAll(".blueTeam");
-        bothTeams = document.querySelectorAll(".redTeam, .blueTeam");
+        redTeamPawns = document.querySelectorAll(".red");
+        blueTeamPawns = document.querySelectorAll(".blue");
+        bothTeams = document.querySelectorAll(".red, .blue");
         redPlayer.allies = redTeamPawns;
       }
 
@@ -248,19 +258,15 @@
 
       function removeSelected() {
         allCells.forEach(function(cell) {
-          cell.classList.remove( "selected");
+          cell.classList.remove("selected");
         });
-       
       }
 
-       function removeMoveRange() {
+      function removeMoveRange() {
         allCells.forEach(function(cell) {
-          cell.classList.remove( "moveRange");
+          cell.classList.remove("moveRange");
         });
-       
       }
-
-    
     </script>
   </body>
 </html>
