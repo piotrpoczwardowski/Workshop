@@ -107,6 +107,28 @@
       var selectedPawn;
       var round = 0;
       var moveRange;
+      var Players = {
+        teams: {
+          red: {
+            color: 'red',
+            warrior: {
+              moveRange: 1
+            },
+            assassin: {
+              moveRange: 2
+            }
+          },
+          blue: {
+            color: 'blue',
+            warrior: {
+              moveRange: 1
+            },
+            assassin: {
+              moveRange: 2
+            }
+          }
+        }
+      }
       var redPlayer = {
         team: "red",
         myRound: false,
@@ -141,7 +163,8 @@
 
       whoPlay = round % 2 === 0 ? redPlayer : bluePlayer;
 
-      allCells.forEach(function(pawn) {
+
+    allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
           removeSelected();
         
@@ -154,35 +177,49 @@
             markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
           }
           if (this.classList.contains("moveRange")) {
-            this.classList.add("assassinRedTeam", "player", "redTeam")
-            this.setAttribute('type', 'assassin')
             selectedPawn.classList.remove("assassinRedTeam", "player", "redTeam");
             selectedPawn.removeAttribute("type");
+            this.classList.add("assassinRedTeam", "player", "redTeam")
+            this.setAttribute('type', 'assassin')
+            
             removeMoveRange()
             updatePositions()
           }
 
-          // var targets = document.querySelectorAll(".moveRange");
-
-          // targets.forEach(function(target) {
-          //   target.addEventListener("click", function() {
-          //     if (this.classList.contains("moveRange")) {
-          //       var vanish = document.querySelector(".assassinRedTeam");
-          //       vanish.classList.remove("assassinRedTeam", "player", "redTeam");
-          //       vanish.removeAttribute("type");
-
-          //       this.classList.add("assassinRedTeam", "player", "redTeam");
-          //       this.setAttribute("type", "assassin");
-
-          //       assassinRedTeam = document.querySelector(".assassinRedTeam");
-
-          //       removeSelected();
-          //       updatePositions();
-          //     }
-          //   });
-          // });
+          
         });
       });
+
+
+
+
+
+
+      // allCells.forEach(function(pawn) {
+      //   pawn.addEventListener("click", function() {
+      //     removeSelected();
+        
+
+      //     if (this.classList.contains("redTeam")) {
+      //       removeMoveRange()
+      //       this.classList.add("selected");
+      //       selectedPawn = document.querySelector(".selected");
+      //       pawnType = selectedPawn.getAttribute("type");
+      //       markRange(selectedPawn, whoPlay.pawns[pawnType].moveRange);
+      //     }
+      //     if (this.classList.contains("moveRange")) {
+      //       selectedPawn.classList.remove("assassinRedTeam", "player", "redTeam");
+      //       selectedPawn.removeAttribute("type");
+      //       this.classList.add("assassinRedTeam", "player", "redTeam")
+      //       this.setAttribute('type', 'assassin')
+            
+      //       removeMoveRange()
+      //       updatePositions()
+      //     }
+
+          
+      //   });
+      // });
 
       function updatePositions() {
         freeCells = document.querySelectorAll(".gridCell:not(.player)");
@@ -223,39 +260,7 @@
        
       }
 
-      //     var startPosition = document.querySelector(`[data-x="${2}"][data-y="${2}"]`)
-      //    startPosition.classList.add('warriorRedTeam')
-
-      //    var warriorRedTeam = document.querySelector('.warriorRedTeam')
-
-      //    warriorRedTeam.addEventListener('click', function(){
-      //     warriorRedTeam = document.querySelector('.warriorRedTeam')
-      //       var playerX = parseInt(warriorRedTeam.getAttribute('data-x'))
-
-      //       var playerY = parseInt(warriorRedTeam.getAttribute('data-y'))
-      //       warriorRedTeam.classList.toggle('selected')
-
-      //    var moveRange = document.querySelectorAll(`[data-x="${playerX+1}"][data-y="${playerY}"], [data-x="${playerX-1}"][data-y="${playerY}"],[data-x="${playerX}"][data-y="${playerY+1}"], [data-x="${playerX}"][data-y="${playerY-1}"]`)
-      //     moveRange.forEach(function(cell){
-      //         cell.classList.toggle('move')
-
-      //         cell.addEventListener('click',function(){
-      //            var targetX = parseInt(this.getAttribute('data-x'))
-      //            var targetY = parseInt(this.getAttribute('data-y'))
-      //            var target = document.querySelector(`[data-x="${targetX}"][data-y="${targetY}"]`)
-      //            moveRange.forEach(function(x){
-      //                x.classList.remove('move')
-      //            })
-      //            warriorRedTeam.classList.remove('warriorRedTeam')
-      //            warriorRedTeam.classList.remove('selected')
-
-      //            target.classList.add('warriorRedTeam')
-
-      //         })
-
-      //     })
-
-      //    })
+    
     </script>
   </body>
 </html>
