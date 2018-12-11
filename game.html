@@ -35,6 +35,16 @@
       .selected {
         border: 5px solid rgb(21, 189, 15);
       }
+      .attackRange {
+        transition: all, 0.5s;
+        background: plum;
+        animation-name: a;
+        animation-duration: 2s;
+      }
+      .hiddenAttackRange {
+        
+        
+      }
       .moveRange {
         background: rgba(255, 166, 0, 0.527);
       }
@@ -58,12 +68,16 @@
       .archerBlue {
         background: blue;
       }
-      .attackRange {
-        transition: all, 0.5s;
-        background: plum;
-      }
-      .attackRange:hover {
-        background: purple;
+     
+      
+
+      @keyframes a {
+        0% {
+
+        }
+        100%{
+         background: gray;
+        }
       }
     </style>
   </head>
@@ -221,7 +235,7 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            round++
+            
            
             removeMoveRange();
             updatePositions();
@@ -229,7 +243,7 @@
             
           }
 
-          if(selectedPawn){
+          if(this.classList.contains(enemy.color) && selectedPawn){
             console.log(selectedPawn)
             attackRange(selectedPawn, whoPlay)
             
@@ -286,10 +300,15 @@
             );
             if (next) {
               if (next.classList.contains("player")) {
-               
+                next.classList.add("hiddenAttackRange");
                 break;
               }
+              if(next.classList.contains('moveRange') || next.classList.contains('player')){
+                next.classList.add('hiddenAttackRange')
+              }
+              else{
               next.classList.add("attackRange");
+              }
               
             }
           }
