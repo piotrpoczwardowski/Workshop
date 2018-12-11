@@ -62,7 +62,7 @@
         transition: all, 0.5s;
       }
       .attack:hover {
-        border: 5px solid purple;
+        background: purple;
       }
     </style>
   </head>
@@ -299,22 +299,7 @@
         bothTeams = document.querySelectorAll(".red, .blue");
       }
 
-      function markRange(pawn, range) {
-        let pawnX = parseInt(pawn.getAttribute("data-x"));
-        let pawnY = parseInt(pawn.getAttribute("data-y"));
-
-        for (var i = range; i >= 1; i--) {
-          moveRange = document.querySelectorAll(
-            `[data-x="${pawnX + i}"][data-y="${pawnY}"], [data-x="${pawnX -
-              i}"][data-y="${pawnY}"],[data-x="${pawnX}"][data-y="${pawnY +
-              i}"], [data-x="${pawnX}"][data-y="${pawnY - i}"]`
-          );
-          moveRange.forEach(function(cell) {
-            cell.classList.add("moveRange");
-          });
-        }
-        moveRange = document.querySelectorAll(".moveRange");
-      }
+     
 
       function removeSelected() {
         allCells.forEach(function(cell) {
