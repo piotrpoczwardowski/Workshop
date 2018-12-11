@@ -36,10 +36,18 @@
         border: 5px solid rgb(21, 189, 15);
       }
       .attackRange {
-        transition: all, 0.5s;
-        background: plum;
+        
+        background: gray;
         animation-name: a;
-        animation-duration: 2s;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in
+      }
+      .enemyTarget{
+        
+      }
+      .enemyTarget:hover{
+        border:5px solid purple;
       }
       .hiddenAttackRange {
         
@@ -68,15 +76,21 @@
       .archerBlue {
         background: blue;
       }
-     
+     .moveRange:hover{
+       background: rgb(226, 147, 43);
+     }
       
 
       @keyframes a {
         0% {
-
+          background: gray;
         }
-        100%{
-         background: gray;
+      
+        50% {
+          background: rgb(185, 11, 171);
+      }
+      100% {
+          background: gray;
         }
       }
     </style>
@@ -300,7 +314,7 @@
             );
             if (next) {
               if (next.classList.contains("player")) {
-                next.classList.add("hiddenAttackRange");
+                next.classList.add("hiddenAttackRange", 'enemyTarget');
                 break;
               }
               if(next.classList.contains('moveRange') || next.classList.contains('player')){
