@@ -58,11 +58,11 @@
       .archerBlue {
         background: blue;
       }
-      .attack {
+      .attackRange {
         transition: all, 0.5s;
         background: plum;
       }
-      .attack:hover {
+      .attackRange:hover {
         background: purple;
       }
     </style>
@@ -133,6 +133,7 @@
       var selectedPawn;
       var round = 0;
       var moveRange;
+      var mouseOn = false
 
       var players = {
         teams: {
@@ -144,21 +145,21 @@
                 moveRange: 1,
                 attackRange: 1,
                 health: 100,
-                attack: 10,
+                attackPower: 10,
                 armor: 50
               },
               assassin: {
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attack: 30,
+                attackPower: 30,
                 armor: 10
               },
               archer: {
                 moveRange: 1,
                 attackRange: 3,
                 health: 100,
-                attack: 40,
+                attackPower: 40,
                 armor: 0
               }
             }
@@ -171,21 +172,21 @@
                 moveRange: 1,
                 attackRange: 1,
                 health: 100,
-                attack: 10,
+                attackPower: 10,
                 armor: 50
               },
               assassin: {
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attack: 30,
+                attackPower: 30,
                 armor: 10
               },
               archer: {
                 moveRange: 1,
                 attackRange: 3,
                 health: 100,
-                attack: 40,
+                attackPower: 40,
                 armor: 0
               }
             }
@@ -220,22 +221,28 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-
+            round++
+           
             removeMoveRange();
             updatePositions();
+            selectedPawn = null
+            
           }
 
-          if (this.classList.contains("attack")) {
-            var enemyPawnType = this.getAttribute("type");
-            enemy.pawns[enemyPawnType].health -= whoPlay.pawns[pawnType].attack;
+          if(selectedPawn){
+            console.log(selectedPawn)
+            attackRange(selectedPawn, whoPlay)
+            
           }
+          
         });
       });
 
-      function attackRange(){
-        let attackRange = 3;
-        let enemy = 'blue'
-        let pawn = document.querySelector('[type="archer"]')
+      function attackRange(pawn, whoPlay){
+       
+        let attackRange = whoPlay.pawns[pawnType].attackRange;
+        let enemy = whoPlay.enemy;
+       console.log(attackRange)
         
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
@@ -247,15 +254,31 @@
               y = 0;
             }
             if (i === 1) {
-              x = 0;
+              x = j;
               y = j;
             }
             if (i === 2) {
+              x = 0;
+              y = j;
+            }
+            if (i === 3) {
+              x = -j;
+              y = j;
+            }
+            if (i === 4) {
               x = -j;
               y = 0;
             }
-            if (i === 3) {
+            if (i === 5) {
+              x = -j;
+              y = -j;
+            }
+            if (i === 6) {
               x = 0;
+              y = -j;
+            }
+            if (i === 7) {
+              x = j;
               y = -j;
             }
             var next = document.querySelector(
@@ -266,7 +289,8 @@
                
                 break;
               }
-              next.classList.add("attack");
+              next.classList.add("attackRange");
+              
             }
           }
          }
@@ -278,7 +302,7 @@
       function moveRange(pawn, whoPlay) {
         let moveRange = whoPlay.pawns[pawnType].moveRange;
         let enemy = whoPlay.enemy;
-        let attackRange = whoPlay.pawns[pawnType].attackRange;
+        
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
@@ -353,7 +377,7 @@
 
       function removeMoveRange() {
         allCells.forEach(function(cell) {
-          cell.classList.remove("moveRange", "attack");
+          cell.classList.remove("moveRange", "attackRange");
         });
       }
     </script>
