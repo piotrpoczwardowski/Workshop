@@ -257,16 +257,17 @@
           }
 
           if(this.classList.contains('enemyTarget')){
-           attack(selectedPawn, this)
+           attack(whoPlay, enemy, this.getAttribute('type'))
           }
         });
       });
 
-      function attack(attacker, defender) {
-        
+      function attack(attacker, defender, enemyType) {
+        console.log(enemyType)
         let attackPower = attacker.pawns[pawnType].attackPower;
-        let defHealth = defender.pawns[pawnType].health
-        console.log(attackPower)
+        let defHealth = defender.pawns[enemyType].health
+
+        console.log( defender.pawns[enemyType].health -= attackPower)
 
 
 
