@@ -168,7 +168,7 @@
               warrior: {
                 moveRange: 1,
                 attackRange: 1,
-                health: 100,
+                health: 200,
                 attackPower: 10,
                 armor: 50
               },
@@ -176,14 +176,14 @@
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attackPower: 30,
+                attackPower: 20,
                 armor: 10
               },
               archer: {
-                moveRange: 4,
+                moveRange: 1,
                 attackRange: 3,
-                health: 100,
-                attackPower: 40,
+                health: 70,
+                attackPower: 30,
                 armor: 0
               }
             }
@@ -195,7 +195,7 @@
               warrior: {
                 moveRange: 1,
                 attackRange: 1,
-                health: 100,
+                health: 200,
                 attackPower: 10,
                 armor: 50
               },
@@ -203,14 +203,14 @@
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attackPower: 30,
+                attackPower: 20,
                 armor: 10
               },
               archer: {
                 moveRange: 1,
                 attackRange: 3,
-                health: 100,
-                attackPower: 40,
+                health: 70,
+                attackPower: 30,
                 armor: 0
               }
             }
@@ -257,17 +257,33 @@
           }
 
           if(this.classList.contains('enemyTarget')){
-           attack(whoPlay, enemy, this.getAttribute('type'))
+           attack(whoPlay, enemy, this)
+           
+            removeMoveRange();
+            updatePositions();
+            selectedPawn = null;
           }
         });
       });
 
-      function attack(attacker, defender, enemyType) {
+      function attack(attacker, defender, enemyPawn) {
+        let enemyType = enemyPawn.getAttribute('type')
         console.log(enemyType)
         let attackPower = attacker.pawns[pawnType].attackPower;
         let defHealth = defender.pawns[enemyType].health
 
         console.log( defender.pawns[enemyType].health -= attackPower)
+        if(defender.pawns[enemyType].health <= 0){
+
+          enemyPawn.classList.remove(
+              enemyType + defender.color.capitalize(),
+              "player",
+              defender.color,
+              'enemyTarget'
+            );
+            enemyPawn.removeAttribute("type");
+          
+        }
 
 
 
