@@ -104,7 +104,12 @@
     </style>
   </head>
   <body>
-    
+      <audio num='1' src="/hangdrum/Gmail (9)/1.amr"></audio>
+      <audio num='2' src="/hangdrum/Gmail (9)/2.amr"></audio>
+      <audio num='3' src="/hangdrum/Gmail (9)/3.amr"></audio>
+      <audio num='6'src="/hangdrum/Gmail (9)/4.amr"></audio>
+      <audio num='4' src="/hangdrum/Gmail (9)/5.amr"></audio>
+      <audio num='5' src="/hangdrum/Gmail (9)/6.amr"></audio>
     <div class="grid"></div>
     <script>
       var grid = document.querySelector(".grid");
@@ -242,6 +247,9 @@
           if (this.classList.contains(whoPlay.color)) {
             removeMoveRange();
             this.classList.add("selected");
+            var xD = document.querySelector('[num="6"]')
+            xD.play()
+            xD.currentTime = 0;
             selectedPawn = document.querySelector(".selected");
             pawnType = selectedPawn.getAttribute("type");
             moveRange(selectedPawn, whoPlay);
@@ -271,6 +279,10 @@
 
           if (this.classList.contains("enemyTarget")) {
             attack(whoPlay, enemy, this);
+          var audio = document.querySelector(`[num="${Math.round((Math.random() * 10)/2)}"]`)
+
+            audio.play()
+            audio.currentTime = 0;
 
             removeMoveRange();
             updatePositions();
@@ -304,6 +316,7 @@
         
       }, 1006);
       function attack(attacker, defender, enemyPawn) {
+        
         let enemyType = enemyPawn.getAttribute("type");
         console.log(enemyType);
         let attackPower = attacker.pawns[pawnType].attackPower;
@@ -366,7 +379,7 @@
               insertCoordinates(pawnX + x, pawnY + y)
             );
             if (next) {
-              if (next.classList.contains("player") && next.classList.contains(enemy.color)) {
+              if (next.classList.contains("player")) {
                 next.classList.add("hiddenAttackRange", "enemyTarget");
                 break;
               }
