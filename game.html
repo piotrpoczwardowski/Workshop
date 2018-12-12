@@ -36,22 +36,18 @@
         border: 5px solid rgb(21, 189, 15);
       }
       .attackRange {
-        
         background: gray;
         animation-name: a;
         animation-duration: 1.5s;
         animation-iteration-count: infinite;
-        animation-timing-function: ease-in
+        animation-timing-function: ease-in;
       }
-      .enemyTarget{
-        
+      .enemyTarget {
       }
-      .enemyTarget:hover{
-        border:5px solid purple;
+      .enemyTarget:hover {
+        border: 5px solid purple;
       }
       .hiddenAttackRange {
-        
-        
       }
       .moveRange {
         background: rgba(255, 166, 0, 0.527);
@@ -76,20 +72,19 @@
       .archerBlue {
         background: blue;
       }
-     .moveRange:hover{
-       background: rgb(226, 147, 43);
-     }
-      
+      .moveRange:hover {
+        background: rgb(226, 147, 43);
+      }
 
       @keyframes a {
         0% {
           background: gray;
         }
-      
+
         50% {
           background: rgb(185, 11, 171);
-      }
-      100% {
+        }
+        100% {
           background: gray;
         }
       }
@@ -140,9 +135,10 @@
       assassinBlue.classList.add("assassinBlue", "player", "blue");
       assassinBlue.setAttribute("type", "assassin");
 
-
-       var startPositionArcherRed =document.querySelector(insertCoordinates(2,8))
-      var archerRed = startPositionArcherRed
+      var startPositionArcherRed = document.querySelector(
+        insertCoordinates(2, 8)
+      );
+      var archerRed = startPositionArcherRed;
       archerRed.classList.add("archerRed", "player", "red");
       archerRed.setAttribute("type", "archer");
 
@@ -161,7 +157,7 @@
       var selectedPawn;
       var round = 0;
       var moveRange;
-      var mouseOn = false
+      var mouseOn = false;
 
       var players = {
         teams: {
@@ -184,7 +180,7 @@
                 armor: 10
               },
               archer: {
-                moveRange: 1,
+                moveRange: 4,
                 attackRange: 3,
                 health: 100,
                 attackPower: 40,
@@ -249,33 +245,43 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
+
             
-           
             removeMoveRange();
             updatePositions();
-            selectedPawn = null
-            
+            selectedPawn = null;
           }
 
-          if(this.classList.contains(enemy.color) && selectedPawn){
-            console.log(selectedPawn)
-            attackRange(selectedPawn, whoPlay)
-            
+          if (this.classList.contains(enemy.color) && selectedPawn) {
+            attackRange(selectedPawn, whoPlay);
           }
-          
+
+          if(this.classList.contains('enemyTarget')){
+           attack(selectedPawn, this)
+          }
         });
       });
 
-      function attackRange(pawn, whoPlay){
-       
+      function attack(attacker, defender) {
+        
+        let attackPower = attacker.pawns[pawnType].attackPower;
+        let defHealth = defender.pawns[pawnType].health
+        console.log(attackPower)
+
+
+
+
+        
+      }
+
+      function attackRange(pawn, whoPlay) {
         let attackRange = whoPlay.pawns[pawnType].attackRange;
         let enemy = whoPlay.enemy;
-     
-        
+
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
-         for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 8; i++) {
           for (var j = 1; j < attackRange + 1; j++) {
             if (i === 0) {
               x = j;
@@ -310,40 +316,37 @@
               y = -j;
             }
             var next = document.querySelector(
-              insertCoordinates(pawnX + x, pawnY + y  )
+              insertCoordinates(pawnX + x, pawnY + y)
             );
             if (next) {
               if (next.classList.contains("player")) {
-                next.classList.add("hiddenAttackRange", 'enemyTarget');
+                next.classList.add("hiddenAttackRange", "enemyTarget");
                 break;
               }
-              if(next.classList.contains('moveRange') || next.classList.contains('player')){
-                next.classList.add('hiddenAttackRange')
+              if (
+                next.classList.contains("moveRange") ||
+                next.classList.contains("player")
+              ) {
+                next.classList.add("hiddenAttackRange");
+              } else {
+                next.classList.add("attackRange");
               }
-              else{
-              next.classList.add("attackRange");
-              }
-              
             }
           }
-         }
-
-
-
+        }
       }
 
       function moveRange(pawn, whoPlay) {
         let moveRange = whoPlay.pawns[pawnType].moveRange;
         let enemy = whoPlay.enemy;
-        
+
         pawnX = getPosition(pawn).x;
         pawnY = getPosition(pawn).y;
 
         for (var i = 0; i < 4; i++) {
           for (var j = 1; j < moveRange + 1; j++) {
-            var x 
+            var x;
             var y;
-           
 
             if (i === 0) {
               x = j;
@@ -368,7 +371,6 @@
 
             if (next) {
               if (next.classList.contains("player")) {
-               
                 break;
               }
               next.classList.add("moveRange");
@@ -380,6 +382,7 @@
       function insertCoordinates(x, y) {
         return `[data-x='${x}'][data-y='${y}']`;
       }
+
       function getPosition(cell) {
         return {
           x: parseInt(cell.getAttribute("data-x")),
@@ -400,8 +403,6 @@
         bothTeams = document.querySelectorAll(".red, .blue");
       }
 
-     
-
       function removeSelected() {
         allCells.forEach(function(cell) {
           cell.classList.remove("selected");
@@ -410,7 +411,12 @@
 
       function removeMoveRange() {
         allCells.forEach(function(cell) {
-          cell.classList.remove("moveRange", "attackRange");
+          cell.classList.remove(
+            "moveRange",
+            "attackRange",
+            "hiddenAttackRange",
+            "enemyTarget"
+          );
         });
       }
     </script>
