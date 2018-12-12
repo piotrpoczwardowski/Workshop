@@ -75,7 +75,20 @@
       .moveRange:hover {
         background: rgb(226, 147, 43);
       }
-
+      
+      .healthBar{
+        border: 1px solid black;
+        height: 10px;
+        background: red;
+        width: 60px;
+        position: absolute;
+      }
+      .health{
+        height: inherit;
+        background: greenyellow;
+        width: 0%;
+        transition: all, 0.5s;
+      }
       @keyframes a {
         0% {
           background: gray;
@@ -91,6 +104,9 @@
     </style>
   </head>
   <body>
+    <div class="healthBar">
+      <div class="health"></div>
+    </div>
     <div class="grid"></div>
     <script>
       var grid = document.querySelector(".grid");
@@ -155,7 +171,7 @@
       var blueTeamPawns = document.querySelectorAll(".blue");
       var bothTeams = document.querySelectorAll(".red, .blue");
       var selectedPawn;
-      var round = 0;
+      var round = 1;
       var moveRange;
       var mouseOn = false;
 
@@ -246,7 +262,6 @@
             );
             this.setAttribute("type", pawnType);
 
-            
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
@@ -256,39 +271,40 @@
             attackRange(selectedPawn, whoPlay);
           }
 
-          if(this.classList.contains('enemyTarget')){
-           attack(whoPlay, enemy, this)
-           
+          if (this.classList.contains("enemyTarget")) {
+            attack(whoPlay, enemy, this);
+
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
           }
         });
       });
-
-      function attack(attacker, defender, enemyPawn) {
-        let enemyType = enemyPawn.getAttribute('type')
-        console.log(enemyType)
-        let attackPower = attacker.pawns[pawnType].attackPower;
-        let defHealth = defender.pawns[enemyType].health
-
-        console.log( defender.pawns[enemyType].health -= attackPower)
-        if(defender.pawns[enemyType].health <= 0){
-
-          enemyPawn.classList.remove(
-              enemyType + defender.color.capitalize(),
-              "player",
-              defender.color,
-              'enemyTarget'
-            );
-            enemyPawn.removeAttribute("type");
-          
-        }
-
-
-
-
+      setInterval(function() {
+        var lol = document.querySelector('.assassinRed')
+        var healthBar = document.querySelector('.healthBar')
+      var healt = document.querySelector('.health')
+        healthBar.setAttribute('style', `top: ${lol.getBoundingClientRect().y - 5}px; left: ${lol.getBoundingClientRect().x+7}px`)
+        var ddd = players.teams.red.pawns[lol.getAttribute('type')].health
+        healt.style.width = ddd + '%'
         
+      }, 16);
+      function attack(attacker, defender, enemyPawn) {
+        let enemyType = enemyPawn.getAttribute("type");
+        console.log(enemyType);
+        let attackPower = attacker.pawns[pawnType].attackPower;
+        let defHealth = defender.pawns[enemyType].health;
+
+        console.log((defender.pawns[enemyType].health -= attackPower));
+        if (defender.pawns[enemyType].health <= 0) {
+          enemyPawn.classList.remove(
+            enemyType + defender.color.capitalize(),
+            "player",
+            defender.color,
+            "enemyTarget"
+          );
+          enemyPawn.removeAttribute("type");
+        }
       }
 
       function attackRange(pawn, whoPlay) {
