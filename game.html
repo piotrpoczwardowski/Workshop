@@ -236,8 +236,8 @@
 
       whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
       enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
-      makeHealthBar()
-      trackingHealthBar()
+      makeHealthBar();
+      trackingHealthBar();
       allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
           removeSelected();
@@ -263,7 +263,7 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-
+            round++;
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
@@ -275,34 +275,14 @@
 
           if (this.classList.contains("enemyTarget")) {
             attack(whoPlay, enemy, this);
-
+            round++;
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
           }
         });
       });
-      setInterval(function() {
-        //   var lol = document.querySelector('.assassinRed')
-        //   var healthBar = document.querySelector('.healthBar')
-        // var healt = document.querySelector('.health')
-        //   healthBar.setAttribute('style', `top: ${lol.getBoundingClientRect().y - 5}px; left: ${lol.getBoundingClientRect().x+7}px`)
-        //   var ddd = players.teams.red.pawns[lol.getAttribute('type')].health
-        //   healt.style.width = ddd + '%'
-        // document.querySelectorAll('.player').forEach(function(player){
-        //   if(heathsBarCreated !== 6){
-        //   var healthBar = document.createElement('div')
-        //   healthBar.classList.add('healthBar')
-        //   var health = document.createElement('div')
-        //   health.classList.add('health')
-        //   healthBar.appendChild(health)
-        //   document.body.appendChild(healthBar)
-        //   heathsBarCreated ++
-        //   }
-        //   var playerType = player.getAttribute('type')
-        //   healthBar.setAttribute('style', `top: ${player.getBoundingClientRect().y - 5}px; left: ${player.getBoundingClientRect().x+7}px`)
-        // })
-      }, 1006);
+      
 
       function makeHealthBar() {
         let players = document.querySelectorAll(".player");
@@ -324,11 +304,12 @@
         let playersHealth = document.querySelectorAll(".player");
         playersHealth.forEach(function(player) {
           let playerColor = player.className.split(" ")[3].capitalize();
-          let playerColor2 = player.className.split(" ")[3]
-          let playerType = player.getAttribute("type")
+          let playerColor2 = player.className.split(" ")[3];
+          let playerType = player.getAttribute("type");
           let playerAttributes = playerType + playerColor;
-          var healthPercent = players.teams[playerColor2].pawns[playerType].health
-          console.log(healthPercent);
+          var healthPercent =
+            players.teams[playerColor2].pawns[playerType].health;
+
           let healthBar = document.querySelector(
             `.healthBar[whose="${playerAttributes}"]`
           );
@@ -336,11 +317,13 @@
             `.health[whose="${playerAttributes}"]`
           );
 
-         healthBar.setAttribute('style', `top: ${player.getBoundingClientRect().y - 5}px; left: ${player.getBoundingClientRect().x+7}px`)
-         health.style.width = healthPercent + '%'
+          healthBar.setAttribute(
+            "style",
+            `top: ${player.getBoundingClientRect().y -
+              5}px; left: ${player.getBoundingClientRect().x + 7}px`
+          );
+          health.style.width = healthPercent + "%";
         });
-        
-
       }
       function attack(attacker, defender, enemyPawn) {
         let enemyType = enemyPawn.getAttribute("type");
@@ -350,6 +333,22 @@
 
         console.log((defender.pawns[enemyType].health -= attackPower));
         if (defender.pawns[enemyType].health <= 0) {
+          let playerColor = enemyPawn.className.split(" ")[3].capitalize();
+          let playerColor2 = enemyPawn.className.split(" ")[3];
+
+          let playerAttributes = enemyType + playerColor;
+          var healthPercent =
+            players.teams[playerColor2].pawns[enemyType].health;
+
+          let healthBar = document.querySelector(
+            `.healthBar[whose="${playerAttributes}"]`
+          );
+          let health = document.querySelector(
+            `.health[whose="${playerAttributes}"]`
+          );
+
+          healthBar.remove();
+
           enemyPawn.classList.remove(
             enemyType + defender.color.capitalize(),
             "player",
@@ -476,8 +475,6 @@
         };
       }
 
-     
-
       function updatePositions() {
         enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
         whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
@@ -485,7 +482,7 @@
         redTeamPawns = document.querySelectorAll(".red");
         blueTeamPawns = document.querySelectorAll(".blue");
         bothTeams = document.querySelectorAll(".red, .blue");
-        trackingHealthBar()
+        trackingHealthBar();
       }
 
       function removeSelected() {
@@ -504,7 +501,6 @@
           );
         });
       }
-      
     </script>
   </body>
 </html>
