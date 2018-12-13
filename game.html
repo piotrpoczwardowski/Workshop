@@ -104,12 +104,6 @@
     </style>
   </head>
   <body>
-    <audio num="1" src="/hangdrum/Gmail (9)/1.amr"></audio>
-    <audio num="2" src="/hangdrum/Gmail (9)/7.amr"></audio>
-    <audio num="3" src="/hangdrum/Gmail (9)/8.amr"></audio>
-    <audio num="6" src="/hangdrum/Gmail (9)/4.amr"></audio>
-    <audio num="4" src="/hangdrum/Gmail (9)/9.amr"></audio>
-    <audio num="5" src="/hangdrum/Gmail (9)/6.amr"></audio>
     <div class="grid"></div>
     <script>
       var grid = document.querySelector(".grid");
@@ -187,7 +181,7 @@
               warrior: {
                 moveRange: 1,
                 attackRange: 1,
-                health: 200,
+                health: 100,
                 attackPower: 10,
                 armor: 50
               },
@@ -195,13 +189,13 @@
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attackPower: 20,
+                attackPower: 70,
                 armor: 10
               },
               archer: {
                 moveRange: 1,
                 attackRange: 3,
-                health: 70,
+                health: 100,
                 attackPower: 30,
                 armor: 0
               }
@@ -214,7 +208,7 @@
               warrior: {
                 moveRange: 1,
                 attackRange: 1,
-                health: 200,
+                health: 100,
                 attackPower: 10,
                 armor: 50
               },
@@ -228,7 +222,7 @@
               archer: {
                 moveRange: 1,
                 attackRange: 3,
-                health: 70,
+                health: 100,
                 attackPower: 30,
                 armor: 0
               }
@@ -236,10 +230,14 @@
           }
         }
       };
+      String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      };
 
       whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
       enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
-
+      makeHealthBar()
+      trackingHealthBar()
       allCells.forEach(function(pawn) {
         pawn.addEventListener("click", function() {
           removeSelected();
@@ -247,7 +245,7 @@
           if (this.classList.contains(whoPlay.color)) {
             removeMoveRange();
             this.classList.add("selected");
-          
+
             selectedPawn = document.querySelector(".selected");
             pawnType = selectedPawn.getAttribute("type");
             moveRange(selectedPawn, whoPlay);
@@ -277,7 +275,6 @@
 
           if (this.classList.contains("enemyTarget")) {
             attack(whoPlay, enemy, this);
-          
 
             removeMoveRange();
             updatePositions();
@@ -306,6 +303,45 @@
         //   healthBar.setAttribute('style', `top: ${player.getBoundingClientRect().y - 5}px; left: ${player.getBoundingClientRect().x+7}px`)
         // })
       }, 1006);
+
+      function makeHealthBar() {
+        let players = document.querySelectorAll(".player");
+
+        players.forEach(function(player) {
+          let playerColor = player.className.split(" ")[3].capitalize();
+          let playerAttributes = player.getAttribute("type") + playerColor;
+          var healthBar = document.createElement("div");
+          healthBar.classList.add("healthBar");
+          var health = document.createElement("div");
+          health.classList.add("health");
+          healthBar.appendChild(health);
+          document.body.appendChild(healthBar);
+          healthBar.setAttribute("whose", playerAttributes);
+          health.setAttribute("whose", playerAttributes);
+        });
+      }
+      function trackingHealthBar() {
+        let playersHealth = document.querySelectorAll(".player");
+        playersHealth.forEach(function(player) {
+          let playerColor = player.className.split(" ")[3].capitalize();
+          let playerColor2 = player.className.split(" ")[3]
+          let playerType = player.getAttribute("type")
+          let playerAttributes = playerType + playerColor;
+          var healthPercent = players.teams[playerColor2].pawns[playerType].health
+          console.log(healthPercent);
+          let healthBar = document.querySelector(
+            `.healthBar[whose="${playerAttributes}"]`
+          );
+          let health = document.querySelector(
+            `.health[whose="${playerAttributes}"]`
+          );
+
+         healthBar.setAttribute('style', `top: ${player.getBoundingClientRect().y - 5}px; left: ${player.getBoundingClientRect().x+7}px`)
+         health.style.width = healthPercent + '%'
+        });
+        
+
+      }
       function attack(attacker, defender, enemyPawn) {
         let enemyType = enemyPawn.getAttribute("type");
         console.log(enemyType);
@@ -440,9 +476,7 @@
         };
       }
 
-      String.prototype.capitalize = function() {
-        return this.charAt(0).toUpperCase() + this.slice(1);
-      };
+     
 
       function updatePositions() {
         enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
@@ -451,6 +485,7 @@
         redTeamPawns = document.querySelectorAll(".red");
         blueTeamPawns = document.querySelectorAll(".blue");
         bothTeams = document.querySelectorAll(".red, .blue");
+        trackingHealthBar()
       }
 
       function removeSelected() {
@@ -469,6 +504,7 @@
           );
         });
       }
+      
     </script>
   </body>
 </html>
