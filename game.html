@@ -89,6 +89,15 @@
         width: 0%;
         transition: all, 0.5s;
       }
+      .damage {
+        color: red;
+        font-weight: bold;
+        position: absolute;
+        left: 20px;
+        top: -20px;
+        transition: all, 1.5s;
+       
+      }
       @keyframes a {
         0% {
           background: gray;
@@ -142,7 +151,7 @@
       assassinRed.setAttribute("type", "assassin");
 
       var startPositionAssassinBlue = document.querySelector(
-        insertCoordinates(9, 5)
+        insertCoordinates(3, 5)
       );
       var assassinBlue = startPositionAssassinBlue;
       assassinBlue.classList.add("assassinBlue", "player", "blue");
@@ -189,7 +198,7 @@
                 moveRange: 3,
                 attackRange: 1,
                 health: 100,
-                attackPower: 70,
+                attackPower: 20,
                 armor: 10
               },
               archer: {
@@ -263,7 +272,7 @@
               whoPlay.color
             );
             this.setAttribute("type", pawnType);
-            round++;
+
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
@@ -275,14 +284,13 @@
 
           if (this.classList.contains("enemyTarget")) {
             attack(whoPlay, enemy, this);
-            round++;
+
             removeMoveRange();
             updatePositions();
             selectedPawn = null;
           }
         });
       });
-      
 
       function makeHealthBar() {
         let players = document.querySelectorAll(".player");
@@ -330,24 +338,24 @@
         console.log(enemyType);
         let attackPower = attacker.pawns[pawnType].attackPower;
         let defHealth = defender.pawns[enemyType].health;
+        let playerColor = enemyPawn.className.split(" ")[3].capitalize();
+        let playerColor2 = enemyPawn.className.split(" ")[3];
+
+        let playerAttributes = enemyType + playerColor;
+        var healthPercent = players.teams[playerColor2].pawns[enemyType].health;
+
+        let healthBar = document.querySelector(
+          `.healthBar[whose="${playerAttributes}"]`
+        );
+        let health = document.querySelector(
+          `.health[whose="${playerAttributes}"]`
+        );
+
+        floatingLetters("damage", attackPower, health, '-');
 
         console.log((defender.pawns[enemyType].health -= attackPower));
         if (defender.pawns[enemyType].health <= 0) {
-          let playerColor = enemyPawn.className.split(" ")[3].capitalize();
-          let playerColor2 = enemyPawn.className.split(" ")[3];
-
-          let playerAttributes = enemyType + playerColor;
-          var healthPercent =
-            players.teams[playerColor2].pawns[enemyType].health;
-
-          let healthBar = document.querySelector(
-            `.healthBar[whose="${playerAttributes}"]`
-          );
-          let health = document.querySelector(
-            `.health[whose="${playerAttributes}"]`
-          );
-
-          healthBar.remove();
+         
 
           enemyPawn.classList.remove(
             enemyType + defender.color.capitalize(),
@@ -356,9 +364,22 @@
             "enemyTarget"
           );
           enemyPawn.removeAttribute("type");
+          healthBar.remove();
         }
       }
-
+      function floatingLetters(classes, value, contener, minus) {
+        let damage = document.createElement("p");
+        damage.classList.add(classes);
+        damage.innerHTML = minus + value;
+        contener.appendChild(damage);
+        setTimeout(function() {
+          damage.style.textAlign = 'center'
+          damage.style.top = -100 + 'px'
+          damage.style.left = 10 + 'px'
+          damage.style.fontSize= 30 + 'px'
+          damage.style.opacity = 0
+        }, 0);
+      }
       function attackRange(pawn, whoPlay) {
         let attackRange = whoPlay.pawns[pawnType].attackRange;
         let enemy = whoPlay.enemy;
