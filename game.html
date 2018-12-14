@@ -164,9 +164,9 @@
         }
       }
       var players = document.querySelectorAll('.player')
-     
+      whoPlay = round % 2 === 0 ? playerRed : playerBlue
   function game(){
-    document.querySelectorAll('.player').forEach(function(pawn){
+    players.forEach(function(pawn){
       pawn.addEventListener('click', function(){
         removeSelected()
         pawn.classList.add('selected')
