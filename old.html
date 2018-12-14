@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .grid {
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .gridRow {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .gridCell {
+        height: 80px;
+        width: 80px;
+        flex-grow: 1;
+        background: gray;
+        box-sizing: border-box;
+        border: 2px solid white;
+        box-sizing: border-box;
+      }
+
+      .move {
+        background: rgba(187, 50, 50, 0.678);
+      }
+      .selected {
+        border: 5px solid rgb(21, 189, 15);
+      }
+      .attackRange {
+        background: gray;
+        animation-name: a;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in;
+      }
+      .enemyTarget {
+      }
+      .enemyTarget:hover {
+        border: 5px solid purple;
+      }
+      .hiddenAttackRange {
+      }
+      .moveRange {
+        background: rgba(255, 166, 0, 0.527);
+      }
+      .warriorRed {
+        background: rgb(58, 2, 2);
+      }
+
+      .assassinRed {
+        background: rgb(161, 2, 2);
+      }
+      .archerRed {
+        background: red;
+      }
+
+      .warriorBlue {
+        background: rgb(1, 7, 63);
+      }
+      .assassinBlue {
+        background: rgb(1, 14, 129);
+      }
+      .archerBlue {
+        background: blue;
+      }
+      .moveRange:hover {
+        background: rgb(226, 147, 43);
+      }
+
+      .healthBar {
+        border: 1px solid black;
+        height: 10px;
+        background: red;
+        width: 60px;
+        position: absolute;
+      }
+      .health {
+        height: inherit;
+        background: greenyellow;
+        width: 0%;
+        transition: all, 0.5s;
+      }
+      .damage {
+        color: red;
+        font-weight: bold;
+        position: absolute;
+        left: 20px;
+        top: -20px;
+        transition: all, 1.5s;
+       
+      }
+      @keyframes a {
+        0% {
+          background: gray;
+        }
+
+        50% {
+          background: rgb(185, 11, 171);
+        }
+        100% {
+          background: gray;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <script>
+      var grid = document.querySelector(".grid");
+      for (var i = 0; i < 10; i++) {
+        var row = document.createElement("div");
+        row.classList.add("gridRow");
+        grid.appendChild(row);
+        for (var j = 0; j < 10; j++) {
+          var cell = document.createElement("div");
+          cell.classList.add("gridCell");
+          cell.setAttribute("data-y", i + 1);
+          cell.setAttribute("data-x", j + 1);
+          row.appendChild(cell);
+        }
+      }
+
+      var startPositionWarriorRed = document.querySelector(
+        insertCoordinates(2, 2)
+      );
+      var warriorRed = startPositionWarriorRed;
+      warriorRed.classList.add("warriorRed", "player", "red");
+      warriorRed.setAttribute("type", "warrior");
+
+      var startPositionWarriorBlue = document.querySelector(
+        insertCoordinates(9, 2)
+      );
+      var warriorBlue = startPositionWarriorBlue;
+      warriorBlue.classList.add("warriorBlue", "player", "blue");
+      warriorBlue.setAttribute("type", "warrior");
+
+      var startPositionAssassinRed = document.querySelector(
+        insertCoordinates(2, 5)
+      );
+      var assassinRed = startPositionAssassinRed;
+      assassinRed.classList.add("assassinRed", "player", "red");
+      assassinRed.setAttribute("type", "assassin");
+
+      var startPositionAssassinBlue = document.querySelector(
+        insertCoordinates(3, 5)
+      );
+      var assassinBlue = startPositionAssassinBlue;
+      assassinBlue.classList.add("assassinBlue", "player", "blue");
+      assassinBlue.setAttribute("type", "assassin");
+
+      var startPositionArcherRed = document.querySelector(
+        insertCoordinates(2, 8)
+      );
+      var archerRed = startPositionArcherRed;
+      archerRed.classList.add("archerRed", "player", "red");
+      archerRed.setAttribute("type", "archer");
+
+      var startPositionArcherBlue = document.querySelector(
+        insertCoordinates(9, 8)
+      );
+      var archerBlue = startPositionArcherBlue;
+      archerBlue.classList.add("archerBlue", "player", "blue");
+      archerBlue.setAttribute("type", "archer");
+
+      var allCells = document.querySelectorAll(".gridCell");
+      var freeCells = document.querySelectorAll(".gridCell:not(.player)");
+      var redTeamPawns = document.querySelectorAll(".red");
+      var blueTeamPawns = document.querySelectorAll(".blue");
+      var bothTeams = document.querySelectorAll(".red, .blue");
+      var selectedPawn;
+      var round = 0;
+      var moveRange;
+      var mouseOn = false;
+      var heathsBarCreated = 0;
+      var players = {
+        teams: {
+          red: {
+            color: "red",
+            enemy: "blue",
+            pawns: {
+              warrior: {
+                moveRange: 1,
+                attackRange: 1,
+                health: 100,
+                attackPower: 10,
+                armor: 50
+              },
+              assassin: {
+                moveRange: 3,
+                attackRange: 1,
+                health: 100,
+                attackPower: 20,
+                armor: 10
+              },
+              archer: {
+                moveRange: 1,
+                attackRange: 3,
+                health: 100,
+                attackPower: 30,
+                armor: 0
+              }
+            }
+          },
+          blue: {
+            color: "blue",
+            enemy: "red",
+            pawns: {
+              warrior: {
+                moveRange: 1,
+                attackRange: 1,
+                health: 100,
+                attackPower: 10,
+                armor: 50
+              },
+              assassin: {
+                moveRange: 3,
+                attackRange: 1,
+                health: 100,
+                attackPower: 20,
+                armor: 10
+              },
+              archer: {
+                moveRange: 1,
+                attackRange: 3,
+                health: 100,
+                attackPower: 30,
+                armor: 0
+              }
+            }
+          }
+        }
+      };
+      String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      };
+
+      whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
+      enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
+      makeHealthBar();
+      trackingHealthBar();
+      allCells.forEach(function(pawn) {
+        pawn.addEventListener("click", function() {
+          removeSelected();
+
+          if (this.classList.contains(whoPlay.color)) {
+            removeMoveRange();
+            this.classList.add("selected");
+
+            selectedPawn = document.querySelector(".selected");
+            pawnType = selectedPawn.getAttribute("type");
+            moveRange(selectedPawn, whoPlay);
+          }
+          if (this.classList.contains("moveRange")) {
+            selectedPawn.classList.remove(
+              pawnType + whoPlay.color.capitalize(),
+              "player",
+              whoPlay.color
+            );
+            selectedPawn.removeAttribute("type");
+            this.classList.add(
+              pawnType + whoPlay.color.capitalize(),
+              "player",
+              whoPlay.color
+            );
+            this.setAttribute("type", pawnType);
+
+            removeMoveRange();
+            updatePositions();
+            selectedPawn = null;
+          }
+
+          if (this.classList.contains(enemy.color) && selectedPawn) {
+            attackRange(selectedPawn, whoPlay);
+          }
+
+          if (this.classList.contains("enemyTarget")) {
+            attack(whoPlay, enemy, this);
+
+            removeMoveRange();
+            updatePositions();
+            selectedPawn = null;
+          }
+        });
+      });
+
+      function makeHealthBar() {
+        let players = document.querySelectorAll(".player");
+
+        players.forEach(function(player) {
+          let playerColor = player.className.split(" ")[3].capitalize();
+          let playerAttributes = player.getAttribute("type") + playerColor;
+          var healthBar = document.createElement("div");
+          healthBar.classList.add("healthBar");
+          var health = document.createElement("div");
+          health.classList.add("health");
+          healthBar.appendChild(health);
+          document.body.appendChild(healthBar);
+          healthBar.setAttribute("whose", playerAttributes);
+          health.setAttribute("whose", playerAttributes);
+        });
+      }
+      function trackingHealthBar() {
+        let playersHealth = document.querySelectorAll(".player");
+        playersHealth.forEach(function(player) {
+          let playerColor = player.className.split(" ")[3].capitalize();
+          let playerColor2 = player.className.split(" ")[3];
+          let playerType = player.getAttribute("type");
+          let playerAttributes = playerType + playerColor;
+          var healthPercent =
+            players.teams[playerColor2].pawns[playerType].health;
+
+          let healthBar = document.querySelector(
+            `.healthBar[whose="${playerAttributes}"]`
+          );
+          let health = document.querySelector(
+            `.health[whose="${playerAttributes}"]`
+          );
+
+          healthBar.setAttribute(
+            "style",
+            `top: ${player.getBoundingClientRect().y -
+              5}px; left: ${player.getBoundingClientRect().x + 7}px`
+          );
+          health.style.width = healthPercent + "%";
+        });
+      }
+      function attack(attacker, defender, enemyPawn) {
+        let enemyType = enemyPawn.getAttribute("type");
+        console.log(enemyType);
+        let attackPower = attacker.pawns[pawnType].attackPower;
+        let defHealth = defender.pawns[enemyType].health;
+        let playerColor = enemyPawn.className.split(" ")[3].capitalize();
+        let playerColor2 = enemyPawn.className.split(" ")[3];
+
+        let playerAttributes = enemyType + playerColor;
+        var healthPercent = players.teams[playerColor2].pawns[enemyType].health;
+
+        let healthBar = document.querySelector(
+          `.healthBar[whose="${playerAttributes}"]`
+        );
+        let health = document.querySelector(
+          `.health[whose="${playerAttributes}"]`
+        );
+
+        floatingLetters("damage", attackPower, health, '-');
+
+        console.log((defender.pawns[enemyType].health -= attackPower));
+        if (defender.pawns[enemyType].health <= 0) {
+         
+
+          enemyPawn.classList.remove(
+            enemyType + defender.color.capitalize(),
+            "player",
+            defender.color,
+            "enemyTarget"
+          );
+          enemyPawn.removeAttribute("type");
+          healthBar.remove();
+        }
+      }
+      function floatingLetters(classes, value, contener, minus) {
+        let damage = document.createElement("p");
+        damage.classList.add(classes);
+        damage.innerHTML = minus + value;
+        contener.appendChild(damage);
+        setTimeout(function() {
+          damage.style.textAlign = 'center'
+          damage.style.top = -100 + 'px'
+          damage.style.left = 10 + 'px'
+          damage.style.fontSize= 30 + 'px'
+          damage.style.opacity = 0
+        }, 0);
+      }
+      function attackRange(pawn, whoPlay) {
+        let attackRange = whoPlay.pawns[pawnType].attackRange;
+        let enemy = whoPlay.enemy;
+
+        pawnX = getPosition(pawn).x;
+        pawnY = getPosition(pawn).y;
+
+        for (var i = 0; i < 8; i++) {
+          for (var j = 1; j < attackRange + 1; j++) {
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = j;
+              y = j;
+            }
+            if (i === 2) {
+              x = 0;
+              y = j;
+            }
+            if (i === 3) {
+              x = -j;
+              y = j;
+            }
+            if (i === 4) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 5) {
+              x = -j;
+              y = -j;
+            }
+            if (i === 6) {
+              x = 0;
+              y = -j;
+            }
+            if (i === 7) {
+              x = j;
+              y = -j;
+            }
+            var next = document.querySelector(
+              insertCoordinates(pawnX + x, pawnY + y)
+            );
+            if (next) {
+              if (next.classList.contains("player")) {
+                next.classList.add("hiddenAttackRange", "enemyTarget");
+                break;
+              }
+              if (
+                next.classList.contains("moveRange") ||
+                next.classList.contains("player")
+              ) {
+                next.classList.add("hiddenAttackRange");
+              } else {
+                next.classList.add("attackRange");
+              }
+            }
+          }
+        }
+      }
+
+      function moveRange(pawn, whoPlay) {
+        let moveRange = whoPlay.pawns[pawnType].moveRange;
+        let enemy = whoPlay.enemy;
+
+        pawnX = getPosition(pawn).x;
+        pawnY = getPosition(pawn).y;
+
+        for (var i = 0; i < 4; i++) {
+          for (var j = 1; j < moveRange + 1; j++) {
+            var x;
+            var y;
+
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = 0;
+              y = j;
+            }
+            if (i === 2) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 3) {
+              x = 0;
+              y = -j;
+            }
+
+            var next = document.querySelector(
+              insertCoordinates(pawnX + x, pawnY + y)
+            );
+
+            if (next) {
+              if (next.classList.contains("player")) {
+                break;
+              }
+              next.classList.add("moveRange");
+            }
+          }
+        }
+      }
+
+      function insertCoordinates(x, y) {
+        return `[data-x='${x}'][data-y='${y}']`;
+      }
+
+      function getPosition(cell) {
+        return {
+          x: parseInt(cell.getAttribute("data-x")),
+          y: parseInt(cell.getAttribute("data-y"))
+        };
+      }
+
+      function updatePositions() {
+        enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
+        whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
+        freeCells = document.querySelectorAll(".gridCell:not(.player)");
+        redTeamPawns = document.querySelectorAll(".red");
+        blueTeamPawns = document.querySelectorAll(".blue");
+        bothTeams = document.querySelectorAll(".red, .blue");
+        trackingHealthBar();
+      }
+
+      function removeSelected() {
+        allCells.forEach(function(cell) {
+          cell.classList.remove("selected");
+        });
+      }
+
+      function removeMoveRange() {
+        allCells.forEach(function(cell) {
+          cell.classList.remove(
+            "moveRange",
+            "attackRange",
+            "hiddenAttackRange",
+            "enemyTarget"
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

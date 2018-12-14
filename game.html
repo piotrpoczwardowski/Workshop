@@ -50,15 +50,21 @@
       }
       .warrior {
       }
+      .archer{
+
+      }
       .red {
         background: red;
+      }
+      .blue{
+        background: blue;
       }
     </style>
   </head>
   <body>
     <div class="grid"><div class="ja"></div></div>
     <script>
-      "use strict"
+      "use strict";
       var grid = document.querySelector(".grid");
       for (var i = 0; i < 10; i++) {
         var row = document.createElement("div");
@@ -72,7 +78,7 @@
           row.appendChild(cell);
         }
       }
-      
+
       var allCells = document.querySelectorAll(".gridCell");
       var freeCells = document.querySelectorAll(".gridCell:not(.player)");
       var redTeamPawns = document.querySelectorAll(".red");
@@ -83,42 +89,91 @@
       var moveRange;
       var mouseOn = false;
 
-      var player = {
+      var playerRed = {
         color: "red",
         classes: {
           who: "player",
           color: "red"
         },
         pawns: {
-          warrior:{
-            type: 'warrior'
+          warrior: {
+            type: "warrior"
           },
-          archer:{
-            type: 'archer'
+          archer: {
+            type: "archer"
           }
         },
 
-        createPawn: createPawn
+        createPawn: createPawn,
+        findCell: findCell
       };
+      var playerBlue = {
+        color: "blue",
+        classes: {
+          who: "player",
+          color: "blue"
+        },
+        pawns: {
+          warrior: {
+            type: "warrior"
+          },
+          archer: {
+            type: "archer"
+          }
+        },
+
+        createPawn: createPawn,
+        findCell: findCell
+      };
+      
+      function arrangePawns(){
+        
+      }
 
       function createPawn(type) {
-        let pawn = document.createElement('div')
+        let pawn = document.createElement("div");
+
+        pawn.classList.add(this.color, this.classes.who, this.pawns[type].type);
+        grid.appendChild(pawn);
+
+        this.pawns[type].obj = pawn;
+      }
+
+      function findCell(type,x,y) {
         
-        pawn.classList.add(this.color, this.classes.who, this.pawns[type].type)
-        grid.appendChild(pawn)
+        let cell = insertCoordinates(x, y);
 
+        let cellX = cell.getBoundingClientRect().x;
+        let cellY = cell.getBoundingClientRect().y;
+        let cellWidth = parseInt(
+          window.getComputedStyle(cell).getPropertyValue("width")
+        );
+        let cellHeight = parseInt(
+          window.getComputedStyle(cell).getPropertyValue("height")
+        );
+        let playerWidth = parseInt(
+          window
+            .getComputedStyle(this.pawns[type].obj)
+            .getPropertyValue("width")
+        );
+        let playerHeight = parseInt(
+          window
+            .getComputedStyle(this.pawns[type].obj)
+            .getPropertyValue("height")
+        );
+        let playerX = (cellWidth - playerWidth) / 2;
+        let playerY = (cellHeight - playerHeight) / 2;
+        this.pawns[type].cellX = x;
+        this.pawns[type].cellY = y;
+        this.pawns[type].playerX = cellX + playerX 
+        this.pawns[type].playerY = cellY + playerY 
 
+        this.pawns[type].obj.style.left = cellX + playerX + "px";
+        this.pawns[type].obj.style.top = cellY + playerY + "px";
       }
 
-      function findCell(){
-        let x = 3
-        let y = 3
-       let cell = document.querySelector(insertCoordinates(x,y))
-       console.log(cell)
-      }
-
-       function insertCoordinates(x, y) {
-        return `[data-x='${x}'][data-y='${y}']`;
+      function insertCoordinates(x, y) {
+        return document.querySelector(`[data-x='${x}'][data-y='${y}']`);
       }
 
       function getPosition(cell) {
@@ -343,8 +398,6 @@
       //     }
       //   }
       // }
-
-     
 
       // String.prototype.capitalize = function() {
       //   return this.charAt(0).toUpperCase() + this.slice(1);
