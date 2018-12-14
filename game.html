@@ -110,6 +110,13 @@
 
       }
 
+      function findCell(){
+        let x = 3
+        let y = 3
+       let cell = document.querySelector(insertCoordinates(x,y))
+       console.log(cell)
+      }
+
        function insertCoordinates(x, y) {
         return `[data-x='${x}'][data-y='${y}']`;
       }
