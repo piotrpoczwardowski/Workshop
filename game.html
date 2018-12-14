@@ -49,15 +49,27 @@
         position: absolute;
       }
       .warrior {
+        border: 7px solid rgb(235, 231, 15);
+        box-sizing: border-box;
       }
       .archer{
-
+        border: 7px solid rgb(15, 235, 52);
+        box-sizing: border-box;
+      }
+      .sorcerer{
+        border: 7px solid rgb(133, 15, 113);
+        box-sizing: border-box;
       }
       .red {
         background: red;
       }
       .blue{
         background: blue;
+      }
+
+      .selected{
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+       
       }
     </style>
   </head>
@@ -78,7 +90,7 @@
           row.appendChild(cell);
         }
       }
-
+    
       var allCells = document.querySelectorAll(".gridCell");
       var freeCells = document.querySelectorAll(".gridCell:not(.player)");
       var redTeamPawns = document.querySelectorAll(".red");
@@ -88,6 +100,8 @@
       var round = 0;
       var moveRange;
       var mouseOn = false;
+      let types = ['warrior', 'archer', 'sorcerer']
+      let playerNumbers = 2
 
       var playerRed = {
         color: "red",
@@ -101,11 +115,17 @@
           },
           archer: {
             type: "archer"
+          },
+          sorcerer: {
+            type: "sorcerer"
           }
         },
-
+        
         createPawn: createPawn,
-        findCell: findCell
+        move: function(){
+          this.pawns.warrior.obj.style = 60 + 'px'
+        }
+      
       };
       var playerBlue = {
         color: "blue",
@@ -119,28 +139,56 @@
           },
           archer: {
             type: "archer"
+          },
+          sorcerer: {
+            type: "sorcerer"
           }
         },
 
         createPawn: createPawn,
-        findCell: findCell
+       
       };
       
-      function arrangePawns(){
-        
+      for(let i = 0; i < playerNumbers; i++){
+        let x
+        let player
+        i%2 === 0 ? x=2 : x=9
+        i%2 === 0 ? player=playerRed : player=playerBlue
+        console.log(player)
+        for(let i = 0; i<types.length; i++ ){
+          let y 
+          i === 0 ? y = 2 : null
+          i === 1 ? y = 5 : null
+          i === 2 ? y = 8 : null
+          player.createPawn(types[i],x,y)
+        }
+      }
+      var players = document.querySelectorAll('.player')
+     
+  function game(){
+    document.querySelectorAll('.player').forEach(function(pawn){
+      pawn.addEventListener('click', function(){
+        removeSelected()
+        pawn.classList.add('selected')
+      })
+    })
+  }
+  
+game()
+function removeSelected() {
+        players.forEach(function(player) {
+          player.classList.remove("selected");
+        });
       }
 
-      function createPawn(type) {
+      function createPawn(type,x,y) {
         let pawn = document.createElement("div");
 
         pawn.classList.add(this.color, this.classes.who, this.pawns[type].type);
         grid.appendChild(pawn);
 
         this.pawns[type].obj = pawn;
-      }
-
-      function findCell(type,x,y) {
-        
+         
         let cell = insertCoordinates(x, y);
 
         let cellX = cell.getBoundingClientRect().x;
@@ -171,6 +219,8 @@
         this.pawns[type].obj.style.left = cellX + playerX + "px";
         this.pawns[type].obj.style.top = cellY + playerY + "px";
       }
+      
+    
 
       function insertCoordinates(x, y) {
         return document.querySelector(`[data-x='${x}'][data-y='${y}']`);
