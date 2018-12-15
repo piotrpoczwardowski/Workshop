@@ -5,7 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
+    <style>
+        .grid {
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .gridRow {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .gridCell {
+        height: 80px;
+        width: 80px;
+        flex-grow: 1;
+        background: gray;
+        box-sizing: border-box;
+        border: 2px solid white;
+        box-sizing: border-box;
+      }
+
+      @keyframes a {
+        0% {
+          background: gray;
+        }
+
+        50% {
+          background: rgb(185, 11, 171);
+        }
+        100% {
+          background: gray;
+        }
+      }
+      .player {
+        width: 60px;
+        height: 60px;
+
+        border-radius: 50%;
+        position: absolute;
+      }
+      .warrior {
+        border: 7px solid rgb(235, 231, 15);
+        box-sizing: border-box;
+      }
+      .archer{
+        border: 7px solid rgb(15, 235, 52);
+        box-sizing: border-box;
+      }
+      .sorcerer{
+        border: 7px solid rgb(133, 15, 113);
+        box-sizing: border-box;
+      }
+      .red {
+        background: red;
+      }
+      .blue{
+        background: blue;
+      }
+
+      .selected{
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+       
+      }
+    </style>
   </head>
+
   <body>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
