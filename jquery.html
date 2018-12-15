@@ -9,38 +9,98 @@
     .test{
         font-size: 50px;
     }
+
+    .content{
+        background: chocolate;
+        height: 500px;
+    }
     </style>
 </head>
 <body>
 
     <a href="http://jquery.com/">jQuery</a>
-  <div class="content">
-      <div class="lol"></div>
-      <div class="lol"></div>
-      <div class="lol"></div>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <div class="lol"></div>
-      <div class="lol"></div>
-      <a href="">dsd</a>
+<h1>Lol</h1>
+  <div id="myList">
+      
+     
+  </div>
+<div class="content"></div>
+  <div id='myDiv'>
+      <a href=""></a>
   </div>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
 
-   $('h1')
-   console.log($('.content').find('h1').eq(2).addClass('ww').end().addClass('main'))
+//    $('h1')
+//    console.log($('.content').find('h1').eq(2).addClass('ww').end().addClass('main'))
 
-   $( "a" ).attr( "href", "allMyHrefsAreTheSameNow.html" );
+//    $( "a" ).attr( "href", "allMyHrefsAreTheSameNow.html" );
  
- $( "a" ).attr({
-     title: "all titles are the same too!",
-     href: "somethingNew.html"
- });
-// Testing whether a selection contains elements.
-if ( $( "div.foo" ).length ) {
+//  $( "a" ).attr({
+//      title: "all titles are the same too!",
+//      href: "somethingNew.html"
+//  });
+// // Testing whether a selection contains elements.
+// if ( $( "div.foo" ).length ) {
    
+// }
+
+// // Refining selections.
+// $( "div.foo" ).has( "p" );         // div.foo elements that contain <p> tags
+// $( "h1" ).not( ".bar" );           // h1 elements that don't have a class of bar
+// $( "ul li" ).filter( ".current" ); // unordered list items with class of current
+// $( "ul li" ).first();              // just the first unordered list item
+// $( "ul li" ).eq( 5 );              // the sixth
+
+// // The .html() method sets all the h1 elements' html to be "hello world":
+// $( "h1" ).html( "hello world" );
+
+// // The .html() method returns the html of the first h1 element:
+// $( "h1" ).html();
+// // > "hello world"
+var h1 = $('h1')
+$(h1).appendTo($('.content'))
+
+h1.addClass('hi')
+h1.attr('style', 'color:red')
+
+h1.click(function(){
+    console.log('hi')
+})
+ var removed = h1.detach()
+
+ removed.appendTo('.content')
+
+$('<div class="wwww">Hi</div>').appendTo($('.content'))
+var myItems = [];
+var myList = $( "#myList" );
+ 
+for ( var i = 0; i < 100; i++ ) {
+    myItems.push( "<li>item " + i + "</li>" );
 }
+//  console.log(myItems)
+// myList.append( myItems.join( "" ) );
+
+$( "#myDiv a:first" ).attr({
+    rel: "nofollow",
+    href: function( idx, href ) {
+        return "/new/" + href;
+    }
+});
+ 
+$( "#myDiv a:first" ).attr( "href", function( ix, href ) {
+    return "/new/" + href;
+});
+
+
+
+var obj = $('<div> LOL </div>')
+obj.appendTo('.content')
+obj.data('data', {
+    x: 10,
+    y: 50
+})
+console.log(obj.data('data'))
 
     </script>
 </body>
