@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .test{
+        font-size: 50px;
+    }
+    </style>
+</head>
+<body>
+
+    <a href="http://jquery.com/">jQuery</a>
+    <p>LOLOLOLOLO</p>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script>
+
+    // Your code goes here.
+    $( document ).ready(function() {
+ 
+ $( "a" ).click(function( event ) {
+
+     alert( "Thanks for visiting!" );
+     event.preventDefault()
+
+ });
+
+});
+
+$.get( "jquery.html", function(){
+    console.log('da')
+} );
+    </script>
+</body>
+</html>
