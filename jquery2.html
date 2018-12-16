@@ -79,9 +79,10 @@
       <div class="grid">
 
       </div>
+     
     <script src="jquery-3.3.1.min.js"></script>
     <script>
-        var arr = ['player', 'red']
+        var arr = ['player', 'red', 'protected']
 
       var players = {
         red: {
@@ -99,14 +100,23 @@
      
       warriorRed.appendTo('.grid')
      
-      warriorRed.click(function(){
-        console.log($(this).position().left + 10 )
+      // warriorRed.click(function(){
+      //   console.log($(this).position().left + 10 )
 
-        $(this).css('left', $(this).position().left + 100)
+      //   $(this).css('left', $(this).position().left + 100)
        
-      })
-      $.each([ "foo", "bar", "baz" ], function( idx, val ) {
-    console.log( "element " + idx + " is " + val );
+      // })
+      $( warriorRed ).click(function() {
+ console.log( $( this ).hasClass( "protected" ) )
+ if ( $( this ).hasClass( "protected" ) ) {
+
+     $( this )
+         .animate({ left: 500 })
+         .animate({ top: 500 })
+         
+
+ }
+
 });
     </script>
   </body>
