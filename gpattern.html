@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .grid {
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .gridRow {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .gridCell {
+        height: 80px;
+        width: 80px;
+        flex-grow: 1;
+        background: gray;
+        box-sizing: border-box;
+        border: 2px solid white;
+        box-sizing: border-box;
+      }
+
+      @keyframes a {
+        0% {
+          background: gray;
+        }
+
+        50% {
+          background: rgb(185, 11, 171);
+        }
+        100% {
+          background: gray;
+        }
+      }
+      .player {
+        width: 60px;
+        height: 60px;
+
+        border-radius: 50%;
+        position: absolute;
+      }
+      .warrior {
+        border: 7px solid rgb(235, 231, 15);
+        box-sizing: border-box;
+      }
+      .archer{
+        border: 7px solid rgb(15, 235, 52);
+        box-sizing: border-box;
+      }
+      .sorcerer{
+        border: 7px solid rgb(133, 15, 113);
+        box-sizing: border-box;
+      }
+      .red {
+        background: red;
+      }
+      .blue{
+        background: blue;
+      }
+
+      .selected{
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+       
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"><div class="ja"></div></div>
+    <script>
+      "use strict";
+      var grid = document.querySelector(".grid");
+      for (var i = 0; i < 10; i++) {
+        var row = document.createElement("div");
+        row.classList.add("gridRow");
+        grid.appendChild(row);
+        for (var j = 0; j < 10; j++) {
+          var cell = document.createElement("div");
+          cell.classList.add("gridCell");
+          cell.setAttribute("data-y", i + 1);
+          cell.setAttribute("data-x", j + 1);
+          row.appendChild(cell);
+        }
+      }
+    
+      var allCells = document.querySelectorAll(".gridCell");
+      var freeCells = document.querySelectorAll(".gridCell:not(.player)");
+      var redTeamPawns = document.querySelectorAll(".red");
+      var blueTeamPawns = document.querySelectorAll(".blue");
+      var bothTeams = document.querySelectorAll(".red, .blue");
+      var selectedPawn;
+      var round = 0;
+      var moveRange;
+      var mouseOn = false;
+      let types = ['warrior', 'archer', 'sorcerer']
+      let playerNumbers = 2
+
+      var playerRed = {
+        color: "red",
+        classes: {
+          who: "player",
+          color: "red"
+        },
+        pawns: {
+          warrior: {
+            type: "warrior"
+          },
+          archer: {
+            type: "archer"
+          },
+          sorcerer: {
+            type: "sorcerer"
+          }
+        },
+        
+        createPawn: createPawn,
+        move: function(){
+          this.pawns.warrior.obj.style = 60 + 'px'
+        }
+      
+      };
+      var playerBlue = {
+        color: "blue",
+        classes: {
+          who: "player",
+          color: "blue"
+        },
+        pawns: {
+          warrior: {
+            type: "warrior"
+          },
+          archer: {
+            type: "archer"
+          },
+          sorcerer: {
+            type: "sorcerer"
+          }
+        },
+
+        createPawn: createPawn,
+       
+      };
+      
+      for(let i = 0; i < playerNumbers; i++){
+        let x
+        let player
+        i%2 === 0 ? x=2 : x=9
+        i%2 === 0 ? player=playerRed : player=playerBlue
+        console.log(player)
+        for(let i = 0; i<types.length; i++ ){
+          let y 
+          i === 0 ? y = 2 : null
+          i === 1 ? y = 5 : null
+          i === 2 ? y = 8 : null
+          player.createPawn(types[i],x,y)
+        }
+      }
+      var players = document.querySelectorAll('.player')
+      whoPlay = round % 2 === 0 ? playerRed : playerBlue
+  function game(){
+    players.forEach(function(pawn){
+      pawn.addEventListener('click', function(){
+        removeSelected()
+        pawn.classList.add('selected')
+      })
+    })
+  }
+  
+game()
+function removeSelected() {
+        players.forEach(function(player) {
+          player.classList.remove("selected");
+        });
+      }
+
+      function createPawn(type,x,y) {
+        let pawn = document.createElement("div");
+
+        pawn.classList.add(this.color, this.classes.who, this.pawns[type].type);
+        grid.appendChild(pawn);
+
+        this.pawns[type].obj = pawn;
+         
+        let cell = insertCoordinates(x, y);
+
+        let cellX = cell.getBoundingClientRect().x;
+        let cellY = cell.getBoundingClientRect().y;
+        let cellWidth = parseInt(
+          window.getComputedStyle(cell).getPropertyValue("width")
+        );
+        let cellHeight = parseInt(
+          window.getComputedStyle(cell).getPropertyValue("height")
+        );
+        let playerWidth = parseInt(
+          window
+            .getComputedStyle(this.pawns[type].obj)
+            .getPropertyValue("width")
+        );
+        let playerHeight = parseInt(
+          window
+            .getComputedStyle(this.pawns[type].obj)
+            .getPropertyValue("height")
+        );
+        let playerX = (cellWidth - playerWidth) / 2;
+        let playerY = (cellHeight - playerHeight) / 2;
+        this.pawns[type].cellX = x;
+        this.pawns[type].cellY = y;
+        this.pawns[type].playerX = cellX + playerX 
+        this.pawns[type].playerY = cellY + playerY 
+
+        this.pawns[type].obj.style.left = cellX + playerX + "px";
+        this.pawns[type].obj.style.top = cellY + playerY + "px";
+      }
+      
+    
+
+      function insertCoordinates(x, y) {
+        return document.querySelector(`[data-x='${x}'][data-y='${y}']`);
+      }
+
+      function getPosition(cell) {
+        return {
+          x: parseInt(cell.getAttribute("data-x")),
+          y: parseInt(cell.getAttribute("data-y"))
+        };
+      }
+
+      // var players = {
+      //   teams: {
+      //     red: {
+      //       color: "red",
+      //       enemy: "blue",
+      //       pawns: {
+      //         warrior: {
+      //           moveRange: 1,
+      //           attackRange: 1,
+      //           health: 100,
+      //           attackPower: 10,
+      //           armor: 50
+      //         },
+      //         assassin: {
+      //           moveRange: 3,
+      //           attackRange: 1,
+      //           health: 100,
+      //           attackPower: 30,
+      //           armor: 10
+      //         },
+      //         archer: {
+      //           moveRange: 4,
+      //           attackRange: 3,
+      //           health: 100,
+      //           attackPower: 40,
+      //           armor: 0
+      //         }
+      //       }
+      //     },
+      //     blue: {
+      //       color: "blue",
+      //       enemy: "red",
+      //       pawns: {
+      //         warrior: {
+      //           moveRange: 1,
+      //           attackRange: 1,
+      //           health: 100,
+      //           attackPower: 10,
+      //           armor: 50
+      //         },
+      //         assassin: {
+      //           moveRange: 3,
+      //           attackRange: 1,
+      //           health: 100,
+      //           attackPower: 30,
+      //           armor: 10
+      //         },
+      //         archer: {
+      //           moveRange: 1,
+      //           attackRange: 3,
+      //           health: 100,
+      //           attackPower: 40,
+      //           armor: 0
+      //         }
+      //       }
+      //     }
+      //   }
+      // };
+
+      // whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
+      // enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
+
+      // allCells.forEach(function(pawn) {
+      //   pawn.addEventListener("click", function() {
+      //     removeSelected();
+
+      //     if (this.classList.contains(whoPlay.color)) {
+      //       removeMoveRange();
+      //       this.classList.add("selected");
+      //       selectedPawn = document.querySelector(".selected");
+      //       pawnType = selectedPawn.getAttribute("type");
+      //       moveRange(selectedPawn, whoPlay);
+      //     }
+      //     if (this.classList.contains("moveRange")) {
+      //       selectedPawn.classList.remove(
+      //         pawnType + whoPlay.color.capitalize(),
+      //         "player",
+      //         whoPlay.color
+      //       );
+      //       selectedPawn.removeAttribute("type");
+      //       this.classList.add(
+      //         pawnType + whoPlay.color.capitalize(),
+      //         "player",
+      //         whoPlay.color
+      //       );
+      //       this.setAttribute("type", pawnType);
+
+      //       removeMoveRange();
+      //       updatePositions();
+      //       selectedPawn = null;
+      //     }
+
+      //     if (this.classList.contains(enemy.color) && selectedPawn) {
+      //       attackRange(selectedPawn, whoPlay);
+      //     }
+
+      //     if(this.classList.contains('enemyTarget')){
+      //      attack(whoPlay, enemy, this.getAttribute('type'))
+      //     }
+      //   });
+      // });
+
+      // function attack(attacker, defender, enemyType) {
+      //   console.log(enemyType)
+      //   let attackPower = attacker.pawns[pawnType].attackPower;
+      //   let defHealth = defender.pawns[enemyType].health
+
+      //   console.log( defender.pawns[enemyType].health -= attackPower)
+
+      // }
+
+      // function attackRange(pawn, whoPlay) {
+      //   let attackRange = whoPlay.pawns[pawnType].attackRange;
+      //   let enemy = whoPlay.enemy;
+
+      //   pawnX = getPosition(pawn).x;
+      //   pawnY = getPosition(pawn).y;
+
+      //   for (var i = 0; i < 8; i++) {
+      //     for (var j = 1; j < attackRange + 1; j++) {
+      //       if (i === 0) {
+      //         x = j;
+      //         y = 0;
+      //       }
+      //       if (i === 1) {
+      //         x = j;
+      //         y = j;
+      //       }
+      //       if (i === 2) {
+      //         x = 0;
+      //         y = j;
+      //       }
+      //       if (i === 3) {
+      //         x = -j;
+      //         y = j;
+      //       }
+      //       if (i === 4) {
+      //         x = -j;
+      //         y = 0;
+      //       }
+      //       if (i === 5) {
+      //         x = -j;
+      //         y = -j;
+      //       }
+      //       if (i === 6) {
+      //         x = 0;
+      //         y = -j;
+      //       }
+      //       if (i === 7) {
+      //         x = j;
+      //         y = -j;
+      //       }
+      //       var next = document.querySelector(
+      //         insertCoordinates(pawnX + x, pawnY + y)
+      //       );
+      //       if (next) {
+      //         if (next.classList.contains("player")) {
+      //           next.classList.add("hiddenAttackRange", "enemyTarget");
+      //           break;
+      //         }
+      //         if (
+      //           next.classList.contains("moveRange") ||
+      //           next.classList.contains("player")
+      //         ) {
+      //           next.classList.add("hiddenAttackRange");
+      //         } else {
+      //           next.classList.add("attackRange");
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+
+      // function moveRange(pawn, whoPlay) {
+      //   let moveRange = whoPlay.pawns[pawnType].moveRange;
+      //   let enemy = whoPlay.enemy;
+
+      //   pawnX = getPosition(pawn).x;
+      //   pawnY = getPosition(pawn).y;
+
+      //   for (var i = 0; i < 4; i++) {
+      //     for (var j = 1; j < moveRange + 1; j++) {
+      //       var x;
+      //       var y;
+
+      //       if (i === 0) {
+      //         x = j;
+      //         y = 0;
+      //       }
+      //       if (i === 1) {
+      //         x = 0;
+      //         y = j;
+      //       }
+      //       if (i === 2) {
+      //         x = -j;
+      //         y = 0;
+      //       }
+      //       if (i === 3) {
+      //         x = 0;
+      //         y = -j;
+      //       }
+
+      //       var next = document.querySelector(
+      //         insertCoordinates(pawnX + x, pawnY + y)
+      //       );
+
+      //       if (next) {
+      //         if (next.classList.contains("player")) {
+      //           break;
+      //         }
+      //         next.classList.add("moveRange");
+      //       }
+      //     }
+      //   }
+      // }
+
+      // String.prototype.capitalize = function() {
+      //   return this.charAt(0).toUpperCase() + this.slice(1);
+      // };
+
+      // function updatePositions() {
+      //   enemy = round % 2 !== 0 ? players.teams.red : players.teams.blue;
+      //   whoPlay = round % 2 === 0 ? players.teams.red : players.teams.blue;
+      //   freeCells = document.querySelectorAll(".gridCell:not(.player)");
+      //   redTeamPawns = document.querySelectorAll(".red");
+      //   blueTeamPawns = document.querySelectorAll(".blue");
+      //   bothTeams = document.querySelectorAll(".red, .blue");
+      // }
+
+      // function removeSelected() {
+      //   allCells.forEach(function(cell) {
+      //     cell.classList.remove("selected");
+      //   });
+      // }
+
+      // function removeMoveRange() {
+      //   allCells.forEach(function(cell) {
+      //     cell.classList.remove(
+      //       "moveRange",
+      //       "attackRange",
+      //       "hiddenAttackRange",
+      //       "enemyTarget"
+      //     );
+      //   });
+      // }
+    </script>
+  </body>
+</html>

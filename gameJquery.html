@@ -36,6 +36,32 @@
         border: 5px solid rgb(21, 189, 15);
       }
 
+       .player {
+        width: 60px;
+        height: 60px;
+
+        border-radius: 50%;
+        position: absolute;
+      }
+      .warrior {
+        border: 7px solid rgb(235, 231, 15);
+        box-sizing: border-box;
+      }
+      .archer{
+        border: 7px solid rgb(15, 235, 52);
+        box-sizing: border-box;
+      }
+      .sorcerer{
+        border: 7px solid rgb(133, 15, 113);
+        box-sizing: border-box;
+      }
+      .red {
+        background: red;
+      }
+      .blue{
+        background: blue;
+      }
+
 </style>
 <body>
     <div class="grid">
@@ -43,18 +69,76 @@
     </div>
         <script src="jquery-3.3.1.min.js"></script>
     <script>
-    var grid = document.querySelector(".grid");
-      for (var i = 0; i < 10; i++) {
-        var row = document.createElement("div");
+      var players = {
+        red: {
+          color: 'red',
+          player: 'player',
+          pawns: {
+            classes:['red', 'player'],
+            warrior: {
+              type: 'warrior',
+              classes:['red', 'player', 'warrior'],
+              startPosition:{x:2,y:2}
+            },
+            archer: {
+              type: 'archer',
+            },
+            sorcerer: {
+              type: 'sorcerer',
+            }
+          }
+        },
+        blue: {
+          color: 'blue',
+          player: 'player',
+          pawns: {
+            
+            warrior: {
+              type: 'warrior',
+            },
+            archer: {
+              type: 'archer',
+            },
+            sorcerer: {
+              type: 'sorcerer',
+            }
+          }
+        }
+      }
+
+
+
+      createBoard()
+      var warriorRed = $('<div></div>')
+      var grid = $('.grid')
+
+      warriorRed.addClass(players.red.pawns.warrior.classes )
+
+      warriorRed.appendTo(grid)
+
+
+
+
+
+
+
+      function createBoard(){
+        let grid = document.querySelector(".grid");
+      for (let i = 0; i < 10; i++) {
+        let row = document.createElement("div");
         row.classList.add("gridRow");
         grid.appendChild(row);
-        for (var j = 0; j < 10; j++) {
-          var cell = document.createElement("div");
+        for (let j = 0; j < 10; j++) {
+          let cell = document.createElement("div");
           cell.classList.add("gridCell");
           cell.setAttribute("data-y", i + 1);
           cell.setAttribute("data-x", j + 1);
           row.appendChild(cell);
         }
-      }</script>
+      }
+      }
+   
+      
+      </script>
 </body>
 </html>
