@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
-        .grid {
+      .grid {
         display: flex;
         flex-direction: column;
         width: 800px;
@@ -44,7 +44,7 @@
       .player {
         width: 60px;
         height: 60px;
-    transition: all, 1s;
+        transition: all, 1s;
         border-radius: 50%;
         position: absolute;
         left: 0px;
@@ -53,36 +53,32 @@
         border: 7px solid rgb(235, 231, 15);
         box-sizing: border-box;
       }
-      .archer{
+      .archer {
         border: 7px solid rgb(15, 235, 52);
         box-sizing: border-box;
       }
-      .sorcerer{
+      .sorcerer {
         border: 7px solid rgb(133, 15, 113);
         box-sizing: border-box;
       }
       .red {
         background: red;
       }
-      .blue{
+      .blue {
         background: blue;
       }
 
-      .selected{
-        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
-       
+      .selected {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de,
+          0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
       }
     </style>
   </head>
 
   <body>
-      <div class="grid">
-
-      </div>
-     
     <script src="jquery-3.3.1.min.js"></script>
     <script>
-        var arr = ['player', 'red', 'protected']
+      var arr = ["player", "red", "protected"];
 
       var players = {
         red: {
@@ -95,29 +91,29 @@
         }
       };
 
-      var warriorRed = $('<div></div>')
-      warriorRed.addClass(arr)
-     
-      warriorRed.appendTo('.grid')
-     
+      var warriorRed = $("<div></div>");
+      warriorRed.addClass(arr);
+
+      warriorRed.appendTo("body");
+
       // warriorRed.click(function(){
       //   console.log($(this).position().left + 10 )
 
       //   $(this).css('left', $(this).position().left + 100)
-       
+
       // })
-      $( warriorRed ).click(function() {
- console.log( $( this ).hasClass( "protected" ) )
- if ( $( this ).hasClass( "protected" ) ) {
+      $(warriorRed).click(function() {
+        console.log($(this).hasClass("protected"));
+        if ($(this).hasClass("protected")) {
+          $(this)
+            .animate({ left: 500 })
+            .animate({ top: 500 });
+        }
+      });
 
-     $( this )
-         .animate({ left: 500 })
-         .animate({ top: 500 })
-         
-
- }
-
-});
+      $(document).click(function(event) {
+        warriorRed.animate({ height: 'toggle'});
+      });
     </script>
   </body>
 </html>

@@ -17,15 +17,23 @@
     </style>
   </head>
   <body>
+        <div id="target">
+                Double-click here
+              </div>
+              <div id="other">
+                Trigger the handler
+              </div>
     <a href="http://jquery.com/">jQuery</a>
     <h1>Lol</h1>
     <div id="myList"></div>
     <div class="content"></div>
     <div id="myDiv"><a href=""></a></div>
-    <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
+    <ul id="list">
+        <li><a href="http://domain1.com">Item #1</a></li>
+        <li><a href="/local/path/1">Item #2</a></li>
+        <li><a href="/local/path/2">Item #3</a></li>
+        <li><a href="http://domain4.com">Item #4</a></li>
+        <input type="text">
     </ul>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
@@ -100,11 +108,27 @@
       console.log(obj.data());
       info.x = 5
    
-     var li =  $('li')
+      $( "#list" ).on( "click.lol", 'a', function( event ) {
+    event.preventDefault();
+    console.log( $( this ).text() );
+    $( "#list" ).append( "<li><a href='http://newdomain.com'>Item #5</a></li>" );
 
-       console.log(li.map(function(id){
-           console.log(id)
-       }))
+});
+
+$( "input" ).on({
+    "click.lol change.lol1": // Bind handlers for multiple events
+    function() {
+        console.log( "An input was clicked or changed!" );
+    }, 'mouseover.lol2': function(){
+        console.log('mouseover')
+
+    }
+}
+);
+
+$( "#target" ).dblclick(function() {
+  alert( "Handler for .dblclick() called." );
+});
     </script>
   </body>
 </html>
