@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .grid {
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .gridRow {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .gridCell {
+        height: 80px;
+        width: 80px;
+        flex-grow: 1;
+        background: gray;
+        box-sizing: border-box;
+        border: 2px solid white;
+        box-sizing: border-box;
+      }
+      .move {
+        background: rgba(187, 50, 50, 0.678);
+      }
+      .selected {
+        border: 5px solid rgb(21, 189, 15);
+      }
+
+</style>
+<body>
+    <div class="grid">
+        
+    </div>
+        <script src="jquery-3.3.1.min.js"></script>
+    <script>
+    var grid = document.querySelector(".grid");
+      for (var i = 0; i < 10; i++) {
+        var row = document.createElement("div");
+        row.classList.add("gridRow");
+        grid.appendChild(row);
+        for (var j = 0; j < 10; j++) {
+          var cell = document.createElement("div");
+          cell.classList.add("gridCell");
+          cell.setAttribute("data-y", i + 1);
+          cell.setAttribute("data-x", j + 1);
+          row.appendChild(cell);
+        }
+      }</script>
+</body>
+</html>
