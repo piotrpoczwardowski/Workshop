@@ -152,16 +152,12 @@
       warriorRed.addClass(players.red.pawns.warrior.classes).appendTo(grid);
      
       warriorBlue.addClass(players.blue.pawns.warrior.classes).appendTo(grid);
-      warriorBlue.attr("type", "warrior");
       archerRed.addClass(players.red.pawns.archer.classes).appendTo(grid);
-      archerRed.attr("type", "archer");
       archerBlue.addClass(players.blue.pawns.archer.classes).appendTo(grid);
-      archerBlue.attr("type", "archer");
       sorcererRed.addClass(players.red.pawns.sorcerer.classes).appendTo(grid);
-      sorcererRed.attr("type", "sorcerer");
+    
 
       sorcererBlue.addClass(players.blue.pawns.sorcerer.classes).appendTo(grid);
-      sorcererBlue.attr("type", "sorcerer");
 
       $('.player').each(function(){
         let pawn = $(this)
@@ -190,59 +186,52 @@
       game()
       
       function game(){
-        archerRed.attr('on', 'lololo')
+        
         select()
         markMoveRange()
        
       }
-      function markMoveRange(){
-        let pawn = warriorRed
-        let pawnMoveRange = pawn.data('type').moveRange
-        let field = findPlayerField(pawn)
-        let fieldX = parseInt(field.attr('data-x'))
-        let fieldY = parseInt(field.attr('data-y'))
+      // function markMoveRange(){
+      //   let pawn = warriorRed
+      //   let pawnMoveRange = pawn.data('type').moveRange
+      //   let field = findPlayerField(pawn)
+      //   let fieldX = parseInt(field.attr('data-x'))
+      //   let fieldY = parseInt(field.attr('data-y'))
        
       
-        for (var i = 0; i < 4; i++) {
-          for (var j = 1; j < pawnMoveRange + 1; j++) {
-            var x;
-            var y;
+      //   for (var i = 0; i < 4; i++) {
+      //     for (var j = 1; j < pawnMoveRange + 1; j++) {
+      //       var x;
+      //       var y;
 
-            if (i === 0) {
-              x = j;
-              y = 0;
-            }
-            if (i === 1) {
-              x = 0;
-              y = j;
-            }
-            if (i === 2) {
-              x = -j;
-              y = 0;
-            }
-            if (i === 3) {
-              x = 0;
-              y = -j;
-            }
+      //       if (i === 0) {
+      //         x = j;
+      //         y = 0;
+      //       }
+      //       if (i === 1) {
+      //         x = 0;
+      //         y = j;
+      //       }
+      //       if (i === 2) {
+      //         x = -j;
+      //         y = 0;
+      //       }
+      //       if (i === 3) {
+      //         x = 0;
+      //         y = -j;
+      //       }
 
-            var next = insertCoordinates(fieldX + x, fieldY + y)
+      //       var next = insertCoordinates(fieldX + x, fieldY + y)
             
 
-            if (next) {
-              if (true) {
-             
-             
-                break;
+      //       if (next) {
               
-               
-              }
-              next.addClass('moveRange');
               
-            }
-          }
-        }
+      //       }
+      //     }
+      //   }
 
-      }
+      // }
       
       function select(){
         $(".grid").on("click", ".player", function() {
@@ -261,7 +250,9 @@
      
 
       function findPlayerField(pawn) {
-        return $(`[on="${pawn.attr("class")}"]`);
+        
+        
+      
       }
 
       function removeSelected() {
@@ -294,6 +285,7 @@
           top: targetY + (cellHeight - pawnHeight) / 2
         });
         target.data('type', pawn.data('type'));
+        
         
         
       }
