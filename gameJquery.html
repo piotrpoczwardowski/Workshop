@@ -206,7 +206,7 @@
         let field = findPlayerField(pawn)
         let fieldX = parseInt(field.attr('data-x'))
         let fieldY = parseInt(field.attr('data-y'))
-        console.log(pawn)
+       
       
         for (var i = 0; i < 4; i++) {
           for (var j = 1; j < pawnMoveRange + 1; j++) {
@@ -256,6 +256,15 @@
        if( pawn.hasClass(`${whoPlay.color}`)) {
         markMoveRange(pawn)
         $(this).addClass("selected");
+
+        $('.grid').on('click.l', '.moveRange', function(){
+         
+          move(pawn, $(this))
+          $('.grid').off('click.l')
+          removeSelected();
+        removeMoveRange()
+          
+        })
        } 
        
       });
@@ -263,12 +272,13 @@
         let pawn = $(this);
         pawn.removeClass("selected");
         removeMoveRange()
+        $('.grid').off('click.l')
       });
 
         
       }
      
-
+   
      
 
       function findPlayerField(pawn) {
@@ -276,7 +286,14 @@
         return $(`[on="${pawn.attr('class')}"]`)
       
       }
+  function removeAttributesFromField(pawn){
 
+    let field = findPlayerField(pawn)
+console.log(pawn)
+    field.removeAttr('on')
+    field.removeData('type')
+
+  }
       function removeSelected() {
         $(".player").removeClass("selected");
       }
@@ -297,6 +314,8 @@
       }
 
       function move(pawn, target) {
+        removeAttributesFromField(pawn)
+
         let cell = oneCell;
 
         let targetX = target.position().left;
