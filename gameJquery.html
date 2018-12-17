@@ -1,246 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
-<style>
-  body{
-    margin: 0;
-    padding: 0
-  }
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
     .grid {
-     
-        display: flex;
-        flex-direction: column;
-        width: 800px;
-        margin: 0 auto;
-        flex-wrap: wrap;
-      }
+      display: flex;
+      flex-direction: column;
+      width: 800px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
 
-      .gridRow {
-        display: flex;
-        justify-content: space-around;
-      }
+    .gridRow {
+      display: flex;
+      justify-content: space-around;
+    }
 
-      .gridCell {
-        height: 80px;
-        width: 80px;
-        flex-grow: 1;
-        background: gray;
-        box-sizing: border-box;
-        border: 1.1px solid white;
-        box-sizing: border-box;
-      }
-      .move {
-        background: rgba(187, 50, 50, 0.678);
-      }
-      .selected{
-        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
-       
-      }
+    .gridCell {
+      height: 80px;
+      width: 80px;
+      flex-grow: 1;
+      background: gray;
+      box-sizing: border-box;
+      border: 1.1px solid white;
+      box-sizing: border-box;
+    }
+    .move {
+      background: rgba(187, 50, 50, 0.678);
+    }
+    .selected {
+      box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de,
+        0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+    }
 
-       .player {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-       transition: all, 1s;
-        position: absolute;
-        box-sizing: border-box;
-      }
-      .warrior {
-        border: 6.1px solid rgb(235, 220, 15);
-        box-sizing: border-box;
-       
-      }
-      .archer{
-        border: 7px solid rgb(15, 235, 52);
-        box-sizing: border-box;
-      }
-      .sorcerer{
-        border: 7px solid rgb(133, 15, 113);
-        box-sizing: border-box;
-      }
-      .red {
-        background: red;
-      }
-      .blue{
-        background: blue;
-      }
-      .moveRange{
-        background: greenyellow;
-      }
-
-</style>
-<body>
-    <div class="grid">
-        
-    </div>
-        <script src="jquery-3.3.1.min.js"></script>
+    .player {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transition: all, 1s;
+      position: absolute;
+      box-sizing: border-box;
+    }
+    .warrior {
+      border: 6.1px solid rgb(235, 220, 15);
+      box-sizing: border-box;
+    }
+    .archer {
+      border: 7px solid rgb(15, 235, 52);
+      box-sizing: border-box;
+    }
+    .sorcerer {
+      border: 7px solid rgb(133, 15, 113);
+      box-sizing: border-box;
+    }
+    .red {
+      background: red;
+    }
+    .blue {
+      background: blue;
+    }
+    .moveRange {
+      background: greenyellow;
+    }
+  </style>
+  <body>
+    <div class="grid"></div>
+    <script src="jquery-3.3.1.min.js"></script>
     <script>
-      "use strict;"
+      "use strict;";
 
       var players = {
         red: {
-          color: 'red',
-          player: 'player',
+          color: "red",
+          player: "player",
           pawns: {
-            classes:['red', 'player'],
+            classes: ["red", "player"],
             warrior: {
-              type: 'warrior',
-              classes:['red', 'player', 'warrior']
-              
+              player: 'player',
+              color: 'red',
+              type: "warrior",
+              classes: ["red", "player", "warrior"],
+              moveRange: 3
             },
             archer: {
-              type: 'archer',
-              classes:['red', 'player', 'archer']
+              player: 'player',
+              color: 'red',
+              type: "archer",
+              classes: ["red", "player", "archer"],
+              moveRange: 2
             },
             sorcerer: {
-              type: 'sorcerer',
-              classes:['red', 'player', 'sorcerer']
+              player: 'player',
+              color: 'red',
+              type: "sorcerer",
+              classes: ["red", "player", "sorcerer"],
+              moveRange: 1
             }
           }
         },
         blue: {
-          color: 'blue',
-          player: 'player',
+          color: "blue",
+          player: "player",
           pawns: {
-            classes:['blue', 'player'],
+            classes: ["blue", "player"],
             warrior: {
-              type: 'warrior',
-              classes:['blue', 'player', 'warrior']
+              player: 'player',
+              color: 'blue',
+              type: "warrior",
+              classes: ["blue", "player", "warrior"],
+              moveRange: 3
             },
             archer: {
-              type: 'archer',
-              classes:['blue', 'player', 'archer']
+              player: 'player',
+              color: 'blue',
+              type: "archer",
+              classes: ["blue", "player", "archer"],
+              moveRange: 2
             },
             sorcerer: {
-              type: 'sorcerer',
-              classes:['blue', 'player', 'sorcerer']
+              player: 'player',
+              color: 'blue',
+              type: "sorcerer",
+              classes: ["blue", "player", "sorcerer"],
+              moveRange: 1
             }
           }
         }
+      };
+
+      createBoard();
+
+      let warriorRed = $("<div></div>");
+      let warriorBlue = $("<div></div>");
+      let archerRed = $("<div></div>");
+      let archerBlue = $("<div></div>");
+      let sorcererRed = $("<div></div>");
+      let sorcererBlue = $("<div></div>");
+      let grid = $(".grid");
+      let oneCell = $(".gridCell");
+      let round = 0;
+      let whoPlay = round % 2 === 0 ? players.red : players.blue;
+
+      warriorRed.addClass(players.red.pawns.warrior.classes).appendTo(grid);
+     
+      warriorBlue.addClass(players.blue.pawns.warrior.classes).appendTo(grid);
+      warriorBlue.attr("type", "warrior");
+      archerRed.addClass(players.red.pawns.archer.classes).appendTo(grid);
+      archerRed.attr("type", "archer");
+      archerBlue.addClass(players.blue.pawns.archer.classes).appendTo(grid);
+      archerBlue.attr("type", "archer");
+      sorcererRed.addClass(players.red.pawns.sorcerer.classes).appendTo(grid);
+      sorcererRed.attr("type", "sorcerer");
+
+      sorcererBlue.addClass(players.blue.pawns.sorcerer.classes).appendTo(grid);
+      sorcererBlue.attr("type", "sorcerer");
+
+      $('.player').each(function(){
+        let pawn = $(this)
+        let pawnType = pawn.attr('class').split(' ')[2]
+        let pawnColor = pawn.attr('class').split(' ')[0]
+
+       pawn.data('type', players[pawnColor].pawns[pawnType])
+
+      })
+
+      $(".player").each(function() {
+        let pawn = $(this);
+        pawn.hasClass("red") ? (x = 2) : (x = 9);
+        if (pawn.hasClass("warrior")) {
+          y = 2;
+        }
+        if (pawn.hasClass("archer")) {
+          y = 5;
+        }
+        if (pawn.hasClass("sorcerer")) {
+          y = 8;
+        }
+
+        move(pawn, insertCoordinates(x, y));
+      });
+      game()
+      
+      function game(){
+        archerRed.attr('on', 'lololo')
+        select()
+        markMoveRange()
+       
       }
-
-
-   createBoard()
-    
-      let warriorRed = $('<div></div>')
-      let warriorBlue = $('<div></div>')
-      let archerRed = $('<div></div>')
-      let archerBlue = $('<div></div>')
-      let sorcererRed = $('<div></div>')
-      let sorcererBlue = $('<div></div>')
-      let grid = $('.grid')
-      let oneCell = $('.gridCell')
-      let round = 0
-      let whoPlay = round % 2 === 0? players.red : players.blue
-      
-
-      warriorRed.addClass(players.red.pawns.warrior.classes ).appendTo(grid)
-      warriorBlue.addClass(players.blue.pawns.warrior.classes ).appendTo(grid)
-      archerRed.addClass(players.red.pawns.archer.classes ).appendTo(grid)
-      archerBlue.addClass(players.blue.pawns.archer.classes ).appendTo(grid)
-      sorcererRed.addClass(players.red.pawns.sorcerer.classes ).appendTo(grid)
-      sorcererBlue.addClass(players.blue.pawns.sorcerer.classes ).appendTo(grid)
-
-     $('.player').each(function(){
-       let pawn = $(this)
-       pawn.hasClass('red')? x = 2 : x = 9
-      if(pawn.hasClass('warrior')){y=2}
-      if(pawn.hasClass('archer')){y=5}
-      if(pawn.hasClass('sorcerer')){y=8}
+      function markMoveRange(){
+        let pawn = warriorRed
+        let pawnMoveRange = pawn.data('type').moveRange
+        let field = findPlayerField(pawn)
+        let fieldX = parseInt(field.attr('data-x'))
+        let fieldY = parseInt(field.attr('data-y'))
        
-       move(pawn, insertCoordinates(x,y))
-       
-     })
-     
-     
-     $('.grid').on('click', '.player', function(){
-       let pawn = $(this)
-    removeSelected()
       
-       pawn.hasClass(`${whoPlay.color}`) && $(this).addClass('selected')
-      
-     console.log($(`[on="${pawn.attr('class')}"]`))
-     })
-    //  $('.grid').on('click', '.selected', function(){
-    //    let pawn = $(this)
-    // pawn.removeClass('selected')
-    //  })
+        for (var i = 0; i < 4; i++) {
+          for (var j = 1; j < pawnMoveRange + 1; j++) {
+            var x;
+            var y;
 
-     $('.grid').on('click', '.player', function(){
-       let pawn = $(this)
-      
-     
-      
-      
-     })
-     function findPlayerField(pawn){
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = 0;
+              y = j;
+            }
+            if (i === 2) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 3) {
+              x = 0;
+              y = -j;
+            }
 
-      return $(`[on="${pawn.attr('class')}"]`)
-     }
-     
-
-    function removeSelected(){
-      $('.player').removeClass('selected')
-    }
-      
-      function insertCoordinates(x, y) {
+            var next = insertCoordinates(fieldX + x, fieldY + y)
             
-            return $(`[data-x='${x}'][data-y='${y}']`)
-          }
-    
-          function getPosition(cell) {
-            return {
-              x: parseInt(cell.getAttribute("data-x")),
-              y: parseInt(cell.getAttribute("data-y"))
-            };
-          }
 
-      function move(pawn, target){
-        
-        let cell = oneCell
-        
-       
-        let targetX = target.position().left
-        let cellWidth = parseInt(cell.css('width'))
-        let pawnWidth = parseInt(pawn.css('width'))
-        let targetY = target.position().top
-        let cellHeight = parseInt(cell.css('height'))
-        let pawnHeight = parseInt(pawn.css('height'))
-    
-      
-        pawn.css({
-          left: targetX + ((cellWidth-pawnWidth)/2),
-          top:  targetY + ((cellHeight-pawnHeight)/2)
-
-        })
-        target.attr('on', pawn.attr('class'))
+            if (next) {
+              if (true) {
+             
+             
+                break;
+              
+               
+              }
+              next.addClass('moveRange');
+              
+            }
+          }
+        }
 
       }
+      
+      function select(){
+        $(".grid").on("click", ".player", function() {
+        let pawn = $(this);
+        removeSelected();
 
+        pawn.hasClass(`${whoPlay.color}`) && $(this).addClass("selected");
+      });
+      $(".grid").on("click", ".selected", function() {
+        let pawn = $(this);
+        pawn.removeClass("selected");
+      });
+      }
+     
 
+     
 
-      function createBoard(){
+      function findPlayerField(pawn) {
+        return $(`[on="${pawn.attr("class")}"]`);
+      }
+
+      function removeSelected() {
+        $(".player").removeClass("selected");
+      }
+
+      function insertCoordinates(x, y) {
+        return $(`[data-x='${x}'][data-y='${y}']`);
+      }
+
+      function getPosition(cell) {
+        return {
+          x: parseInt(cell.getAttribute("data-x")),
+          y: parseInt(cell.getAttribute("data-y"))
+        };
+      }
+
+      function move(pawn, target) {
+        let cell = oneCell;
+
+        let targetX = target.position().left;
+        let cellWidth = parseInt(cell.css("width"));
+        let pawnWidth = parseInt(pawn.css("width"));
+        let targetY = target.position().top;
+        let cellHeight = parseInt(cell.css("height"));
+        let pawnHeight = parseInt(pawn.css("height"));
+
+        pawn.css({
+          left: targetX + (cellWidth - pawnWidth) / 2,
+          top: targetY + (cellHeight - pawnHeight) / 2
+        });
+        target.data('type', pawn.data('type'));
+        
+        
+      }
+
+      function createBoard() {
         let grid = document.querySelector(".grid");
-      for (let i = 0; i < 10; i++) {
-        let row = document.createElement("div");
-        row.classList.add("gridRow");
-        grid.appendChild(row);
-        for (let j = 0; j < 10; j++) {
-          let cell = document.createElement("div");
-          cell.classList.add("gridCell");
-          cell.setAttribute("data-y", i + 1);
-          cell.setAttribute("data-x", j + 1);
-          row.appendChild(cell);
+        for (let i = 0; i < 10; i++) {
+          let row = document.createElement("div");
+          row.classList.add("gridRow");
+          grid.appendChild(row);
+          for (let j = 0; j < 10; j++) {
+            let cell = document.createElement("div");
+            cell.classList.add("gridCell");
+            cell.setAttribute("data-y", i + 1);
+            cell.setAttribute("data-x", j + 1);
+            row.appendChild(cell);
+          }
         }
       }
-      }
-   
-      
-      </script>
-</body>
+    </script>
+  </body>
 </html>
