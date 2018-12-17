@@ -69,6 +69,9 @@
       .blue{
         background: blue;
       }
+      .moveRange{
+        background: greenyellow;
+      }
 
 </style>
 <body>
@@ -160,11 +163,27 @@
     removeSelected()
       
        pawn.hasClass(`${whoPlay.color}`) && $(this).addClass('selected')
+      
+     console.log($(`[on="${pawn.attr('class')}"]`))
      })
-     $('.grid').on('click', '.selected', function(){
+    //  $('.grid').on('click', '.selected', function(){
+    //    let pawn = $(this)
+    // pawn.removeClass('selected')
+    //  })
+
+     $('.grid').on('click', '.player', function(){
        let pawn = $(this)
-    pawn.removeClass('selected')
+      
+     
+      
+      
      })
+     function findPlayerField(pawn){
+
+      return $(`[on="${pawn.attr('class')}"]`)
+     }
+     
+
     function removeSelected(){
       $('.player').removeClass('selected')
     }
@@ -199,6 +218,7 @@
           top:  targetY + ((cellHeight-pawnHeight)/2)
 
         })
+        target.attr('on', pawn.attr('class'))
 
       }
 
