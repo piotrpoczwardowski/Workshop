@@ -32,6 +32,7 @@
       box-sizing: border-box;
       border: 1.1px solid white;
       box-sizing: border-box;
+      transition: all, 1s;
     }
     .move {
       background: rgba(187, 50, 50, 0.678);
@@ -69,6 +70,9 @@
     }
     .moveRange {
       background: greenyellow;
+    }
+    .moveRange:hover {
+      background: rgb(10, 199, 35);
     }
   </style>
   <body>
@@ -183,67 +187,85 @@
 
         move(pawn, insertCoordinates(x, y));
       });
-      game()
-      
-      function game(){
+   
         
         select()
-        markMoveRange()
+        
        
-      }
-      // function markMoveRange(){
-      //   let pawn = warriorRed
-      //   let pawnMoveRange = pawn.data('type').moveRange
-      //   let field = findPlayerField(pawn)
-      //   let fieldX = parseInt(field.attr('data-x'))
-      //   let fieldY = parseInt(field.attr('data-y'))
+       $('.grid').on('click', '.selected', function(){
+         console.log('hi')
+       })
        
+     
       
-      //   for (var i = 0; i < 4; i++) {
-      //     for (var j = 1; j < pawnMoveRange + 1; j++) {
-      //       var x;
-      //       var y;
+   
+      function markMoveRange(pawn){
 
-      //       if (i === 0) {
-      //         x = j;
-      //         y = 0;
-      //       }
-      //       if (i === 1) {
-      //         x = 0;
-      //         y = j;
-      //       }
-      //       if (i === 2) {
-      //         x = -j;
-      //         y = 0;
-      //       }
-      //       if (i === 3) {
-      //         x = 0;
-      //         y = -j;
-      //       }
+       
+        let pawnMoveRange = pawn.data('type').moveRange
+        let field = findPlayerField(pawn)
+        let fieldX = parseInt(field.attr('data-x'))
+        let fieldY = parseInt(field.attr('data-y'))
+        console.log(pawn)
+      
+        for (var i = 0; i < 4; i++) {
+          for (var j = 1; j < pawnMoveRange + 1; j++) {
+            var x;
+            var y;
 
-      //       var next = insertCoordinates(fieldX + x, fieldY + y)
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = 0;
+              y = j;
+            }
+            if (i === 2) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 3) {
+              x = 0;
+              y = -j;
+            }
+
+            var next = insertCoordinates(fieldX + x, fieldY + y)
             
 
-      //       if (next) {
-              
-              
-      //       }
-      //     }
-      //   }
+            if (next) {
+             if(next.data('type')){
 
-      // }
+               break;
+             }
+
+              next.addClass('moveRange')
+              
+            }
+          }
+        }
+
+      }
       
       function select(){
         $(".grid").on("click", ".player", function() {
         let pawn = $(this);
         removeSelected();
-
-        pawn.hasClass(`${whoPlay.color}`) && $(this).addClass("selected");
+        removeMoveRange()
+        
+       if( pawn.hasClass(`${whoPlay.color}`)) {
+        markMoveRange(pawn)
+        $(this).addClass("selected");
+       } 
+       
       });
       $(".grid").on("click", ".selected", function() {
         let pawn = $(this);
         pawn.removeClass("selected");
+        removeMoveRange()
       });
+
+        
       }
      
 
@@ -251,12 +273,16 @@
 
       function findPlayerField(pawn) {
         
-        
+        return $(`[on="${pawn.attr('class')}"]`)
       
       }
 
       function removeSelected() {
         $(".player").removeClass("selected");
+      }
+
+      function removeMoveRange(){
+        $(".gridCell").removeClass("moveRange");
       }
 
       function insertCoordinates(x, y) {
@@ -285,7 +311,7 @@
           top: targetY + (cellHeight - pawnHeight) / 2
         });
         target.data('type', pawn.data('type'));
-        
+        target.attr('on', pawn.attr('class'))
         
         
       }
