@@ -132,6 +132,8 @@
       let sorcererBlue = $('<div></div>')
       let grid = $('.grid')
       let oneCell = $('.gridCell')
+      let round = 0
+      let whoPlay = round % 2 === 0? players.red : players.blue
       
 
       warriorRed.addClass(players.red.pawns.warrior.classes ).appendTo(grid)
@@ -153,9 +155,19 @@
      })
      
      
-     
-  
-    
+     $('.grid').on('click', '.player', function(){
+       let pawn = $(this)
+    removeSelected()
+      
+       pawn.hasClass(`${whoPlay.color}`) && $(this).addClass('selected')
+     })
+     $('.grid').on('click', '.selected', function(){
+       let pawn = $(this)
+    pawn.removeClass('selected')
+     })
+    function removeSelected(){
+      $('.player').removeClass('selected')
+    }
       
       function insertCoordinates(x, y) {
             
