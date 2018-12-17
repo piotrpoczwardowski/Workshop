@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <style>
+  body{
+    margin: 0;
+    padding: 0
+  }
     .grid {
+     
         display: flex;
         flex-direction: column;
         width: 800px;
@@ -26,26 +31,29 @@
         flex-grow: 1;
         background: gray;
         box-sizing: border-box;
-        border: 2px solid white;
+        border: 1.1px solid white;
         box-sizing: border-box;
       }
       .move {
         background: rgba(187, 50, 50, 0.678);
       }
-      .selected {
-        border: 5px solid rgb(21, 189, 15);
+      .selected{
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+       
       }
 
        .player {
         width: 60px;
         height: 60px;
-
         border-radius: 50%;
+       transition: all, 1s;
         position: absolute;
+        box-sizing: border-box;
       }
       .warrior {
-        border: 7px solid rgb(235, 231, 15);
+        border: 6.1px solid rgb(235, 220, 15);
         box-sizing: border-box;
+       
       }
       .archer{
         border: 7px solid rgb(15, 235, 52);
@@ -69,6 +77,8 @@
     </div>
         <script src="jquery-3.3.1.min.js"></script>
     <script>
+      "use strict;"
+
       var players = {
         red: {
           color: 'red',
@@ -77,14 +87,16 @@
             classes:['red', 'player'],
             warrior: {
               type: 'warrior',
-              classes:['red', 'player', 'warrior'],
-              startPosition:{x:2,y:2}
+              classes:['red', 'player', 'warrior']
+              
             },
             archer: {
               type: 'archer',
+              classes:['red', 'player', 'archer']
             },
             sorcerer: {
               type: 'sorcerer',
+              classes:['red', 'player', 'sorcerer']
             }
           }
         },
@@ -92,33 +104,91 @@
           color: 'blue',
           player: 'player',
           pawns: {
-            
+            classes:['blue', 'player'],
             warrior: {
               type: 'warrior',
+              classes:['blue', 'player', 'warrior']
             },
             archer: {
               type: 'archer',
+              classes:['blue', 'player', 'archer']
             },
             sorcerer: {
               type: 'sorcerer',
+              classes:['blue', 'player', 'sorcerer']
             }
           }
         }
       }
 
 
+   createBoard()
+    
+      let warriorRed = $('<div></div>')
+      let warriorBlue = $('<div></div>')
+      let archerRed = $('<div></div>')
+      let archerBlue = $('<div></div>')
+      let sorcererRed = $('<div></div>')
+      let sorcererBlue = $('<div></div>')
+      let grid = $('.grid')
+      let oneCell = $('.gridCell')
+      
 
-      createBoard()
-      var warriorRed = $('<div></div>')
-      var grid = $('.grid')
+      warriorRed.addClass(players.red.pawns.warrior.classes ).appendTo(grid)
+      warriorBlue.addClass(players.blue.pawns.warrior.classes ).appendTo(grid)
+      archerRed.addClass(players.red.pawns.archer.classes ).appendTo(grid)
+      archerBlue.addClass(players.blue.pawns.archer.classes ).appendTo(grid)
+      sorcererRed.addClass(players.red.pawns.sorcerer.classes ).appendTo(grid)
+      sorcererBlue.addClass(players.blue.pawns.sorcerer.classes ).appendTo(grid)
 
-      warriorRed.addClass(players.red.pawns.warrior.classes )
+     $('.player').each(function(){
+       let pawn = $(this)
+       pawn.hasClass('red')? x = 2 : x = 9
+      if(pawn.hasClass('warrior')){y=2}
+      if(pawn.hasClass('archer')){y=5}
+      if(pawn.hasClass('sorcerer')){y=8}
+       
+       move(pawn, insertCoordinates(x,y))
+       
+     })
+     
+     
+     
+  
+    
+      
+      function insertCoordinates(x, y) {
+            
+            return $(`[data-x='${x}'][data-y='${y}']`)
+          }
+    
+          function getPosition(cell) {
+            return {
+              x: parseInt(cell.getAttribute("data-x")),
+              y: parseInt(cell.getAttribute("data-y"))
+            };
+          }
 
-      warriorRed.appendTo(grid)
+      function move(pawn, target){
+        
+        let cell = oneCell
+        
+       
+        let targetX = target.position().left
+        let cellWidth = parseInt(cell.css('width'))
+        let pawnWidth = parseInt(pawn.css('width'))
+        let targetY = target.position().top
+        let cellHeight = parseInt(cell.css('height'))
+        let pawnHeight = parseInt(pawn.css('height'))
+    
+      
+        pawn.css({
+          left: targetX + ((cellWidth-pawnWidth)/2),
+          top:  targetY + ((cellHeight-pawnHeight)/2)
 
+        })
 
-
-
+      }
 
 
 
