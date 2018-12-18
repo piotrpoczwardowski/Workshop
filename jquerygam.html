@@ -225,8 +225,13 @@
           
            let pawn =  $('.selected')
            let field = $(this)
-           console.log(field)
+           let fieldX =getFieldCoord(field).x
+           let fieldY =getFieldCoord(field).y
+           console.log(fieldX)
+           pawn.data('pawn').position.x = fieldX
+           pawn.data('pawn').position.y = fieldY
            move(pawn)
+           removeSelect()
         })
       }
 
@@ -378,7 +383,16 @@
       //           }
       //         }
       //       }
-      function
+      function getFieldCoord(field){
+        
+              let fieldX = parseInt(field.attr("data-x"));
+              let fieldY = parseInt(field.attr("data-y"));
+              let coord = {
+                  x: fieldX,
+                  y: fieldY
+              }
+              return coord
+      }
 
        function markMoveRange(pawn) {
            
@@ -386,8 +400,8 @@
             let pawnY = pawn.data("pawn").position.y
               let pawnMoveRange = pawn.data("pawn").moveRange;
               let field = insertCoordinates(pawnX,pawnY)
-              let fieldX = parseInt(field.attr("data-x"));
-              let fieldY = parseInt(field.attr("data-y"));
+              let fieldX = getFieldCoord(field).x
+              let fieldY = getFieldCoord(field).y
 
               for (var i = 0; i < 4; i++) {
                 for (var j = 1; j < pawnMoveRange + 1; j++) {
