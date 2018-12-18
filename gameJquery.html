@@ -40,6 +40,7 @@
     .selected {
       box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de,
         0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+      
     }
 
     .player {
@@ -192,9 +193,7 @@
         select()
         
        
-       $('.grid').on('click', '.selected', function(){
-         console.log('hi')
-       })
+  
        
      
       
@@ -250,6 +249,8 @@
       function select(){
         $(".grid").on("click", ".player", function() {
         let pawn = $(this);
+        let field = findPlayerField(pawn)
+       
         removeSelected();
         removeMoveRange()
         
@@ -258,7 +259,7 @@
         $(this).addClass("selected");
 
         $('.grid').on('click.l', '.moveRange', function(){
-         
+         removeAttributesFromField(field)
           move(pawn, $(this))
           $('.grid').off('click.l')
           removeSelected();
@@ -286,10 +287,10 @@
         return $(`[on="${pawn.attr('class')}"]`)
       
       }
-  function removeAttributesFromField(pawn){
+  function removeAttributesFromField(field){
 
-    let field = findPlayerField(pawn)
-console.log(pawn)
+    
+
     field.removeAttr('on')
     field.removeData('type')
 
@@ -329,8 +330,9 @@ console.log(pawn)
           left: targetX + (cellWidth - pawnWidth) / 2,
           top: targetY + (cellHeight - pawnHeight) / 2
         });
+        
         target.data('type', pawn.data('type'));
-        target.attr('on', pawn.attr('class'))
+        target.attr('on', pawn.attr('class').split(' ').slice(0,3).join(' '))
         
         
       }
