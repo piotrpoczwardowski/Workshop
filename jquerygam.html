@@ -217,7 +217,8 @@
           let pawn = $(this);
           pawn.removeClass("selected");
           $(".gridCell").removeClass("moveRange");
-          $(".gridCell").removeClass("attackRange hiddenAttackRange target");
+          $(".gridCell").removeClass("attackRange hiddenAttackRange");
+          $(".player").removeClass("target");
         });
       }
 
@@ -231,7 +232,7 @@
           pawn.data("pawn").position.x = fieldX;
           pawn.data("pawn").position.y = fieldY;
           move(pawn);
-
+           
           removeSelect();
         });
       }
@@ -239,13 +240,13 @@
       function select(pawn) {
         pawn.addClass("selected");
         markMoveRange(pawn);
-        markAttackRange(pawn)
+        markAttackRange(pawn);
       }
       function removeSelect() {
         $(".player").removeClass("selected");
+        $(".player").removeClass("target");
         $(".gridCell").removeClass("moveRange");
         $(".gridCell").removeClass("attackRange hiddenAttackRange target");
-     
 
         whoPlay = round % 2 === 0 ? players.red : players.blue;
       }
@@ -315,9 +316,13 @@
             var next = insertCoordinates(fieldX + x, fieldY + y);
             if (next) {
               if (checkPawnOnField(next)) {
-                next.addClass("hiddenAttackRange target");
-                
-                break;
+                  if(checkPawnOnField(next).color !== pawn.data('pawn').color){
+                next.addClass("hiddenAttackRange");
+                    
+                   checkPawnOnField(next).pawn.addClass('target')
+               
+                  }
+                  break;
               }
               if (next.hasClass("moveRange")) {
                 next.addClass("hiddenAttackRange");
@@ -369,7 +374,7 @@
             }
 
             var next = insertCoordinates(fieldX + x, fieldY + y);
-
+            
             if (next) {
               if (checkPawnOnField(next)) {
                 break;
@@ -384,25 +389,24 @@
       function checkPawnOnField(field) {
         let fieldX = parseInt(field.attr("data-x"));
         let fieldY = parseInt(field.attr("data-y"));
-       
+
         let player = [];
-       
 
         $(".player").each(function(idk) {
           let pawn = $(this);
 
-        
           player.push({
             x: pawn.data("pawn").position.x,
             y: pawn.data("pawn").position.y,
             pawn: pawn
           });
         });
-  
+
         for (let i = 0; i < player.length; i++) {
           if (player[i].x === fieldX && player[i].y === fieldY) {
-              console.log(player[i].pawn)
-            return true;
+            let pawnColor = player[i].pawn.data("pawn").color;
+            let pawn = player[i].pawn
+            return { isPlayer: true, color: pawnColor, pawn: pawn };
           }
         }
       }
