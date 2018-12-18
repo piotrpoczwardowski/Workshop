@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .grid {
+      display: flex;
+      flex-direction: column;
+      width: 800px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .gridRow {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .gridCell {
+      height: 80px;
+      width: 80px;
+      flex-grow: 1;
+      background: gray;
+      box-sizing: border-box;
+      border: 1.1px solid white;
+      box-sizing: border-box;
+      transition: all, 1s;
+    }
+    .move {
+      background: rgba(187, 50, 50, 0.678);
+    }
+    .selected {
+      box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de,
+        0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+    }
+
+    .player {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transition: all, 1s;
+      position: absolute;
+      box-sizing: border-box;
+    }
+    .warrior {
+      border: 6.1px solid rgb(235, 220, 15);
+      box-sizing: border-box;
+    }
+    .archer {
+      border: 7px solid rgb(15, 235, 52);
+      box-sizing: border-box;
+    }
+    .sorcerer {
+      border: 7px solid rgb(133, 15, 113);
+      box-sizing: border-box;
+    }
+    .red {
+      background: red;
+    }
+    .blue {
+      background: blue;
+    }
+    .moveRange {
+      background: greenyellow;
+    }
+    .moveRange:hover {
+      background: rgb(10, 199, 35);
+    }
+
+    .attackRange {
+      background: #811072;
+    }
+
+    .hiddenAttackRange {
+    }
+
+    .target {
+    }
+    .target:hover {
+      box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff0000,
+        0 0 35px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
+    }
+  </style>
+  <body>
+    <div class="grid"></div>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script>
+      "use strict;";
+
+      var players = {
+        red: {
+          color: "red",
+          player: "player",
+          pawns: {
+            classes: ["red", "player"],
+            warrior: {
+              player: "player",
+              color: "red",
+              type: "warrior",
+              classes: ["red", "player", "warrior"],
+              position: { x: 2, y: 2 },
+              moveRange: 3,
+              attackRange: 1
+            },
+            archer: {
+              player: "player",
+              color: "red",
+              type: "archer",
+              classes: ["red", "player", "archer"],
+              position: { x: 2, y: 5 },
+              moveRange: 2,
+              attackRange: 3
+            },
+            sorcerer: {
+              player: "player",
+              color: "red",
+              type: "sorcerer",
+              classes: ["red", "player", "sorcerer"],
+              position: { x: 2, y: 8 },
+              moveRange: 1,
+              attackRange: 3
+            }
+          }
+        },
+        blue: {
+          color: "blue",
+          player: "player",
+          pawns: {
+            classes: ["blue", "player"],
+            warrior: {
+              player: "player",
+              color: "blue",
+              type: "warrior",
+              classes: ["blue", "player", "warrior"],
+              position: { x: 9, y: 2 },
+              moveRange: 3,
+              attackRange: 1
+            },
+            archer: {
+              player: "player",
+              color: "blue",
+              type: "archer",
+              classes: ["blue", "player", "archer"],
+              position: { x: 9, y: 5 },
+              moveRange: 2,
+              attackRange: 3
+            },
+            sorcerer: {
+              player: "player",
+              color: "blue",
+              type: "sorcerer",
+              classes: ["blue", "player", "sorcerer"],
+              position: { x: 9, y: 8 },
+              moveRange: 1,
+              attackRange: 3
+            }
+          }
+        }
+      };
+
+      createBoard();
+
+      let warriorRed = $("<div></div>");
+      let warriorBlue = $("<div></div>");
+      let archerRed = $("<div></div>");
+      let archerBlue = $("<div></div>");
+      let sorcererRed = $("<div></div>");
+      let sorcererBlue = $("<div></div>");
+      let grid = $(".grid");
+      let oneCell = $(".gridCell");
+      let round = 0;
+      let whoPlay = round % 2 === 0 ? players.red : players.blue;
+
+      warriorRed.addClass(players.red.pawns.warrior.classes).appendTo(grid);
+
+      warriorBlue.addClass(players.blue.pawns.warrior.classes).appendTo(grid);
+      archerRed.addClass(players.red.pawns.archer.classes).appendTo(grid);
+      archerBlue.addClass(players.blue.pawns.archer.classes).appendTo(grid);
+      sorcererRed.addClass(players.red.pawns.sorcerer.classes).appendTo(grid);
+
+      sorcererBlue.addClass(players.blue.pawns.sorcerer.classes).appendTo(grid);
+
+      $(".player").each(function() {
+        let pawn = $(this);
+        let pawnType = pawn.attr("class").split(" ")[2];
+        let pawnColor = pawn.attr("class").split(" ")[0];
+
+        pawn.data("pawn", players[pawnColor].pawns[pawnType]);
+      });
+
+      $(".player").each(function() {
+        let pawn = $(this);
+
+        move(pawn);
+      });
+      addSelectListener();
+      addMoveListener()
+      function addSelectListener() {
+        $(".grid").on("click", ".player", function() {
+          removeSelect();
+          let pawn = $(this);
+          if (pawn.data("pawn").color === whoPlay.color) {
+            select(pawn)
+          }
+        });
+
+        $(".grid").on("click", ".selected", function() {
+          let pawn = $(this);
+          pawn.removeClass("selected");
+          $('.gridCell').removeClass('moveRange')
+          
+        });
+      }
+
+      function addMoveListener(){
+        $(".grid").on("click", ".moveRange", function() {
+          
+           let pawn =  $('.selected')
+           let field = $(this)
+           console.log(field)
+           move(pawn)
+        })
+      }
+
+      function select(pawn){
+        pawn.addClass("selected");
+        markMoveRange(pawn)
+      }
+      function removeSelect() {
+        $(".player").removeClass("selected");
+        $('.gridCell').removeClass('moveRange')
+      }
+
+      function move(pawn) {
+        let x = pawn.data("pawn").position.x;
+        let y = pawn.data("pawn").position.y;
+        let target = insertCoordinates(x, y);
+        let cell = $(".gridCell");
+
+        let targetX = target.position().left;
+        let cellWidth = parseInt(cell.css("width"));
+        let pawnWidth = parseInt(pawn.css("width"));
+        let targetY = target.position().top;
+        let cellHeight = parseInt(cell.css("height"));
+        let pawnHeight = parseInt(pawn.css("height"));
+
+        pawn.css({
+          left: targetX + (cellWidth - pawnWidth) / 2,
+          top: targetY + (cellHeight - pawnHeight) / 2
+        });
+      }
+
+      //       function move(pawn, target) {
+      //         let cell = oneCell;
+
+      //         let targetX = target.position().left;
+      //         let cellWidth = parseInt(cell.css("width"));
+      //         let pawnWidth = parseInt(pawn.css("width"));
+      //         let targetY = target.position().top;
+      //         let cellHeight = parseInt(cell.css("height"));
+      //         let pawnHeight = parseInt(pawn.css("height"));
+
+      //         pawn.css({
+      //           left: targetX + (cellWidth - pawnWidth) / 2,
+      //           top: targetY + (cellHeight - pawnHeight) / 2
+      //         });
+
+      //         target.data("type", pawn.data("type"));
+      //         target.attr(
+      //           "on",
+      //           pawn
+      //             .attr("class")
+      //             .split(" ")
+      //             .slice(0, 3)
+      //             .join(" ")
+      //         );
+      //       }
+
+      //       function select() {
+      //         $(".grid").on("click", ".player", function() {
+      //           let pawn = $(this);
+      //           let field = findPlayerField(pawn);
+
+      //           removeSelected();
+      //           removeMoveRange();
+      //           removeAttackRange()
+
+      //           if (pawn.hasClass(`${whoPlay.color}`)) {
+      //             markMoveRange(pawn);
+      //             attackRange(pawn)
+      //             $(this).addClass("selected");
+
+      //             $(".grid").on("click.l", ".moveRange", function() {
+      //               removeAttributesFromField(field);
+      //               move(pawn, $(this));
+      //               $(".grid").off("click.l");
+      //               removeSelected();
+      //               removeMoveRange();
+      //               removeAttackRange()
+      //             });
+      //           }
+      //         });
+      //         $(".grid").on("click", ".selected", function() {
+      //           let pawn = $(this);
+      //           pawn.removeClass("selected");
+      //           removeMoveRange();
+      //           removeAttackRange()
+      //           $(".grid").off("click.l");
+      //         });
+      //       }
+
+      //       function attackRange(pawn) {
+      //         let pawnAttackRange = pawn.data("type").attackRange;
+      //         let field = findPlayerField(pawn);
+      //         let fieldX = parseInt(field.attr("data-x"));
+      //         let fieldY = parseInt(field.attr("data-y"));
+
+      //         for (var i = 0; i < 8; i++) {
+      //           for (var j = 1; j < pawnAttackRange + 1; j++) {
+      //             if (i === 0) {
+      //               x = j;
+      //               y = 0;
+      //             }
+      //             if (i === 1) {
+      //               x = j;
+      //               y = j;
+      //             }
+      //             if (i === 2) {
+      //               x = 0;
+      //               y = j;
+      //             }
+      //             if (i === 3) {
+      //               x = -j;
+      //               y = j;
+      //             }
+      //             if (i === 4) {
+      //               x = -j;
+      //               y = 0;
+      //             }
+      //             if (i === 5) {
+      //               x = -j;
+      //               y = -j;
+      //             }
+      //             if (i === 6) {
+      //               x = 0;
+      //               y = -j;
+      //             }
+      //             if (i === 7) {
+      //               x = j;
+      //               y = -j;
+      //             }
+      //             var next = (
+      //               insertCoordinates(fieldX + x, fieldY + y)
+      //             );
+      //             if (next) {
+      //               if (next.data("type")) {
+      //                 findPlayerFromField(next).addClass("hiddenAttackRange target");
+      //                 console.log(findPlayerFromField(next))
+      //                 break;
+      //               }
+      //               if (
+      //                 next.data("type") ||
+      //                 next.hasClass("moveRange")
+      //               ) {
+      //                 next.addClass("hiddenAttackRange");
+      //               } else {
+      //                 next.addClass("attackRange");
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      function
+
+       function markMoveRange(pawn) {
+           
+            let pawnX = pawn.data("pawn").position.x
+            let pawnY = pawn.data("pawn").position.y
+              let pawnMoveRange = pawn.data("pawn").moveRange;
+              let field = insertCoordinates(pawnX,pawnY)
+              let fieldX = parseInt(field.attr("data-x"));
+              let fieldY = parseInt(field.attr("data-y"));
+
+              for (var i = 0; i < 4; i++) {
+                for (var j = 1; j < pawnMoveRange + 1; j++) {
+                  let x;
+                  let y;
+
+                  if (i === 0) {
+                    x = j;
+                    y = 0;
+                  }
+                  if (i === 1) {
+                    x = 0;
+                    y = j;
+                  }
+                  if (i === 2) {
+                    x = -j;
+                    y = 0;
+                  }
+                  if (i === 3) {
+                    x = 0;
+                    y = -j;
+                  }
+
+                  var next = insertCoordinates(fieldX + x, fieldY + y);
+
+                  if (next) {
+                    if (checkPawnOnField(next)) {
+                      break;
+                    }
+
+                    next.addClass("moveRange");
+                  }
+                }
+              }
+            }
+
+            function checkPawnOnField(field){
+               
+               let fieldX = parseInt(field.attr('data-x'))
+               let fieldY = parseInt(field.attr('data-y'))
+               let xs = []
+               let ys = []
+               let coord = []
+               
+             $('.player').each(function(idk){
+                   let pawn = $(this)
+                   xs += pawn.data('pawn').position.x
+                   ys += pawn.data('pawn').position.y
+                   coord.push({x:pawn.data('pawn').position.x, y:pawn.data('pawn').position.y})
+                  
+
+               })
+             
+           
+               for(let i = 0; i<coord.length; i++){
+               
+                   if(coord[i].x === fieldX && coord[i].y === fieldY){
+                       return true
+                   } 
+               }
+              
+            }
+            // function findPlayerField(pawn) {
+            //   return $(`[on="${pawn.attr("class")}"]`);
+            // }
+            // function findPlayerFromField(field){
+            //   console.log(field)
+            //   return $(`[on="${field.attr("on")}"]`);
+            // }
+            // function removeAttributesFromField(field) {
+            //   field.removeAttr("on");
+            //   field.removeData("type");
+            // }
+      
+
+      //       function removeMoveRange() {
+      //         $(".gridCell").removeClass("moveRange");
+      //       }
+      //       function removeAttackRange() {
+      //         $(".gridCell").removeClass("attackRange");
+      //       }
+      function insertCoordinates(x, y) {
+        return $(`[data-x='${x}'][data-y='${y}']`);
+      }
+
+      //       function getPosition(cell) {
+      //         return {
+      //           x: parseInt(cell.getAttribute("data-x")),
+      //           y: parseInt(cell.getAttribute("data-y"))
+      //         };
+      //       }
+
+      //       function move(pawn, target) {
+      //         let cell = oneCell;
+
+      //         let targetX = target.position().left;
+      //         let cellWidth = parseInt(cell.css("width"));
+      //         let pawnWidth = parseInt(pawn.css("width"));
+      //         let targetY = target.position().top;
+      //         let cellHeight = parseInt(cell.css("height"));
+      //         let pawnHeight = parseInt(pawn.css("height"));
+
+      //         pawn.css({
+      //           left: targetX + (cellWidth - pawnWidth) / 2,
+      //           top: targetY + (cellHeight - pawnHeight) / 2
+      //         });
+
+      //         target.data("type", pawn.data("type"));
+      //         target.attr(
+      //           "on",
+      //           pawn
+      //             .attr("class")
+      //             .split(" ")
+      //             .slice(0, 3)
+      //             .join(" ")
+      //         );
+      //       }
+
+      function createBoard() {
+        let grid = $(".grid");
+        for (let i = 0; i < 10; i++) {
+          let row = $("<div></div>");
+          row.addClass("gridRow");
+          grid.append(row);
+          for (let j = 0; j < 10; j++) {
+            let cell = $("<div></div>");
+            cell.addClass("gridCell");
+            cell.attr("data-y", i + 1);
+            cell.attr("data-x", j + 1);
+
+            row.append(cell);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
