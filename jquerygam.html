@@ -202,46 +202,52 @@
         move(pawn);
       });
       addSelectListener();
-      addMoveListener()
+      addMoveListener();
       function addSelectListener() {
         $(".grid").on("click", ".player", function() {
           removeSelect();
           let pawn = $(this);
+
           if (pawn.data("pawn").color === whoPlay.color) {
-            select(pawn)
+            select(pawn);
           }
         });
 
         $(".grid").on("click", ".selected", function() {
           let pawn = $(this);
           pawn.removeClass("selected");
-          $('.gridCell').removeClass('moveRange')
-          
+          $(".gridCell").removeClass("moveRange");
+          $(".gridCell").removeClass("attackRange hiddenAttackRange target");
         });
       }
 
-      function addMoveListener(){
+      function addMoveListener() {
         $(".grid").on("click", ".moveRange", function() {
-          
-           let pawn =  $('.selected')
-           let field = $(this)
-           let fieldX =getFieldCoord(field).x
-           let fieldY =getFieldCoord(field).y
-           console.log(fieldX)
-           pawn.data('pawn').position.x = fieldX
-           pawn.data('pawn').position.y = fieldY
-           move(pawn)
-           removeSelect()
-        })
+          let pawn = $(".selected");
+          let field = $(this);
+          let fieldX = getFieldCoord(field).x;
+          let fieldY = getFieldCoord(field).y;
+
+          pawn.data("pawn").position.x = fieldX;
+          pawn.data("pawn").position.y = fieldY;
+          move(pawn);
+
+          removeSelect();
+        });
       }
 
-      function select(pawn){
+      function select(pawn) {
         pawn.addClass("selected");
-        markMoveRange(pawn)
+        markMoveRange(pawn);
+        markAttackRange(pawn)
       }
       function removeSelect() {
         $(".player").removeClass("selected");
-        $('.gridCell').removeClass('moveRange')
+        $(".gridCell").removeClass("moveRange");
+        $(".gridCell").removeClass("attackRange hiddenAttackRange target");
+     
+
+        whoPlay = round % 2 === 0 ? players.red : players.blue;
       }
 
       function move(pawn) {
@@ -263,219 +269,154 @@
         });
       }
 
-      //       function move(pawn, target) {
-      //         let cell = oneCell;
+      function markAttackRange(pawn) {
+        let pawnAttackRange = pawn.data("pawn").attackRange;
+        let pawnX = pawn.data("pawn").position.x;
+        let pawnY = pawn.data("pawn").position.y;
+        let pawnMoveRange = pawn.data("pawn").moveRange;
+        let field = insertCoordinates(pawnX, pawnY);
+        let fieldX = getFieldCoord(field).x;
+        let fieldY = getFieldCoord(field).y;
 
-      //         let targetX = target.position().left;
-      //         let cellWidth = parseInt(cell.css("width"));
-      //         let pawnWidth = parseInt(pawn.css("width"));
-      //         let targetY = target.position().top;
-      //         let cellHeight = parseInt(cell.css("height"));
-      //         let pawnHeight = parseInt(pawn.css("height"));
-
-      //         pawn.css({
-      //           left: targetX + (cellWidth - pawnWidth) / 2,
-      //           top: targetY + (cellHeight - pawnHeight) / 2
-      //         });
-
-      //         target.data("type", pawn.data("type"));
-      //         target.attr(
-      //           "on",
-      //           pawn
-      //             .attr("class")
-      //             .split(" ")
-      //             .slice(0, 3)
-      //             .join(" ")
-      //         );
-      //       }
-
-      //       function select() {
-      //         $(".grid").on("click", ".player", function() {
-      //           let pawn = $(this);
-      //           let field = findPlayerField(pawn);
-
-      //           removeSelected();
-      //           removeMoveRange();
-      //           removeAttackRange()
-
-      //           if (pawn.hasClass(`${whoPlay.color}`)) {
-      //             markMoveRange(pawn);
-      //             attackRange(pawn)
-      //             $(this).addClass("selected");
-
-      //             $(".grid").on("click.l", ".moveRange", function() {
-      //               removeAttributesFromField(field);
-      //               move(pawn, $(this));
-      //               $(".grid").off("click.l");
-      //               removeSelected();
-      //               removeMoveRange();
-      //               removeAttackRange()
-      //             });
-      //           }
-      //         });
-      //         $(".grid").on("click", ".selected", function() {
-      //           let pawn = $(this);
-      //           pawn.removeClass("selected");
-      //           removeMoveRange();
-      //           removeAttackRange()
-      //           $(".grid").off("click.l");
-      //         });
-      //       }
-
-      //       function attackRange(pawn) {
-      //         let pawnAttackRange = pawn.data("type").attackRange;
-      //         let field = findPlayerField(pawn);
-      //         let fieldX = parseInt(field.attr("data-x"));
-      //         let fieldY = parseInt(field.attr("data-y"));
-
-      //         for (var i = 0; i < 8; i++) {
-      //           for (var j = 1; j < pawnAttackRange + 1; j++) {
-      //             if (i === 0) {
-      //               x = j;
-      //               y = 0;
-      //             }
-      //             if (i === 1) {
-      //               x = j;
-      //               y = j;
-      //             }
-      //             if (i === 2) {
-      //               x = 0;
-      //               y = j;
-      //             }
-      //             if (i === 3) {
-      //               x = -j;
-      //               y = j;
-      //             }
-      //             if (i === 4) {
-      //               x = -j;
-      //               y = 0;
-      //             }
-      //             if (i === 5) {
-      //               x = -j;
-      //               y = -j;
-      //             }
-      //             if (i === 6) {
-      //               x = 0;
-      //               y = -j;
-      //             }
-      //             if (i === 7) {
-      //               x = j;
-      //               y = -j;
-      //             }
-      //             var next = (
-      //               insertCoordinates(fieldX + x, fieldY + y)
-      //             );
-      //             if (next) {
-      //               if (next.data("type")) {
-      //                 findPlayerFromField(next).addClass("hiddenAttackRange target");
-      //                 console.log(findPlayerFromField(next))
-      //                 break;
-      //               }
-      //               if (
-      //                 next.data("type") ||
-      //                 next.hasClass("moveRange")
-      //               ) {
-      //                 next.addClass("hiddenAttackRange");
-      //               } else {
-      //                 next.addClass("attackRange");
-      //               }
-      //             }
-      //           }
-      //         }
-      //       }
-      function getFieldCoord(field){
-        
-              let fieldX = parseInt(field.attr("data-x"));
-              let fieldY = parseInt(field.attr("data-y"));
-              let coord = {
-                  x: fieldX,
-                  y: fieldY
+        for (var i = 0; i < 8; i++) {
+          for (var j = 1; j < pawnAttackRange + 1; j++) {
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = j;
+              y = j;
+            }
+            if (i === 2) {
+              x = 0;
+              y = j;
+            }
+            if (i === 3) {
+              x = -j;
+              y = j;
+            }
+            if (i === 4) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 5) {
+              x = -j;
+              y = -j;
+            }
+            if (i === 6) {
+              x = 0;
+              y = -j;
+            }
+            if (i === 7) {
+              x = j;
+              y = -j;
+            }
+            var next = insertCoordinates(fieldX + x, fieldY + y);
+            if (next) {
+              if (checkPawnOnField(next)) {
+                next.addClass("hiddenAttackRange target");
+                
+                break;
               }
-              return coord
+              if (next.hasClass("moveRange")) {
+                next.addClass("hiddenAttackRange");
+              } else {
+                next.addClass("attackRange");
+              }
+            }
+          }
+        }
+      }
+      function getFieldCoord(field) {
+        let fieldX = parseInt(field.attr("data-x"));
+        let fieldY = parseInt(field.attr("data-y"));
+        let player = {
+          x: fieldX,
+          y: fieldY
+        };
+        return player;
       }
 
-       function markMoveRange(pawn) {
-           
-            let pawnX = pawn.data("pawn").position.x
-            let pawnY = pawn.data("pawn").position.y
-              let pawnMoveRange = pawn.data("pawn").moveRange;
-              let field = insertCoordinates(pawnX,pawnY)
-              let fieldX = getFieldCoord(field).x
-              let fieldY = getFieldCoord(field).y
+      function markMoveRange(pawn) {
+        let pawnX = pawn.data("pawn").position.x;
+        let pawnY = pawn.data("pawn").position.y;
+        let pawnMoveRange = pawn.data("pawn").moveRange;
+        let field = insertCoordinates(pawnX, pawnY);
+        let fieldX = getFieldCoord(field).x;
+        let fieldY = getFieldCoord(field).y;
 
-              for (var i = 0; i < 4; i++) {
-                for (var j = 1; j < pawnMoveRange + 1; j++) {
-                  let x;
-                  let y;
+        for (var i = 0; i < 4; i++) {
+          for (var j = 1; j < pawnMoveRange + 1; j++) {
+            let x;
+            let y;
 
-                  if (i === 0) {
-                    x = j;
-                    y = 0;
-                  }
-                  if (i === 1) {
-                    x = 0;
-                    y = j;
-                  }
-                  if (i === 2) {
-                    x = -j;
-                    y = 0;
-                  }
-                  if (i === 3) {
-                    x = 0;
-                    y = -j;
-                  }
+            if (i === 0) {
+              x = j;
+              y = 0;
+            }
+            if (i === 1) {
+              x = 0;
+              y = j;
+            }
+            if (i === 2) {
+              x = -j;
+              y = 0;
+            }
+            if (i === 3) {
+              x = 0;
+              y = -j;
+            }
 
-                  var next = insertCoordinates(fieldX + x, fieldY + y);
+            var next = insertCoordinates(fieldX + x, fieldY + y);
 
-                  if (next) {
-                    if (checkPawnOnField(next)) {
-                      break;
-                    }
-
-                    next.addClass("moveRange");
-                  }
-                }
+            if (next) {
+              if (checkPawnOnField(next)) {
+                break;
               }
-            }
 
-            function checkPawnOnField(field){
-               
-               let fieldX = parseInt(field.attr('data-x'))
-               let fieldY = parseInt(field.attr('data-y'))
-               let xs = []
-               let ys = []
-               let coord = []
-               
-             $('.player').each(function(idk){
-                   let pawn = $(this)
-                   xs += pawn.data('pawn').position.x
-                   ys += pawn.data('pawn').position.y
-                   coord.push({x:pawn.data('pawn').position.x, y:pawn.data('pawn').position.y})
-                  
-
-               })
-             
-           
-               for(let i = 0; i<coord.length; i++){
-               
-                   if(coord[i].x === fieldX && coord[i].y === fieldY){
-                       return true
-                   } 
-               }
-              
+              next.addClass("moveRange");
             }
-            // function findPlayerField(pawn) {
-            //   return $(`[on="${pawn.attr("class")}"]`);
-            // }
-            // function findPlayerFromField(field){
-            //   console.log(field)
-            //   return $(`[on="${field.attr("on")}"]`);
-            // }
-            // function removeAttributesFromField(field) {
-            //   field.removeAttr("on");
-            //   field.removeData("type");
-            // }
-      
+          }
+        }
+      }
+
+      function checkPawnOnField(field) {
+        let fieldX = parseInt(field.attr("data-x"));
+        let fieldY = parseInt(field.attr("data-y"));
+       
+        let player = [];
+       
+
+        $(".player").each(function(idk) {
+          let pawn = $(this);
+
+        
+          player.push({
+            x: pawn.data("pawn").position.x,
+            y: pawn.data("pawn").position.y,
+            pawn: pawn
+          });
+        });
+  
+        for (let i = 0; i < player.length; i++) {
+          if (player[i].x === fieldX && player[i].y === fieldY) {
+              console.log(player[i].pawn)
+            return true;
+          }
+        }
+      }
+      // function findPlayerField(pawn) {
+      //   return $(`[on="${pawn.attr("class")}"]`);
+      // }
+      // function findPlayerFromField(field){
+      //   console.log(field)
+      //   return $(`[on="${field.attr("on")}"]`);
+      // }
+      // function removeAttributesFromField(field) {
+      //   field.removeAttr("on");
+      //   field.removeData("type");
+      // }
 
       //       function removeMoveRange() {
       //         $(".gridCell").removeClass("moveRange");
