@@ -89,28 +89,34 @@
         0 0 35px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
     }
 
-        .healthBar {
-        border: 1px solid black;
-        height: 10px;
-        background: red;
-        width: 60px;
-        position: absolute;
-        border-radius: 10px;
-        transition: all, 1s;
-      }
-      .health {
-        height: inherit;
-        background: greenyellow;
-        width: 50%;
-        transition: all, 0.5s;
-        border-radius: 10px
-        /* border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px; */
-      }
+    .healthBar {
+      border: 1px solid black;
+      height: 10px;
+      background: red;
+      width: 60px;
+      position: absolute;
+      border-radius: 10px;
+      transition: all, 1s;
+    }
+    .health {
+      height: inherit;
+      background: greenyellow;
+      width: 50%;
+      transition: all, 0.5s;
+      border-radius: 10px;
+    }
+
+    .action{
+      position: absolute;
+      font-weight: bold;
+      text-align: center;
+      color: rgb(175, 14, 14);
+    }
+    
   </style>
   <body>
     <div class="grid">
-     
+      
     </div>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
@@ -132,7 +138,6 @@
               attackRange: 1,
               hp: 100,
               attackPower: 20
-              
             },
             archer: {
               player: "player",
@@ -230,34 +235,32 @@
         pawn.data("pawn", players[pawnColor].pawns[pawnType]);
 
         let healthBar = $("<div></div>");
-        healthBar.addClass('healthBar')
+        healthBar.addClass("healthBar");
         let health = $("<div></div>");
-        health.addClass('health')
-        health.appendTo(healthBar)
-        pawn.data('pawn').healthBar = healthBar
-        pawn.data('pawn').health = health
-        pawn.data('pawn').healthBar.appendTo(grid)
-        
+        health.addClass("health");
+        health.appendTo(healthBar);
+        pawn.data("pawn").healthBar = healthBar;
+        pawn.data("pawn").health = health;
+        pawn.data("pawn").healthBar.appendTo(grid);
       });
 
       $(".player").each(function() {
         let pawn = $(this);
 
         move(pawn);
-        pawn.data('pawn').healthBar.css({
+        pawn.data("pawn").healthBar.css({
           top: pawn.position().top - 15,
           left: pawn.position().left
-        })
-        pawn.data('pawn').health.css({
-          width: pawn.data('pawn').hp + '%'
-        })
+        });
+        pawn.data("pawn").health.css({
+          width: pawn.data("pawn").hp + "%"
+        });
       });
       addSelectListener();
       addMoveListener();
-      addAttackListener()
+      addAttackListener();
       function addSelectListener() {
         $(".grid").on("click", ".player", function() {
-          
           let pawn = $(this);
 
           if (pawn.data("pawn").color === whoPlay.color) {
@@ -285,35 +288,57 @@
           pawn.data("pawn").position.x = fieldX;
           pawn.data("pawn").position.y = fieldY;
           move(pawn);
-           
+
           removeSelect();
         });
       }
 
-      function addAttackListener(){
-
-         $(".grid").on("click", ".target", function() {
+      function addAttackListener() {
+        $(".grid").on("click", ".target", function() {
           let pawn = $(".selected");
-          let target= $(this);
-         console.log(pawn)
-         console.log(target)
-         target.data('pawn').hp = target.data('pawn').hp - pawn.data('pawn').attackPower
-         target.data('pawn').health.css({
-           width: target.data('pawn').hp + '%'
-         })
-         if( target.data('pawn').hp <= 0){
-           setTimeout(function(){
-             target.detach()
-             target.data('pawn').healthBar.detach()
-           },200)
-         }
-         removeSelect()
+          let target = $(this);
+          console.log(pawn);
+          console.log(target);
+          target.data("pawn").hp =
+            target.data("pawn").hp - pawn.data("pawn").attackPower;
+          target.data("pawn").health.css({
+            width: target.data("pawn").hp + "%"
+          });
+          floatingNumbers(target, pawn.data("pawn").attackPower)
+          if (target.data("pawn").hp <= 0) {
+            setTimeout(function() {
+              target.detach();
+              target.data("pawn").healthBar.detach();
+            }, 200);
+          }
+          removeSelect();
         });
-
       }
 
-      function floatingNumbers(){
-        
+      function floatingNumbers(pawn, num) {
+       
+        let number = -(num)
+        let stringContener = $('<div></div>')
+        let string = $('<p></p>')
+        string.html(number)
+        string.appendTo(stringContener)
+        string.addClass('action')
+
+        string.appendTo(grid)
+        string.css({
+          left: pawn.position().left + 18,
+          top: pawn.position().top
+        })
+        string.animate({
+          top: pawn.position().top - 80,
+          left: pawn.position().left +5,
+          fontSize: 30,
+          opacity: 0
+         
+        },700)
+  setTimeout(function(){
+    stringContener.remove()
+  },0)
       }
 
       function select(pawn) {
@@ -347,9 +372,9 @@
           left: targetX + (cellWidth - pawnWidth) / 2,
           top: targetY + (cellHeight - pawnHeight) / 2
         });
-        pawn.data('pawn').healthBar.css({
+        pawn.data("pawn").healthBar.css({
           left: targetX + (cellWidth - pawnWidth) / 2,
-          top: (targetY + (cellHeight - pawnHeight) / 2) - 15
+          top: targetY + (cellHeight - pawnHeight) / 2 - 15
         });
       }
 
@@ -399,13 +424,12 @@
             var next = insertCoordinates(fieldX + x, fieldY + y);
             if (next) {
               if (checkPawnOnField(next)) {
-                  if(checkPawnOnField(next).color !== pawn.data('pawn').color){
-                next.addClass("hiddenAttackRange");
-                    
-                   checkPawnOnField(next).pawn.addClass('target')
-               
-                  }
-                  break;
+                if (checkPawnOnField(next).color !== pawn.data("pawn").color) {
+                  next.addClass("hiddenAttackRange");
+
+                  checkPawnOnField(next).pawn.addClass("target");
+                }
+                break;
               }
               if (next.hasClass("moveRange")) {
                 next.addClass("hiddenAttackRange");
@@ -457,7 +481,7 @@
             }
 
             var next = insertCoordinates(fieldX + x, fieldY + y);
-            
+
             if (next) {
               if (checkPawnOnField(next)) {
                 break;
@@ -488,65 +512,15 @@
         for (let i = 0; i < player.length; i++) {
           if (player[i].x === fieldX && player[i].y === fieldY) {
             let pawnColor = player[i].pawn.data("pawn").color;
-            let pawn = player[i].pawn
+            let pawn = player[i].pawn;
             return { isPlayer: true, color: pawnColor, pawn: pawn };
           }
         }
       }
-      // function findPlayerField(pawn) {
-      //   return $(`[on="${pawn.attr("class")}"]`);
-      // }
-      // function findPlayerFromField(field){
-      //   console.log(field)
-      //   return $(`[on="${field.attr("on")}"]`);
-      // }
-      // function removeAttributesFromField(field) {
-      //   field.removeAttr("on");
-      //   field.removeData("type");
-      // }
 
-      //       function removeMoveRange() {
-      //         $(".gridCell").removeClass("moveRange");
-      //       }
-      //       function removeAttackRange() {
-      //         $(".gridCell").removeClass("attackRange");
-      //       }
       function insertCoordinates(x, y) {
         return $(`[data-x='${x}'][data-y='${y}']`);
       }
-
-      //       function getPosition(cell) {
-      //         return {
-      //           x: parseInt(cell.getAttribute("data-x")),
-      //           y: parseInt(cell.getAttribute("data-y"))
-      //         };
-      //       }
-
-      //       function move(pawn, target) {
-      //         let cell = oneCell;
-
-      //         let targetX = target.position().left;
-      //         let cellWidth = parseInt(cell.css("width"));
-      //         let pawnWidth = parseInt(pawn.css("width"));
-      //         let targetY = target.position().top;
-      //         let cellHeight = parseInt(cell.css("height"));
-      //         let pawnHeight = parseInt(pawn.css("height"));
-
-      //         pawn.css({
-      //           left: targetX + (cellWidth - pawnWidth) / 2,
-      //           top: targetY + (cellHeight - pawnHeight) / 2
-      //         });
-
-      //         target.data("type", pawn.data("type"));
-      //         target.attr(
-      //           "on",
-      //           pawn
-      //             .attr("class")
-      //             .split(" ")
-      //             .slice(0, 3)
-      //             .join(" ")
-      //         );
-      //       }
 
       function createBoard() {
         let grid = $(".grid");
