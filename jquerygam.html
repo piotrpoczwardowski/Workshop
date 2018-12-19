@@ -295,16 +295,25 @@
          $(".grid").on("click", ".target", function() {
           let pawn = $(".selected");
           let target= $(this);
-         
          console.log(pawn)
          console.log(target)
          target.data('pawn').hp = target.data('pawn').hp - pawn.data('pawn').attackPower
          target.data('pawn').health.css({
            width: target.data('pawn').hp + '%'
          })
-         if()
+         if( target.data('pawn').hp <= 0){
+           setTimeout(function(){
+             target.detach()
+             target.data('pawn').healthBar.detach()
+           },200)
+         }
+         removeSelect()
         });
 
+      }
+
+      function floatingNumbers(){
+        
       }
 
       function select(pawn) {
