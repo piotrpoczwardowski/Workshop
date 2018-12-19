@@ -96,14 +96,16 @@
         width: 60px;
         position: absolute;
         border-radius: 10px;
+        transition: all, 1s;
       }
       .health {
         height: inherit;
         background: greenyellow;
         width: 50%;
         transition: all, 0.5s;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
+        border-radius: 10px
+        /* border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px; */
       }
   </style>
   <body>
@@ -128,7 +130,8 @@
               position: { x: 2, y: 2 },
               moveRange: 3,
               attackRange: 1,
-              health: 100
+              hp: 100,
+              attackPower: 20
               
             },
             archer: {
@@ -139,7 +142,8 @@
               position: { x: 2, y: 5 },
               moveRange: 2,
               attackRange: 3,
-              health: 100
+              hp: 100,
+              attackPower: 20
             },
             sorcerer: {
               player: "player",
@@ -149,7 +153,8 @@
               position: { x: 2, y: 8 },
               moveRange: 1,
               attackRange: 3,
-              health: 100
+              hp: 100,
+              attackPower: 20
             }
           }
         },
@@ -166,7 +171,8 @@
               position: { x: 9, y: 2 },
               moveRange: 3,
               attackRange: 1,
-              health: 100
+              hp: 100,
+              attackPower: 20
             },
             archer: {
               player: "player",
@@ -176,7 +182,8 @@
               position: { x: 9, y: 5 },
               moveRange: 2,
               attackRange: 3,
-              health: 100
+              hp: 100,
+              attackPower: 20
             },
             sorcerer: {
               player: "player",
@@ -186,7 +193,8 @@
               position: { x: 9, y: 8 },
               moveRange: 1,
               attackRange: 3,
-              health: 100
+              hp: 100,
+              attackPower: 20
             }
           }
         }
@@ -227,6 +235,7 @@
         health.addClass('health')
         health.appendTo(healthBar)
         pawn.data('pawn').healthBar = healthBar
+        pawn.data('pawn').health = health
         pawn.data('pawn').healthBar.appendTo(grid)
         
       });
@@ -236,18 +245,23 @@
 
         move(pawn);
         pawn.data('pawn').healthBar.css({
-          top: pawn.position().top,
+          top: pawn.position().top - 15,
           left: pawn.position().left
+        })
+        pawn.data('pawn').health.css({
+          width: pawn.data('pawn').hp + '%'
         })
       });
       addSelectListener();
       addMoveListener();
+      addAttackListener()
       function addSelectListener() {
         $(".grid").on("click", ".player", function() {
-          removeSelect();
+          
           let pawn = $(this);
 
           if (pawn.data("pawn").color === whoPlay.color) {
+            removeSelect();
             select(pawn);
           }
         });
@@ -274,6 +288,23 @@
            
           removeSelect();
         });
+      }
+
+      function addAttackListener(){
+
+         $(".grid").on("click", ".target", function() {
+          let pawn = $(".selected");
+          let target= $(this);
+         
+         console.log(pawn)
+         console.log(target)
+         target.data('pawn').hp = target.data('pawn').hp - pawn.data('pawn').attackPower
+         target.data('pawn').health.css({
+           width: target.data('pawn').hp + '%'
+         })
+         if()
+        });
+
       }
 
       function select(pawn) {
@@ -306,6 +337,10 @@
         pawn.css({
           left: targetX + (cellWidth - pawnWidth) / 2,
           top: targetY + (cellHeight - pawnHeight) / 2
+        });
+        pawn.data('pawn').healthBar.css({
+          left: targetX + (cellWidth - pawnWidth) / 2,
+          top: (targetY + (cellHeight - pawnHeight) / 2) - 15
         });
       }
 
