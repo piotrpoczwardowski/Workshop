@@ -95,16 +95,21 @@
         background: red;
         width: 60px;
         position: absolute;
+        border-radius: 10px;
       }
       .health {
         height: inherit;
         background: greenyellow;
-        width: 0%;
+        width: 50%;
         transition: all, 0.5s;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
       }
   </style>
   <body>
-    <div class="grid"></div>
+    <div class="grid">
+     
+    </div>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
       "use strict;";
@@ -122,7 +127,9 @@
               classes: ["red", "player", "warrior"],
               position: { x: 2, y: 2 },
               moveRange: 3,
-              attackRange: 1
+              attackRange: 1,
+              health: 100
+              
             },
             archer: {
               player: "player",
@@ -131,7 +138,8 @@
               classes: ["red", "player", "archer"],
               position: { x: 2, y: 5 },
               moveRange: 2,
-              attackRange: 3
+              attackRange: 3,
+              health: 100
             },
             sorcerer: {
               player: "player",
@@ -140,7 +148,8 @@
               classes: ["red", "player", "sorcerer"],
               position: { x: 2, y: 8 },
               moveRange: 1,
-              attackRange: 3
+              attackRange: 3,
+              health: 100
             }
           }
         },
@@ -156,7 +165,8 @@
               classes: ["blue", "player", "warrior"],
               position: { x: 9, y: 2 },
               moveRange: 3,
-              attackRange: 1
+              attackRange: 1,
+              health: 100
             },
             archer: {
               player: "player",
@@ -165,7 +175,8 @@
               classes: ["blue", "player", "archer"],
               position: { x: 9, y: 5 },
               moveRange: 2,
-              attackRange: 3
+              attackRange: 3,
+              health: 100
             },
             sorcerer: {
               player: "player",
@@ -174,7 +185,8 @@
               classes: ["blue", "player", "sorcerer"],
               position: { x: 9, y: 8 },
               moveRange: 1,
-              attackRange: 3
+              attackRange: 3,
+              health: 100
             }
           }
         }
@@ -208,12 +220,25 @@
         let pawnColor = pawn.attr("class").split(" ")[0];
 
         pawn.data("pawn", players[pawnColor].pawns[pawnType]);
+
+        let healthBar = $("<div></div>");
+        healthBar.addClass('healthBar')
+        let health = $("<div></div>");
+        health.addClass('health')
+        health.appendTo(healthBar)
+        pawn.data('pawn').healthBar = healthBar
+        pawn.data('pawn').healthBar.appendTo(grid)
+        
       });
 
       $(".player").each(function() {
         let pawn = $(this);
 
         move(pawn);
+        pawn.data('pawn').healthBar.css({
+          top: pawn.position().top,
+          left: pawn.position().left
+        })
       });
       addSelectListener();
       addMoveListener();
