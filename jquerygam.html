@@ -217,6 +217,7 @@
       let oneCell = $(".gridCell");
       let round = 0;
       let whoPlay = round % 2 === 0 ? players.red : players.blue;
+      let whoIsEnemy = round % 2 === 0 ? players.blue : players.red;
 
       warriorRed.addClass(players.red.pawns.warrior.classes).appendTo(grid);
 
@@ -297,8 +298,7 @@
         $(".grid").on("click", ".target", function() {
           let pawn = $(".selected");
           let target = $(this);
-          console.log(pawn);
-          console.log(target);
+         
           target.data("pawn").hp =
             target.data("pawn").hp - pawn.data("pawn").attackPower;
           target.data("pawn").health.css({
@@ -344,7 +344,14 @@
       function select(pawn) {
         pawn.addClass("selected");
         markMoveRange(pawn);
-        markAttackRange(pawn);
+       attackRangeOnHover()
+       
+      }
+
+      function attackRangeOnHover(){
+        let pawn = warriorRed
+        let enemyColor
+        console.log(whoPlay.color)
       }
       function removeSelect() {
         $(".player").removeClass("selected");
@@ -353,6 +360,7 @@
         $(".gridCell").removeClass("attackRange hiddenAttackRange target");
 
         whoPlay = round % 2 === 0 ? players.red : players.blue;
+        whoIsEnemy = round % 2 === 0 ? players.blue : players.red;
       }
 
       function move(pawn) {
