@@ -112,9 +112,19 @@
       text-align: center;
       color: rgb(175, 14, 14);
     }
+
+    .arrow{
+      width: 10px;
+      height: 10px;
+      background: black;
+      position: absolute;
+      border-radius: 50%;
+    }
   </style>
   <body>
-    <div class="grid"></div>
+    <div class="grid">
+     
+    </div>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
       "use strict;";
@@ -297,7 +307,19 @@
           let pawn = $(".selected");
           let target = $(this);
 
-          target.data("pawn").hp =
+          
+          attack(pawn, target)
+          removeSelect();
+          
+        });
+      }
+
+      function attack(pawn, target){
+
+        arrowAttack(pawn,target)
+
+
+        target.data("pawn").hp =
             target.data("pawn").hp - pawn.data("pawn").attackPower;
           target.data("pawn").health.css({
             width: target.data("pawn").hp + "%"
@@ -309,8 +331,29 @@
               target.data("pawn").healthBar.detach();
             }, 200);
           }
-          removeSelect();
-        });
+
+
+      }
+arrowAttack()
+      function arrowAttack(){
+        let pawn = warriorRed
+        let target = warriorBlue
+
+        let arrow = $('<div></div>')
+        arrow.addClass('arrow')
+        arrow.appendTo(grid)
+        arrow.css({
+          left: pawn.position().left + 25,
+          top: pawn.position().top + 25
+        })
+
+        arrow.animate({
+          left: target.position().left + 25,
+          top: target.position().top + 25
+        },700,function(){
+          arrow.remove()
+        })
+       
       }
 
       function floatingNumbers(pawn, num) {
@@ -391,6 +434,7 @@
           left: targetX + (cellWidth - pawnWidth) / 2,
           top: targetY + (cellHeight - pawnHeight) / 2 - 15
         });
+       
       }
 
       function markAttackRange(pawn) {
