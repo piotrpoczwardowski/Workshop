@@ -106,18 +106,15 @@
       border-radius: 10px;
     }
 
-    .action{
+    .action {
       position: absolute;
       font-weight: bold;
       text-align: center;
       color: rgb(175, 14, 14);
     }
-    
   </style>
   <body>
-    <div class="grid">
-      
-    </div>
+    <div class="grid"></div>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
       "use strict;";
@@ -276,6 +273,7 @@
           $(".gridCell").removeClass("moveRange");
           $(".gridCell").removeClass("attackRange hiddenAttackRange");
           $(".player").removeClass("target");
+          $(".grid").off("mouseenter.attack");
         });
       }
 
@@ -298,13 +296,13 @@
         $(".grid").on("click", ".target", function() {
           let pawn = $(".selected");
           let target = $(this);
-         
+
           target.data("pawn").hp =
             target.data("pawn").hp - pawn.data("pawn").attackPower;
           target.data("pawn").health.css({
             width: target.data("pawn").hp + "%"
           });
-          floatingNumbers(target, pawn.data("pawn").attackPower)
+          floatingNumbers(target, pawn.data("pawn").attackPower);
           if (target.data("pawn").hp <= 0) {
             setTimeout(function() {
               target.detach();
@@ -316,48 +314,57 @@
       }
 
       function floatingNumbers(pawn, num) {
-       
-        let number = -(num)
-        let stringContener = $('<div></div>')
-        let string = $('<p></p>')
-        string.html(number)
-        string.appendTo(stringContener)
-        string.addClass('action')
+        let number = -num;
+        let stringContener = $("<div></div>");
+        let string = $("<p></p>");
+        string.html(number);
+        string.appendTo(stringContener);
+        string.addClass("action");
 
-        string.appendTo(grid)
+        string.appendTo(grid);
         string.css({
           left: pawn.position().left + 18,
           top: pawn.position().top
-        })
-        string.animate({
-          top: pawn.position().top - 80,
-          left: pawn.position().left +5,
-          fontSize: 30,
-          opacity: 0
-         
-        },700)
-  setTimeout(function(){
-    stringContener.remove()
-  },0)
+        });
+        string.animate(
+          {
+            top: pawn.position().top - 80,
+            left: pawn.position().left + 5,
+            fontSize: 30,
+            opacity: 0
+          },
+          700
+        );
+        setTimeout(function() {
+          stringContener.remove();
+        }, 0);
       }
 
       function select(pawn) {
         pawn.addClass("selected");
         markMoveRange(pawn);
-       attackRangeOnHover()
-       
+        attackRangeOnHover(pawn);
       }
 
-      function attackRangeOnHover(){
-        let pawn = warriorRed
-        let enemyColor
-        console.log(whoPlay.color)
+      function attackRangeOnHover(pawn) {
+       
+
+        let enemy = `.player.${whoIsEnemy.color}`;
+        $(".grid")
+          .on("mouseenter.attack", enemy, function() {
+            markAttackRange(pawn);
+          })
+          .on("mouseleave", enemy, function() {
+            $(".gridCell").removeClass("attackRange hiddenAttackRange");
+            $(".player").removeClass("target");
+          });
       }
       function removeSelect() {
         $(".player").removeClass("selected");
         $(".player").removeClass("target");
         $(".gridCell").removeClass("moveRange");
         $(".gridCell").removeClass("attackRange hiddenAttackRange target");
+        $(".grid").off("mouseenter.attack");
 
         whoPlay = round % 2 === 0 ? players.red : players.blue;
         whoIsEnemy = round % 2 === 0 ? players.blue : players.red;
