@@ -15,21 +15,42 @@
     }
 
     .hidden{
-        height: 200px;
+       
+        
         background: #666;
+        height: 200px;
+        overflow: hidden;
+        transition: all 1s;
+        position: absolute;
+        width: 200px;
+        border-radius: 50%;
+        max-width: 200px;
+       
     }
 
      .down{
         height: 200px;
         background: #444;;
     }
-    
+    button{
+        width: 50px;
+        height: 50px;
+    }
+
+    p{
+        cursor: pointer;
+    }
+
+    .toggle{
+        
+    }
+
     </style>
   </head>
   <body>
     <div class="title"><h1>Hello my new world!</h1></div>
     <div class="hidden">
-
+<p>HHHHHHH</p>
     </div>
     <div class="down">
 
@@ -37,5 +58,22 @@
     <button>
         Click me
     </button>
+
+    <script>
+    let button = document.querySelector('button')
+    let hidden =  document.querySelector('.hidden')
+
+    button.addEventListener('click',function(){
+       
+        hidden.style.width = 0;
+        hidden.style.height = '0px';
+        hidden.style.marginLeft = '100px';
+        hidden.style.marginTop = '100px';
+        console.log('dsfs')
+    })
+    
+    setInterval(function(){console.log(hidden.style.maxWidth)},1000)
+    
+    </script>
   </body>
 </html>
