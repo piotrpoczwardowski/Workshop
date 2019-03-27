@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+      <div id="app">
+          {{msg}}
+          <span v-html='msg'></span>
+          <div v-bind:disabled='msg'>gfdg</div>
+          <a v-bind:[attributename]="hr"> ... </a>
+          <a :href='msg'></a>
+      </div>
+      <div id="app2">
+          <div>{{msg}}</div>
+          <div>{{reverseMsg}}</div>
+      </div>
+    <script>
+
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+                msg: "Hello"
+            },
+            computed:{
+                reverseMsg: function(){
+                    return Date.now()
+                }
+            }
+        })
+      let data = { a: 1 };
+      var vm = new Vue({
+        el: '#app',  
+        data: {
+            msg: data.a,
+            hr: 'path',
+            attributename: 'href'
+        },
+        created: function () {
+    // `this` points to the vm instance
+    console.log('I am born' + this.msg)
+  }
+      });
+      vm.$watch("a", function(newValue, oldValue) {
+        console.log(oldValue);
+        // This callback will be called when `vm.a` changes
+      });
+    </script>
+  </body>
+</html>
